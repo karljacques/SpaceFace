@@ -1,0 +1,3 @@
+ping:
+    path: /ping
+    controller: App\Controller\PingController::index
