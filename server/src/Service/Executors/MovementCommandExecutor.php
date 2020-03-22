@@ -20,18 +20,18 @@ class MovementCommandExecutor
 
         $direction = $this->convertDirectionToTranslation($command->getDirection());
 
-        $proposedPosition = $ship->getPosition()->add($direction);
+        $proposedPosition = $ship->getVector()->add($direction);
 
         if (!$system->getBoundingBox()->containsPoint($proposedPosition)) {
             throw new UserActionException('Proposed movement is out of system bounds',
                 [
-                'current_position' => $ship->getPosition(),
+                'current_position' => $ship->getVector(),
                 'delta' => $direction,
                 'proposed_position' => $proposedPosition
             ]);
         }
 
-        $ship->setPosition($proposedPosition);
+        $ship->setVector($proposedPosition);
     }
 
     private function convertDirectionToTranslation(string $direction): Vector2

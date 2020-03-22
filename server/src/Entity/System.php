@@ -30,6 +30,12 @@ class System
     private $name;
 
     /**
+     * @ORM\Column(type="string", length=4)
+     * @Groups({"basic"})
+     */
+    private $designation;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Ship", mappedBy="system")
      */
     private $ships;
@@ -44,9 +50,15 @@ class System
      */
     private $sizeY;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\JumpNode", mappedBy="entrySystem")
+     */
+    private $jumpNodes;
+
     public function __construct()
     {
         $this->ships = new ArrayCollection();
+        $this->jumpNodes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -122,6 +134,49 @@ class System
     public function setSizeY(int $sizeY): self
     {
         $this->sizeY = $sizeY;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|JumpNode[]
+     */
+    public function getJumpNodes(): Collection
+    {
+        return $this->jumpNodes;
+    }
+
+    public function addJumpNode(JumpNode $jumpNode): self
+    {
+        if (!$this->jumpNodes->contains($jumpNode)) {
+            $this->jumpNodes[] = $jumpNode;
+            $jumpNode->setEntrySystem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeJumpNode(JumpNode $jumpNode): self
+    {
+        if ($this->jumpNodes->contains($jumpNode)) {
+            $this->jumpNodes->removeElement($jumpNode);
+            // set the owning side to null (unless already changed)
+            if ($jumpNode->getEntrySystem() === $this) {
+                $jumpNode->setEntrySystem(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDesignation(): ?string
+    {
+        return $this->designation;
+    }
+
+    public function setDesignation(string $designation): self
+    {
+        $this->designation = $designation;
 
         return $this;
     }

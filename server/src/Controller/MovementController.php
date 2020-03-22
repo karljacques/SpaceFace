@@ -5,7 +5,9 @@ namespace App\Controller;
 
 
 use App\Command\MovementCommand;
+use App\Entity\JumpNode;
 use App\Exception\UserActionException;
+use App\Repository\JumpNodeRepository;
 use App\Service\Executors\MovementCommandExecutor;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,13 +41,20 @@ class MovementController extends AbstractController
         $this->commandExecutor->execute($move);
 
         // Load the current sector data
+        /** @var JumpNodeRepository $jumpNodeRepository */
+        $jumpNodeRepository = $this->entityManager->getRepository(JumpNode::class);
+        $entryNodes = $jumpNodeRepository->findEntryNodeByLocation($move->getShip()->getLocation());
 
         $this->entityManager->flush();
+
 
         return $this->json([
             "success" => true,
             "data" => [
-                "ship" => $move->getShip()
+                "ship" => $move->getShip(),
+                'sector' => [
+                    'entryNodes' => $entryNodes
+                ]
             ]
         ], 200, [], ['groups' => ['basic', 'self']]);
     }

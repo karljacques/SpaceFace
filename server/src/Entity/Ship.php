@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Util\Location;
 use App\Util\Vector2;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -108,15 +109,20 @@ class Ship
      * @Groups({"self"})
      * @return Vector2
      */
-    public function getPosition(): Vector2
+    public function getVector(): Vector2
     {
         return new Vector2($this->getX(), $this->getY());
     }
 
-    public function setPosition(Vector2 $position): void
+    public function setVector(Vector2 $position): void
     {
         $this->setX($position->getX());
         $this->setY($position->getY());
+    }
+
+    public function getLocation(): Location
+    {
+        return new Location($this->getSystem(), $this->getVector());
     }
 
 }
