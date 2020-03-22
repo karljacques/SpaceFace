@@ -50,4 +50,9 @@ class Vector2 implements JsonSerializable
             'y' => $this->getY()
         ];
     }
+
+    public function subtract(Vector2 $b): Vector2
+    {
+        return new Vector2($this->getX() - $b->getX(), $this->getY() - $b->getY());
+    }
 }
