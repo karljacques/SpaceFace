@@ -15,7 +15,10 @@ class SystemFixtures extends Fixture
 
         for ($i = 0; $i < $systemCount; $i++) {
             $system = new System();
-            $system->setName($faker->domainName);
+            $system->setName(ucwords($faker->domainWord));
+
+            $system->setSizeX($faker->numberBetween(10, 15));
+            $system->setSizeY($faker->numberBetween(10, 20));
 
             $manager->persist($system);
         }

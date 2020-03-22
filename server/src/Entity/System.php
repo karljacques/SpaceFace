@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SystemRepository")
- * @ORM\Table(name="solarSystem")
+ * @ORM\Table(name="star_system")
  */
 class System
 {
@@ -33,6 +33,16 @@ class System
      * @ORM\OneToMany(targetEntity="App\Entity\Ship", mappedBy="system")
      */
     private $ships;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $sizeX;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $sizeY;
 
     public function __construct()
     {
@@ -89,6 +99,30 @@ class System
 
     public function getBoundingBox(): BoundingBox
     {
-        return new BoundingBox(new Vector2(1, 1), new Vector2(10, 10));
+        return new BoundingBox(new Vector2(1, 1), new Vector2($this->getSizeX(), $this->getSizeY()));
+    }
+
+    public function getSizeX(): ?int
+    {
+        return $this->sizeX;
+    }
+
+    public function setSizeX(int $sizeX): self
+    {
+        $this->sizeX = $sizeX;
+
+        return $this;
+    }
+
+    public function getSizeY(): ?int
+    {
+        return $this->sizeY;
+    }
+
+    public function setSizeY(int $sizeY): self
+    {
+        $this->sizeY = $sizeY;
+
+        return $this;
     }
 }

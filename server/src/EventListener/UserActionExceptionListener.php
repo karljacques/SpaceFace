@@ -25,6 +25,6 @@ class UserActionExceptionListener
         ];
 
         $event->setResponse(new JsonResponse(['success' => false, 'error' => $error]));
-        $event->getResponse()->setStatusCode(400);
+        $event->getResponse()->setStatusCode(403);
     }
 }
