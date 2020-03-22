@@ -1,8 +1,5 @@
-docker-symfony
+SpaceFace uses docker-symfony
 ==============
-
-[![Build Status](https://secure.travis-ci.org/eko/docker-symfony.png?branch=master)](http://travis-ci.org/eko/docker-symfony)
-
 
 This is a complete stack for running Symfony 4 (latest version: Flex) into Docker containers using docker-compose tool.
 
@@ -10,28 +7,15 @@ This is a complete stack for running Symfony 4 (latest version: Flex) into Docke
 
 First, clone this repository:
 
-```bash
-$ git clone https://github.com/eko/docker-symfony.git
-```
-
-Next, put your Symfony application into `symfony` folder and do not forget to add `symfony.localhost` in your `/etc/hosts` file.
-
-Make sure you adjust `database_host` in `parameters.yml` to the database container alias "db" (for Symfony < 4)
-Make sure you adjust `DATABASE_URL` in `env` to the database container alias "db" (for Symfony >= 4)
-
-Then, run:
+Run:
 
 ```bash
-$ docker-compose up
+$ docker-compose up -d
 ```
 
 You are done, you can visit your Symfony application on the following URL: `http://symfony.localhost` (and access Kibana on `http://symfony.localhost:81`)
 
-_Note :_ you can rebuild all Docker images by running:
 
-```bash
-$ docker-compose build
-```
 
 # How it works?
 
@@ -75,6 +59,9 @@ Configure your IDE to use port 5902 for XDebug.
 Docker versions below 18.03.1 don't support the Docker variable `host.docker.internal`.  
 In that case you'd have to swap out `host.docker.internal` with your machine IP address in php-fpm/xdebug.ini.
 
-# Code license
+# Run tests
 
-You are free to use the code in this repository under the terms of the 0-clause BSD license. LICENSE contains a copy of this license.
+Create the SQLite schema
+```
+./bin/console doctrine:schema:create --env=test
+```
