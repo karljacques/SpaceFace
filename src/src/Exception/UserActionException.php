@@ -11,8 +11,7 @@ class UserActionException extends \Exception
     {
         parent::__construct($message, 200);
 
-        $this->details['message'] = $message;
-        $this->details = array_merge($this->details, $details);
+        $this->details = $details;
     }
 
     /**

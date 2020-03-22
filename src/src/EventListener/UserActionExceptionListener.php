@@ -18,7 +18,13 @@ class UserActionExceptionListener
             return;
         }
 
-        $event->setResponse(new JsonResponse(['success' => false, 'errors' => [$exception->getDetails()]]));
+        $error = [
+            'type' => 'action',
+            'message' => $exception->getMessage(),
+            'details' => $exception->getDetails()
+        ];
+
+        $event->setResponse(new JsonResponse(['success' => false, 'error' => $error]));
         $event->getResponse()->setStatusCode(400);
     }
 }

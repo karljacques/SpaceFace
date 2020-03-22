@@ -17,14 +17,18 @@ class CommandValidationExceptionListener
             return;
         }
 
-        $errors = [];
+        $violations = [];
         /** @var ConstraintViolation $violation */
         foreach ($exception->getViolationList() as $violation) {
-            $errors[$violation->getPropertyPath()] = $violation->getMessage();
+            $violations[$violation->getPropertyPath()] = $violation->getMessage();
         }
 
-        $event->setResponse(new JsonResponse(['success' => false, 'errors' => $errors]));
-        $event->getResponse()->setStatusCode($exception->getCode());
+        $error = [
+            'type' => 'validation',
+            'violations' => $violations
+        ];
 
+        $event->setResponse(new JsonResponse(['success' => false, 'error' => $error]));
+        $event->getResponse()->setStatusCode($exception->getCode());
     }
 }
