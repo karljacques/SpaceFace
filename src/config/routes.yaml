@@ -1,3 +1,7 @@
 ping:
     path: /ping
     controller: App\Controller\PingController::index
+
+move:
+    path: /move
+    controller: App\Controller\MovementController::index

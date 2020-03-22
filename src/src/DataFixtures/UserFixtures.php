@@ -5,17 +5,13 @@ namespace App\DataFixtures;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class UserFixtures extends Fixture
+class UserFixtures extends Fixture implements ContainerAwareInterface
 {
-    private $passwordEncoder;
-
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
-    {
-        $this->passwordEncoder = $passwordEncoder;
-    }
-
+    /** @var ContainerInterface */
+    private $container;
 
     /**
      * Load data fixtures with the passed EntityManager
@@ -23,13 +19,23 @@ class UserFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
+        $passwordEncoder = $this->container->get('security.password_encoder');
         $user = new User();
 
         $user->setUsername('TestUser')
             ->setApiToken('73d0e731888687f8dd1413215b5de938')
-            ->setPassword($this->passwordEncoder->encodePassword($user, 'password'));
+            ->setPassword($passwordEncoder->encodePassword($user, 'password'));
 
         $manager->persist($user);
         $manager->flush();
+    }
+
+    /**
+     * Sets the container.
+     * @param ContainerInterface|null $container
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
     }
 }

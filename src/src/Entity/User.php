@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -38,6 +40,16 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Ship", mappedBy="user")
+     */
+    private $ships;
+
+    public function __construct()
+    {
+        $this->ships = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -130,5 +142,36 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection|Ship[]
+     */
+    public function getShips(): Collection
+    {
+        return $this->ships;
+    }
+
+    public function addShip(Ship $ship): self
+    {
+        if (!$this->ships->contains($ship)) {
+            $this->ships[] = $ship;
+            $ship->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShip(Ship $ship): self
+    {
+        if ($this->ships->contains($ship)) {
+            $this->ships->removeElement($ship);
+            // set the owning side to null (unless already changed)
+            if ($ship->getUser() === $this) {
+                $ship->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }
