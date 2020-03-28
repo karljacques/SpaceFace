@@ -2,21 +2,19 @@
 
 
 namespace App\Command;
-use Symfony\Component\Validator\Constraints as Assert;
+
+use App\Entity\Ship;
+use App\Util\Location;
 
 
 class JumpCommand implements CommandInterface
 {
-    /** @var  int
-        @Assert\Positive
-     */
-    private $targetSystem;
+    protected $ship;
+    protected $target;
 
-    public static function createFromArray($arr): self
+    public function __construct(Ship $ship, Location $target)
     {
-        $move = new self;
-        $move->targetSystem = $arr['targetSystem'];
-
-        return $move;
+        $this->ship = $ship;
+        $this->target = $target;
     }
 }

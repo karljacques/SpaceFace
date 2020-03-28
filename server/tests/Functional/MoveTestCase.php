@@ -1,15 +1,14 @@
 <?php
 
+namespace App\Tests\Functional;
 
-use App\DataFixtures\ShipFixtures;
 use App\Entity\Ship;
 use App\Entity\User;
 use App\Tests\FixtureAwareTestCase;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class MoveTest extends WebTestCase
+class MoveTestCase extends GameTestCase
 {
     use FixtureAwareTestCase;
 
@@ -22,14 +21,7 @@ class MoveTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->client = static::createClient();
-
-        /** @var ShipFixtures $shipFixtures */
-        $shipFixtures = static::$kernel->getContainer()->get('test.App\DataFixtures\ShipFixtures');
-        $this->addFixture($shipFixtures);
-
         $this->executeFixtures();
-
     }
 
     public function testInvalidMovementDirection()
@@ -102,3 +94,4 @@ class MoveTest extends WebTestCase
         return json_decode($this->client->getResponse()->getContent());
     }
 }
+

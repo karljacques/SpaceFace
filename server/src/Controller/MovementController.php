@@ -11,10 +11,7 @@ use App\Repository\JumpNodeRepository;
 use App\Service\Executors\MovementCommandExecutor;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\ConstraintViolation;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 class MovementController extends AbstractController
 {

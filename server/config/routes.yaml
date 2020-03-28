@@ -5,3 +5,7 @@ ping:
 move:
     path: /move
     controller: App\Controller\MovementController::index
+
+jump:
+    path: /jump
+    controller: App\Controller\JumpController::index

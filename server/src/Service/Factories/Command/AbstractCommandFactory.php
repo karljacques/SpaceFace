@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Factories;
+namespace App\Service\Factories\Command;
 
 use App\Command\CommandInterface;
 use App\Command\MovementCommand;
@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 abstract class AbstractCommandFactory
 {
     private $request;
-    private $validator;
+    protected $validator;
     private $security;
 
     public function __construct(

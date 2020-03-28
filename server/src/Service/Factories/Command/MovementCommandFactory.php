@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Service\Factories;
+namespace App\Service\Factories\Command;
 
 
 use App\Command\CommandInterface;

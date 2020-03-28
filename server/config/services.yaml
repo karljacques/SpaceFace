@@ -27,7 +27,11 @@ services:
     # please note that last definitions always *replace* previous ones
     App\Command\MovementCommand:
         class: App\Command\MovementCommand
-        factory: '@App\Service\Factories\MovementCommandFactory'
+        factory: '@App\Service\Factories\Command\MovementCommandFactory'
+
+    App\Command\JumpCommand:
+        class: App\Command\JumpCommand
+        factory: '@App\Service\Factories\Command\JumpCommandFactory'
 
     App\EventListener\UserActionExceptionListener:
         tags:
@@ -36,5 +40,9 @@ services:
     App\EventListener\CommandValidationExceptionListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
+
+    App\Component\Validator\Constraint\ExistsConstraint:
+        tags:
+            - {name: validator.constraint_validator }
 
 
