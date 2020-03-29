@@ -9,3 +9,7 @@ move:
 jump:
     path: /jump
     controller: App\Controller\JumpController::index
+
+schema:
+    path: /schema
+    controller: App\Controller\JsonSchemaTest::index
