@@ -18,7 +18,7 @@ class MovementCommandFactory extends AbstractCommandFactory
         $direction = $request->get('direction');
         $translation = $this->convertDirectionToTranslation($direction);
 
-        return new MovementCommand($ship, $translation);
+        return new MovementCommand($ship, $translation, 5);
     }
 
     private function convertDirectionToTranslation(string $direction): Vector2

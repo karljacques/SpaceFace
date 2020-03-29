@@ -5,10 +5,18 @@ namespace App\Service\Validator;
 use App\Command\CommandInterface;
 use App\Command\MovementCommand;
 use App\Exception\UnexpectedCommandException;
+use App\Service\Calculators\MovementCostCalculatorInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class MovementCommandValidator extends AbstractCommandValidator
 {
+    private $movementCostCalculator;
+
+    public function __construct(MovementCostCalculatorInterface $movementCostCalculator)
+    {
+        $this->movementCostCalculator = $movementCostCalculator;
+    }
+
     function runValidation(CommandInterface $command)
     {
         if (!$command instanceof MovementCommand) {
@@ -27,7 +35,7 @@ class MovementCommandValidator extends AbstractCommandValidator
                 ]);
         }
 
-        $fuelRequired = 1;
+        $fuelRequired = $command->getFuelCost();
 
         if ($ship->getFuel() < $fuelRequired) {
             $this->addViolation('Not enough fuel',
