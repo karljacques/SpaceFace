@@ -6,7 +6,6 @@ use App\Command\CommandInterface;
 use App\Command\MovementCommand;
 use App\Exception\UnexpectedCommandException;
 use App\Service\Validator\MovementCommandValidator;
-use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class MovementCommandExecutor extends AbstractCommandExecutor
 {

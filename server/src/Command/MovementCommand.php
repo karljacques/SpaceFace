@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Ship;
+use App\Service\Factories\Command\MovementCommandFactory;
 use App\Util\Location;
 use App\Util\Vector2;
 
@@ -63,4 +64,8 @@ class MovementCommand implements CommandInterface
     }
 
 
+    public static function getFactoryName(): string
+    {
+        return MovementCommandFactory::class;
+    }
 }

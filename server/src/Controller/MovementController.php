@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Security;
 
-class MovementController extends AbstractController
+class MovementController extends AbstractCommandController
 {
     protected $commandExecutor;
     protected $entityManager;
@@ -32,19 +32,12 @@ class MovementController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param Security $security
-     * @param MovementCommandFactory $commandFactory
      * @return Response
      * @throws UserActionException
      */
-    public function index(Request $request, Security $security, MovementCommandFactory $commandFactory)
+    public function index()
     {
-        /** @var User $user */
-        $user = $security->getUser();
-        $ship = $user->getShips()->first();
-
-        $move = $commandFactory->createCommand($request, $ship);
+        $move = $this->createCommand(MovementCommand::class);
 
         // Execute the command
         $this->commandExecutor->execute($move);

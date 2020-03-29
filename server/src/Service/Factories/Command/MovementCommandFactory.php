@@ -36,4 +36,9 @@ class MovementCommandFactory implements CommandFactoryInterface
 
         throw new LogicException('Invalid direction');
     }
+
+    public function getSchema(): string
+    {
+        return 'move.json';
+    }
 }
