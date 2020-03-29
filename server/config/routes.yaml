@@ -5,13 +5,9 @@ ping:
 move:
     path: /move
     controller: App\Controller\MovementController::index
+    defaults:
+        _schema: 'move.json'
 
 jump:
     path: /jump
     controller: App\Controller\JumpController::index
-
-schema:
-    path: /schema
-    controller: App\Controller\JsonSchemaTest::index
-    defaults:
-        _schema: "test.json"

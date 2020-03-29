@@ -17,7 +17,16 @@ class SchemaValidationExceptionListener
         if (!$exception instanceof SchemaValidationException) {
             return;
         }
-        
-        $event->setResponse(new JsonResponse(['errors' => $exception->getErrors()]));
+
+        $errors = collect($exception->getErrors())->map(function ($error) {
+            $error = ['type' => 'validation'] + $error;
+
+            return $error;
+        });
+
+        $event->setResponse(new JsonResponse([
+            'success' => false,
+            'errors' => $errors
+        ], 400));
     }
 }

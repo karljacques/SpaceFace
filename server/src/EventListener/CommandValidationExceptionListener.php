@@ -28,7 +28,7 @@ class CommandValidationExceptionListener
             'violations' => $violations
         ];
 
-        $event->setResponse(new JsonResponse(['success' => false, 'error' => $error]));
+        $event->setResponse(new JsonResponse(['success' => false, 'errors' => [$error]]));
         $event->getResponse()->setStatusCode($exception->getCode());
     }
 }

@@ -9,7 +9,7 @@ class MovementCommand implements CommandInterface
 {
     /**
      * @var string
-     * @Assert\Choice({"up", "down", "left", "right"}, message="Value must be one of {{ choices }}")
+     * @Assert\Choice({"up", "down", "left", "right"})
      */
     protected $direction;
 

@@ -13,7 +13,7 @@ class MovementCommandFactory extends AbstractCommandFactory
 {
     function createCommand(Request $request, Ship $ship): CommandInterface
     {
-        $command = new MovementCommand($ship, $request->request->get('direction'));
+        $command = new MovementCommand($ship, $request->get('direction'));
 
         return $command;
     }
