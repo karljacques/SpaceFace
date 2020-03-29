@@ -5,6 +5,7 @@ namespace App\EventListener;
 
 
 use App\Exception\UserActionException;
+use App\Service\Validator\UserActionViolation;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
@@ -18,13 +19,15 @@ class UserActionExceptionListener
             return;
         }
 
-        $error = [
-            'type' => 'action',
-            'message' => $exception->getMessage(),
-            'details' => $exception->getDetails()
-        ];
+        $errors = collect($exception->getViolations())->map(function(UserActionViolation $violation) {
+            return [
+                'type' => 'action',
+                'message' => $violation->getMessage(),
+                'details' => $violation->getDetails()
+            ];
+        });
 
-        $event->setResponse(new JsonResponse(['success' => false, 'errors' => [$error]]));
+        $event->setResponse(new JsonResponse(['success' => false, 'errors' => $errors]));
         $event->getResponse()->setStatusCode(403);
     }
 }

@@ -7,14 +7,33 @@ namespace App\Service\Factories\Command;
 use App\Command\CommandInterface;
 use App\Command\MovementCommand;
 use App\Entity\Ship;
+use App\Util\Vector2;
+use LogicException;
 use Symfony\Component\HttpFoundation\Request;
 
 class MovementCommandFactory extends AbstractCommandFactory
 {
     function createCommand(Request $request, Ship $ship): CommandInterface
     {
-        $command = new MovementCommand($ship, $request->get('direction'));
+        $direction = $request->get('direction');
+        $translation = $this->convertDirectionToTranslation($direction);
 
-        return $command;
+        return new MovementCommand($ship, $translation);
+    }
+
+    private function convertDirectionToTranslation(string $direction): Vector2
+    {
+        switch ($direction) {
+            case 'up':
+                return new Vector2(0, 1);
+            case 'down':
+                return new Vector2(0, -1);
+            case 'left':
+                return new Vector2(-1, 0);
+            case 'right':
+                return new Vector2(1, 0);
+        }
+
+        throw new LogicException('Invalid direction');
     }
 }

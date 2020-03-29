@@ -3,22 +3,25 @@
 
 namespace App\Exception;
 
+use App\Service\Validator\UserActionViolation;
+
 class UserActionException extends \Exception
 {
-    protected $details;
+    /** @var UserActionViolation[] */
+    protected $violations;
 
-    public function __construct(string $message, array $details)
+    public function __construct(array $violations)
     {
-        parent::__construct($message, 200);
+        parent::__construct('User Action Exception', 200);
 
-        $this->details = $details;
+        $this->violations = $violations;
     }
 
     /**
      * @return array
      */
-    public function getDetails(): array
+    public function getViolations(): array
     {
-        return $this->details;
+        return $this->violations;
     }
 }
