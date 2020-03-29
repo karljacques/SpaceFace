@@ -3,6 +3,7 @@
 namespace App\Util;
 
 use JsonSerializable;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 class Vector2 implements JsonSerializable
 {
@@ -16,6 +17,7 @@ class Vector2 implements JsonSerializable
     }
 
     /**
+     * @Groups({"basic"})
      * @return int
      */
     public function getX(): int
@@ -24,6 +26,7 @@ class Vector2 implements JsonSerializable
     }
 
     /**
+     * @Groups({"basic"})
      * @return int
      */
     public function getY(): int

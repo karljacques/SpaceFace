@@ -29,9 +29,6 @@ services:
         class: App\Command\MovementCommand
         factory: '@App\Service\Factories\Command\MovementCommandFactory'
 
-    App\Command\JumpCommand:
-        class: App\Command\JumpCommand
-        factory: '@App\Service\Factories\Command\JumpCommandFactory'
 
     App\EventListener\UserActionExceptionListener:
         tags:

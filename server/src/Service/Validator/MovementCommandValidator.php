@@ -26,5 +26,15 @@ class MovementCommandValidator extends AbstractCommandValidator
                     'proposed_position' => $command->getProposedPosition()
                 ]);
         }
+
+        $fuelRequired = 1;
+
+        if ($ship->getFuel() < $fuelRequired) {
+            $this->addViolation('Not enough fuel',
+                [
+                    'fuel' => $ship->getFuel(),
+                    'fuel_required' => $fuelRequired
+                ]);
+        }
     }
 }

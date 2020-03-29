@@ -5,6 +5,8 @@ namespace App\Util;
 
 
 use App\Entity\System;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class Location
 {
@@ -18,6 +20,7 @@ class Location
     }
 
     /**
+     * @Groups({"basic"})
      * @return System
      */
     public function getSystem(): System
@@ -26,6 +29,8 @@ class Location
     }
 
     /**
+     * @Groups({"basic"})
+     * @SerializedName("position")
      * @return Vector2
      */
     public function getVector(): Vector2

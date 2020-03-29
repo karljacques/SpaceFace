@@ -24,7 +24,9 @@ class ShipFixtures extends Fixture implements DependentFixtureInterface
             $ship->setUser($user)
                 ->setSystem($factory->randomElement($systems))
                 ->setX(1)
-                ->setY(1);
+                ->setY(1)
+                ->setMaxFuel($factory->numberBetween(100, 200))
+                ->setFuel($ship->getMaxFuel());
             $manager->persist($ship);
         }
         $manager->flush();

@@ -42,6 +42,16 @@ class Ship
     private $system;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $fuel;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $maxFuel;
+
+    /**
      * @Groups({"basic"})
      * @return int
      */
@@ -87,7 +97,6 @@ class Ship
     }
 
     /**
-     * @Groups({"self"})
      * @return System
      */
     public function getSystem(): System
@@ -106,7 +115,6 @@ class Ship
     }
 
     /**
-     * @Groups({"self"})
      * @return Vector2
      */
     public function getVector(): Vector2
@@ -120,9 +128,45 @@ class Ship
         $this->setY($position->getY());
     }
 
+    /**
+     * @Groups({"self"})
+     * @return Location
+     */
     public function getLocation(): Location
     {
         return new Location($this->getSystem(), $this->getVector());
+    }
+
+    /**
+     * @Groups({"self"})
+     * @return int
+     */
+    public function getFuel(): int
+    {
+        return $this->fuel;
+    }
+
+    public function setFuel(int $fuel): self
+    {
+        $this->fuel = $fuel;
+
+        return $this;
+    }
+
+    /**
+     * @Groups({"self"})
+     * @return int
+     */
+    public function getMaxFuel(): int
+    {
+        return $this->maxFuel;
+    }
+
+    public function setMaxFuel(int $maxFuel): self
+    {
+        $this->maxFuel = $maxFuel;
+
+        return $this;
     }
 
 }
