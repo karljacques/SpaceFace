@@ -6,12 +6,16 @@ namespace App\Controller;
 
 use App\Command\MovementCommand;
 use App\Entity\JumpNode;
+use App\Entity\User;
 use App\Exception\UserActionException;
 use App\Repository\JumpNodeRepository;
 use App\Service\Executors\MovementCommandExecutor;
+use App\Service\Factories\Command\MovementCommandFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Security;
 
 class MovementController extends AbstractController
 {
@@ -28,12 +32,20 @@ class MovementController extends AbstractController
     }
 
     /**
-     * @param MovementCommand $move
+     * @param Request $request
+     * @param Security $security
+     * @param MovementCommandFactory $commandFactory
      * @return Response
      * @throws UserActionException
      */
-    public function index(MovementCommand $move)
+    public function index(Request $request, Security $security, MovementCommandFactory $commandFactory)
     {
+        /** @var User $user */
+        $user = $security->getUser();
+        $ship = $user->getShips()->first();
+
+        $move = $commandFactory->createCommand($request, $ship);
+
         // Execute the command
         $this->commandExecutor->execute($move);
 

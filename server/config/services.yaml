@@ -25,25 +25,12 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-    App\Command\MovementCommand:
-        class: App\Command\MovementCommand
-        factory: '@App\Service\Factories\Command\MovementCommandFactory'
-
-
     App\EventListener\UserActionExceptionListener:
-        tags:
-            - { name: kernel.event_listener, event: kernel.exception }
-
-    App\EventListener\CommandValidationExceptionListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
 
     App\EventListener\SchemaValidationExceptionListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
-
-    App\Component\Validator\Constraint\ExistsConstraint:
-        tags:
-            - {name: validator.constraint_validator }
 
 

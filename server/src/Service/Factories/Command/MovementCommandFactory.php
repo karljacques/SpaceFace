@@ -11,9 +11,9 @@ use App\Util\Vector2;
 use LogicException;
 use Symfony\Component\HttpFoundation\Request;
 
-class MovementCommandFactory extends AbstractCommandFactory
+class MovementCommandFactory implements CommandFactoryInterface
 {
-    function createCommand(Request $request, Ship $ship): CommandInterface
+    public function createCommand(Request $request, Ship $ship): CommandInterface
     {
         $direction = $request->get('direction');
         $translation = $this->convertDirectionToTranslation($direction);
