@@ -41,6 +41,10 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
 
+    App\EventListener\SchemaValidationExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+
     App\Component\Validator\Constraint\ExistsConstraint:
         tags:
             - {name: validator.constraint_validator }

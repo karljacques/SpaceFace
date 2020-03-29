@@ -11,8 +11,6 @@ class JumpController extends AbstractController
 {
     public function index(JumpCommand $command)
     {
-        dump($command);
-
         return $this->json(['yo']);
     }
 }

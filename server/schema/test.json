@@ -1,0 +1,25 @@
+{
+  "type": "object",
+  "required": [
+    "greeting",
+    "expected_response"
+  ],
+  "properties": {
+    "greeting": {
+      "type": "string",
+      "enum": [
+        "yo",
+        "sup"
+      ]
+    },
+    "expected_response": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

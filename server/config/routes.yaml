@@ -13,3 +13,5 @@ jump:
 schema:
     path: /schema
     controller: App\Controller\JsonSchemaTest::index
+    defaults:
+        _schema: "test.json"
