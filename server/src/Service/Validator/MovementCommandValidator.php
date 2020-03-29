@@ -4,6 +4,7 @@ namespace App\Service\Validator;
 
 use App\Command\CommandInterface;
 use App\Command\MovementCommand;
+use App\Exception\UnexpectedCommandException;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class MovementCommandValidator extends AbstractCommandValidator
@@ -11,7 +12,7 @@ class MovementCommandValidator extends AbstractCommandValidator
     function runValidation(CommandInterface $command)
     {
         if (!$command instanceof MovementCommand) {
-            throw new UnexpectedTypeException($command, MovementCommand::class);
+            throw new UnexpectedCommandException($command, MovementCommand::class);
         }
 
         $ship = $command->getShip();

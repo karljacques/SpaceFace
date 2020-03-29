@@ -4,7 +4,9 @@
 namespace App\Exception;
 
 
-class SchemaValidationException extends \Exception
+use Exception;
+
+class SchemaValidationException extends Exception
 {
     protected $errors;
 
@@ -22,6 +24,4 @@ class SchemaValidationException extends \Exception
     {
         return $this->errors;
     }
-
-
 }

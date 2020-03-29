@@ -4,6 +4,7 @@ namespace App\Service\Executors;
 
 use App\Command\CommandInterface;
 use App\Command\MovementCommand;
+use App\Exception\UnexpectedCommandException;
 use App\Service\Validator\MovementCommandValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
@@ -20,7 +21,7 @@ class MovementCommandExecutor extends AbstractCommandExecutor
     protected function executeCommand(CommandInterface $command): void
     {
         if (!$command instanceof MovementCommand) {
-            throw new UnexpectedTypeException($command, MovementCommand::class);
+            throw new UnexpectedCommandException($command, MovementCommand::class);
         }
 
         $ship = $command->getShip();
