@@ -9,7 +9,7 @@ abstract class AbstractCommandValidator
 {
     private $violations = [];
 
-    abstract function runValidation(CommandInterface $command);
+    abstract protected function runValidation(CommandInterface $command);
 
     /**
      * @param CommandInterface $command

@@ -2,28 +2,26 @@
 
 namespace App\Service\Executors;
 
+use App\Command\CommandInterface;
 use App\Command\MovementCommand;
-use App\Exception\UserActionException;
 use App\Service\Validator\MovementCommandValidator;
-use App\Util\Vector2;
-use LogicException;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class MovementCommandExecutor
+class MovementCommandExecutor extends AbstractCommandExecutor
 {
-    protected $validator;
-
     public function __construct(MovementCommandValidator $validator)
     {
-        $this->validator = $validator;
+        $this->setValidator($validator);
     }
 
     /**
-     * @param MovementCommand $command
-     * @throws UserActionException
+     * @param CommandInterface $command
      */
-    public function execute(MovementCommand $command): void
+    protected function executeCommand(CommandInterface $command): void
     {
-        $this->validator->validate($command);
+        if (!$command instanceof MovementCommand) {
+            throw new UnexpectedTypeException($command, MovementCommand::class);
+        }
 
         $ship = $command->getShip();
         $ship->setVector($command->getProposedPosition());

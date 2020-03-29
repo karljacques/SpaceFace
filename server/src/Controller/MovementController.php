@@ -30,6 +30,7 @@ class MovementController extends AbstractController
     /**
      * @param MovementCommand $move
      * @return Response
+     * @throws UserActionException
      */
     public function index(MovementCommand $move)
     {
