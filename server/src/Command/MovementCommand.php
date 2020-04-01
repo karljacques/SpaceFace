@@ -4,10 +4,9 @@ namespace App\Command;
 
 use App\Entity\Ship;
 use App\Service\Factories\Command\MovementCommandFactory;
-use App\Util\Location;
 use App\Util\Vector2;
 
-class MovementCommand implements CommandInterface
+class MovementCommand extends AbstractShipCommand
 {
     /** @var Vector2 */
     protected $translation;
@@ -15,15 +14,12 @@ class MovementCommand implements CommandInterface
     /** @var Vector2 */
     protected $proposedPosition;
 
-    /**  @var Ship */
-    protected $ship;
-
     /** @var int */
     protected $fuelCost;
 
     public function __construct(Ship $ship, Vector2 $translation, int $fuelCost)
     {
-        $this->ship = $ship;
+        parent::__construct($ship);
         $this->translation = $translation;
 
         $this->proposedPosition = $ship->getVector()->add($translation);
@@ -37,14 +33,6 @@ class MovementCommand implements CommandInterface
     public function getTranslation(): Vector2
     {
         return $this->translation;
-    }
-
-    /**
-     * @return Ship
-     */
-    public function getShip(): Ship
-    {
-        return $this->ship;
     }
 
     /**

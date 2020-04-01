@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Command\CommandInterface;
 use App\Entity\User;
 use App\Service\Factories\Command\CommandFactoryInterface;
+use App\Service\Factories\Command\JumpCommandFactory;
 use App\Service\Factories\Command\MovementCommandFactory;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -50,7 +51,8 @@ class AbstractCommandController extends AbstractController
     private static function getCommandFactories(): array
     {
         return [
-            MovementCommandFactory::class
+            MovementCommandFactory::class,
+            JumpCommandFactory::class
         ];
     }
 }

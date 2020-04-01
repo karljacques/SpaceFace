@@ -11,3 +11,5 @@ move:
 jump:
     path: /jump
     controller: App\Controller\JumpController::index
+    defaults:
+        _schema: 'jump.json'

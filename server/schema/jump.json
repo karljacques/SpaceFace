@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "node"
+  ],
+  "properties": {
+    "node": {
+      "type": "integer",
+      "minimum": 1
+    }
+  }
+}
