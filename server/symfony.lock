@@ -114,6 +114,15 @@
     "justinrainbow/json-schema": {
         "version": "5.2.9"
     },
+    "laminas/laminas-code": {
+        "version": "3.4.1"
+    },
+    "laminas/laminas-eventmanager": {
+        "version": "3.2.1"
+    },
+    "laminas/laminas-zendframework-bridge": {
+        "version": "1.0.3"
+    },
     "nikic/php-parser": {
         "version": "v4.3.0"
     },
@@ -362,6 +371,9 @@
     },
     "tightenco/collect": {
         "version": "v7.3.0"
+    },
+    "webimpress/safe-writer": {
+        "version": "2.0.1"
     },
     "webmozart/assert": {
         "version": "1.7.0"

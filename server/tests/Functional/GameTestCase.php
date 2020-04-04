@@ -17,7 +17,7 @@ class GameTestCase extends WebTestCase
     /** @var KernelBrowser */
     protected $client;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

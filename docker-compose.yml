@@ -20,10 +20,7 @@ services:
         ports:
             - 80:9501
         volumes:
-            - ./server:/var/www
-        environment:
-            AUTORELOAD_PROGRAMS: "swoole"
-            AUTORELOAD_ANY_FILES: 0
+            - ./server:/var/www:cached
         networks:
           - db
 

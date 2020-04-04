@@ -20,7 +20,11 @@ abstract class AbstractCommandValidator
         $this->runValidation($command);
 
         if (!$this->isValid()) {
-            throw new UserActionException($this->violations);
+            $violationsToThrow = $this->violations;
+
+            $this->violations = [];
+
+            throw new UserActionException($violationsToThrow);
         }
     }
 
