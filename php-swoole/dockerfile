@@ -1,0 +1,3 @@
+FROM phpswoole/swoole:latest-dev
+
+RUN docker-php-ext-install pdo_mysql

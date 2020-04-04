@@ -1,1 +1,1 @@
-docker exec -it php-fpm /bin/sh
+docker exec -it php-swoole /bin/sh
