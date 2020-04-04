@@ -8,7 +8,7 @@ use App\Tests\FixtureAwareTestCase;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
-class MoveTestCase extends GameTestCase
+class MoveTest extends GameTestCase
 {
     use FixtureAwareTestCase;
 
@@ -29,14 +29,19 @@ class MoveTestCase extends GameTestCase
         $response = $this->executeCommand('backwards');
 
         $this->assertFalse($response->success);
-        $this->assertIsObject($response->error);
+        $this->assertIsArray($response->errors);
 
-        $this->assertObjectHasAttribute('type', $response->error);
-        $this->assertEquals('validation', $response->error->type);
-        $this->assertObjectHasAttribute('violations', $response->error);
+        $error = $response->errors[0];
 
-        $this->assertObjectHasAttribute('direction', $response->error->violations);
-        $this->assertEquals('Value must be one of "up", "down", "left", "right"', $response->error->violations->direction);
+        dump($error);
+
+        $this->assertObjectHasAttribute('type', $error);
+        $this->assertEquals('validation', $error->type);
+
+        $this->assertObjectHasAttribute('property', $error);
+        $this->assertEquals('direction', $error->property);
+
+        $this->assertEquals('Does not have a value in the enumeration ["up","down","left","right"]', $error->message);
     }
 
     public function testOutOfBoundsMovement()
@@ -45,9 +50,9 @@ class MoveTestCase extends GameTestCase
 
         $this->assertFalse($response->success);
 
-        $this->assertIsObject($response->error);
+        $this->assertIsArray($response->errors);
 
-        $error = $response->error;
+        $error = $response->errors[0];
         $this->assertObjectHasAttribute('type', $error);
         $this->assertEquals('action', $error->type);
 
