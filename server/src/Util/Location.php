@@ -37,4 +37,13 @@ class Location
     {
         return $this->vector;
     }
+
+    public function equals(Location $location): bool
+    {
+        if ($location->getSystem()->getId() !== $this->getSystem()->getId()) {
+            return false;
+        }
+
+        return $this->getVector()->equals($location->getVector());
+    }
 }

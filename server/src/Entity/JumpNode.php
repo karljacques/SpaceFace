@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Util\Location;
+use App\Util\Vector2;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -37,6 +39,7 @@ class JumpNode
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\System")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"basic"})
      */
     private $exitSystem;
 
@@ -125,5 +128,19 @@ class JumpNode
         $this->exitY = $exitY;
 
         return $this;
+    }
+
+
+    /**
+     * @return Location
+     */
+    public function getEntryLocation(): Location
+    {
+        return new Location($this->entrySystem, new Vector2($this->entryX, $this->entryY));
+    }
+
+    public function getExitLocation(): Location
+    {
+        return new Location($this->exitSystem, new Vector2($this->exitX, $this->exitY));
     }
 }

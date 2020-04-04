@@ -58,4 +58,9 @@ class Vector2 implements JsonSerializable
     {
         return new Vector2($this->getX() - $b->getX(), $this->getY() - $b->getY());
     }
+
+    public function equals(Vector2 $vector): bool
+    {
+        return $this->x === $vector->getX() && $this->y === $vector->getY();
+    }
 }

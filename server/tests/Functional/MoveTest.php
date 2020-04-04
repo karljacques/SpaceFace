@@ -33,7 +33,6 @@ class MoveTest extends GameTestCase
 
         $error = $response->errors[0];
 
-        dump($error);
 
         $this->assertObjectHasAttribute('type', $error);
         $this->assertEquals('validation', $error->type);

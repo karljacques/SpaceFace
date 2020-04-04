@@ -19,6 +19,16 @@ class JumpCommand extends AbstractShipCommand
         $this->node = $node;
     }
 
+    /**
+     * @return JumpNode
+     */
+    public function getNode(): JumpNode
+    {
+        return $this->node;
+    }
+
+
+
     public static function getFactoryName(): string
     {
         return JumpCommandFactory::class;

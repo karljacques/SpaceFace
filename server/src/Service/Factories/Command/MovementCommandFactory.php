@@ -7,18 +7,32 @@ namespace App\Service\Factories\Command;
 use App\Command\CommandInterface;
 use App\Command\MovementCommand;
 use App\Entity\Ship;
+use App\Service\Calculators\MovementCostCalculatorInterface;
+use App\Util\Location;
 use App\Util\Vector2;
 use LogicException;
 use Symfony\Component\HttpFoundation\Request;
 
 class MovementCommandFactory implements CommandFactoryInterface
 {
+    protected $movementCostCalculator;
+
+    public function __construct(MovementCostCalculatorInterface $movementCostCalculator)
+    {
+        $this->movementCostCalculator = $movementCostCalculator;
+    }
+
     public function createCommand(Request $request, Ship $ship): CommandInterface
     {
         $direction = $request->get('direction');
         $translation = $this->convertDirectionToTranslation($direction);
 
-        return new MovementCommand($ship, $translation, 5);
+        $targetPosition = $ship->getLocation()->getVector()->add($translation);
+        $targetLocation = new Location($ship->getSystem(), $targetPosition);
+
+        $fuelCost = $this->movementCostCalculator->calculateFuelCost($ship->getLocation(), $targetLocation);
+
+        return new MovementCommand($ship, $translation, $fuelCost);
     }
 
     private function convertDirectionToTranslation(string $direction): Vector2

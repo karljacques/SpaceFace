@@ -169,4 +169,14 @@ class Ship
         return $this;
     }
 
+
+    public function setLocation(Location $location): self
+    {
+        $this->system = $location->getSystem();
+        $this->x = $location->getVector()->getX();
+        $this->y = $location->getVector()->getY();
+
+        return $this;
+    }
+
 }
