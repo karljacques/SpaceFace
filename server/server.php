@@ -30,9 +30,12 @@ $http->on(
 );
 $kernel = new Kernel($_SERVER['APP_ENV'], (bool)$_SERVER['APP_DEBUG']);
 
+
 $http->on(
     "request",
     function (Request $request, Response $response) use ($kernel) {
+        // SqlFormatter will behave differently when it thinks we're in cli, which swoole is
+        SqlFormatter::$cli = false;
 
         $sfRequest = RequestFactory::createFromSwooleRequest($request);
 
@@ -43,6 +46,9 @@ $http->on(
             ResponseWriter::writeSwooleResponse($response, $sfResponse);
         } catch (Exception $e) {
             $response->end((string)$e);
+        } finally {
+            // Allow normal cli detection to resume
+            SqlFormatter::$cli = null;
         }
     }
 );
