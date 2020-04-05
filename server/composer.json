@@ -2,9 +2,10 @@
     "type": "project",
     "license": "proprietary",
     "require": {
-        "php": "^7.2.5",
+        "php": "^7.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-json": "*",
         "doctrine/annotations": "^1.8",
         "fzaninotto/faker": "^1.9",
         "indragunawan/swoole-http-message-bridge": "^0.1.0",
@@ -24,8 +25,11 @@
         "dama/doctrine-test-bundle": "^6.3",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
         "symfony/browser-kit": "5.0.*",
+        "symfony/debug-bundle": "5.0.*",
         "symfony/maker-bundle": "^1.14",
-        "symfony/phpunit-bridge": "^5.0"
+        "symfony/phpunit-bridge": "^5.0",
+        "symfony/profiler-pack": "^1.0",
+        "symfony/var-dumper": "5.0.*"
     },
     "config": {
         "preferred-install": {

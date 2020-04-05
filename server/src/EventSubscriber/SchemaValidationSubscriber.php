@@ -13,7 +13,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 class SchemaValidationSubscriber implements EventSubscriberInterface
 {
-    protected $kernel;
+    protected KernelInterface $kernel;
+    protected array $schemaCache = [];
 
     public function __construct(KernelInterface $kernel)
     {
@@ -57,6 +58,10 @@ class SchemaValidationSubscriber implements EventSubscriberInterface
      */
     private function loadSchema(string $filename): object
     {
+        if (isset($this->schemaCache[$filename])) {
+            return $this->schemaCache[$filename];
+        }
+
         $path = $this->getFullSchemaPath($filename);
         $content = file_get_contents($path);
 
@@ -65,6 +70,8 @@ class SchemaValidationSubscriber implements EventSubscriberInterface
         if (json_last_error() !== JSON_ERROR_NONE) {
             $this->throwJsonExceptionError(json_last_error_msg(), $filename);
         }
+
+        $this->schemaCache[$filename] = $decoded;
 
         return $decoded;
     }

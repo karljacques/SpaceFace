@@ -2,7 +2,7 @@ version: '3.7'
 services:
     db:
         container_name: db
-        image: mysql
+        image: mariadb
         command: ["--default-authentication-plugin=mysql_native_password"]
         ports:
             - "3306:3306"
@@ -13,16 +13,40 @@ services:
             MYSQL_PASSWORD: symfony
         networks:
             - db
-
     php-swoole:
         container_name: php-swoole
         build: ./php-swoole
         ports:
-            - 80:9501
+            - 9501:9501
         volumes:
             - ./server:/var/www:cached
+        depends_on:
+            - db
+        environment:
+            AUTORELOAD_PROGRAMS: "swoole"
+            AUTORELOAD_ANY_FILES: 1
         networks:
-          - db
+            - db
+    nginx:
+        image: nginx:latest
+        ports:
+            - "80:80"
+        volumes:
+            - ./php-fpm/nginx.conf:/etc/nginx/conf.d/site.conf
+            - ./server:/var/www
+
+        networks:
+            - php
+    php:
+        build: ./php-fpm
+        volumes:
+            - ./server:/var/www
+        networks:
+            - db
+            - php
+
+
 
 networks:
     db:
+    php:

@@ -14,8 +14,13 @@ require_once './config/bootstrap.php';
 
 use Indragunawan\SwooleHttpMessageBridge\Symfony\Request as RequestFactory;
 use Indragunawan\SwooleHttpMessageBridge\Symfony\Response as ResponseWriter;
+use Symfony\Component\ErrorHandler\Debug;
 
+umask(0000);
+
+Debug::enable();
 $http = new Server("0.0.0.0", 9501);
+
 
 $http->on(
     "start",
@@ -37,7 +42,7 @@ $http->on(
 
             ResponseWriter::writeSwooleResponse($response, $sfResponse);
         } catch (Exception $e) {
-            $response->end($e->getMessage());
+            $response->end((string)$e);
         }
     }
 );

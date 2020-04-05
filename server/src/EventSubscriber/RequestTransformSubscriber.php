@@ -15,6 +15,10 @@ class RequestTransformSubscriber implements EventSubscriberInterface
         $body = $request->getContent();
         $data = json_decode($body, true);
 
+        if (null === $data) {
+            return;
+        }
+
         foreach ($data as $key => $value) {
             $request->request->set($key, $value);
         }

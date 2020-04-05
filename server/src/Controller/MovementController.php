@@ -35,7 +35,7 @@ class MovementController extends AbstractCommandController
     {
         /** @var MovementCommand $move */
         $move = $this->createCommand(MovementCommand::class);
-
+        dump($move);
         // Execute the command
         $this->commandExecutor->execute($move);
 
