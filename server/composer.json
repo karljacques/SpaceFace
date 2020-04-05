@@ -10,6 +10,7 @@
         "fzaninotto/faker": "^1.9",
         "indragunawan/swoole-http-message-bridge": "^0.1.0",
         "justinrainbow/json-schema": "^5.2",
+        "nelmio/cors-bundle": "^2.0",
         "symfony/console": "5.0.*",
         "symfony/dotenv": "5.0.*",
         "symfony/flex": "^1.3.1",
