@@ -21,6 +21,37 @@
         protected x: number = 0;
         protected y: number = 0;
 
+        protected ws!: WebSocket;
+
+        public async mounted() {
+
+            const token = await Home.getTicket();
+
+            this.ws = new WebSocket("ws://localhost:9502/" + token, []);
+            //
+            // this.ws.onopen = () => {
+            //    this.ws.send(JSON.stringify({
+            //        data: {
+            //            connected: true
+            //        }
+            //    }))
+            // };
+
+            this.ws.onmessage = function (data) {
+                console.log(data);
+            };
+        }
+
+        protected static async getTicket(): Promise<string> {
+            const response = await axios.get('http://localhost:9501/authentication/ticket', {
+                headers: {
+                    "X-AUTH-TOKEN": "73d0e731888687f8dd1413215b5de938"
+                }
+            });
+
+            return response.data.data.token;
+        }
+
         protected async onClickDirection(direction: string) {
             const response = await axios.post('http://localhost:9501/move', {
                 direction

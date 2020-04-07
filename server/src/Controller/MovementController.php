@@ -4,12 +4,12 @@
 namespace App\Controller;
 
 
-use App\Command\CommandInterface;
 use App\Command\MovementCommand;
 use App\Entity\JumpNode;
 use App\Exception\UserActionException;
 use App\Repository\JumpNodeRepository;
 use App\Service\Executors\MovementCommandExecutor;
+use App\Service\MessageSender;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -31,11 +31,11 @@ class MovementController extends AbstractCommandController
      * @return Response
      * @throws UserActionException
      */
-    public function index()
+    public function index(MessageSender $sender)
     {
         /** @var MovementCommand $move */
         $move = $this->createCommand(MovementCommand::class);
-        dump($move);
+
         // Execute the command
         $this->commandExecutor->execute($move);
 
@@ -45,6 +45,8 @@ class MovementController extends AbstractCommandController
         $entryNodes = $jumpNodeRepository->findEntryNodeByLocation($move->getShip()->getLocation());
 
         $this->entityManager->flush();
+
+        $sender->send($move->getShip()->getUser(), 'move_success');
 
         return $this->json([
             "success" => true,

@@ -4,12 +4,20 @@ ping:
 
 move:
     path: /move
+    methods: [POST]
     controller: App\Controller\MovementController::index
     defaults:
         _schema: 'move.json'
 
 jump:
     path: /jump
+    methods: [POST]
     controller: App\Controller\JumpController::index
     defaults:
         _schema: 'jump.json'
+
+ticket:
+    path: /authentication/ticket
+    methods: [GET]
+    controller: App\Controller\Authentication\SocketTicketController::index
+
