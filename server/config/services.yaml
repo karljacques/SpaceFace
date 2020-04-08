@@ -37,4 +37,7 @@ services:
         public: true
         autowire: true
 
+    App\Service\Infrastructure\WebsocketConnectionManager:
+        public: true
+        autowire: true
 

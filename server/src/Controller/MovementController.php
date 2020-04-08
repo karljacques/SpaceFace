@@ -46,7 +46,7 @@ class MovementController extends AbstractCommandController
 
         $this->entityManager->flush();
 
-        $sender->send($move->getShip()->getUser(), 'move_success');
+        $sender->send($move->getShip()->getUser(), ['action' => 'move_success']);
 
         return $this->json([
             "success" => true,

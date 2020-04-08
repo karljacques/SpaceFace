@@ -28,14 +28,6 @@
             const token = await Home.getTicket();
 
             this.ws = new WebSocket("ws://localhost:9502/" + token, []);
-            //
-            // this.ws.onopen = () => {
-            //    this.ws.send(JSON.stringify({
-            //        data: {
-            //            connected: true
-            //        }
-            //    }))
-            // };
 
             this.ws.onmessage = function (data) {
                 console.log(data);
@@ -60,7 +52,7 @@
                     "X-AUTH-TOKEN": "73d0e731888687f8dd1413215b5de938"
                 }
             });
-
+            console.log('response');
             this.x = response.data.data.ship.location.position.x;
             this.y = response.data.data.ship.location.position.y;
         }
