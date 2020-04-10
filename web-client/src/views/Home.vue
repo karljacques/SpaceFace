@@ -27,11 +27,27 @@
 
             const token = await Home.getTicket();
 
-            this.ws = new WebSocket("ws://localhost:9502/" + token, []);
+            this.connect(token);
 
-            this.ws.onmessage = function (data) {
-                console.log(data);
-            };
+        }
+
+        protected connect(token: string) {
+            try {
+                this.ws = new WebSocket("ws://localhost:9502/" + token, []);
+                console.log('Connection open');
+                this.ws.onmessage = function (data) {
+                    console.log(data);
+                };
+
+                this.ws.onclose = () => {
+                    console.log('Connection Closed');
+                    this.connect(token);
+                }
+            } catch (e) {
+                setTimeout(() => this.connect(token), 5000);
+            }
+
+
         }
 
         protected static async getTicket(): Promise<string> {
