@@ -1,19 +1,20 @@
 <?php
 
 
-namespace App\Controller;
+namespace App\Controller\Command;
 
 
 use App\Command\MovementCommand;
+use App\Controller\AbstractCommandController;
 use App\Entity\JumpNode;
 use App\Exception\UserActionException;
 use App\Messenger\Message\UserSpecificMessage;
 use App\Repository\JumpNodeRepository;
 use App\Service\Executors\MovementCommandExecutor;
-use App\Service\MessageSender;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Routing\Annotation\Route;
 
 class MovementController extends AbstractCommandController
 {
@@ -30,6 +31,7 @@ class MovementController extends AbstractCommandController
     }
 
     /**
+     * @Route("/move", methods={"POST"}, defaults={"_schema"="move.json"})
      * @param MessageBusInterface $bus
      * @return Response
      * @throws UserActionException
