@@ -41,3 +41,6 @@ services:
         public: true
         autowire: true
 
+    App\Service\DataCollectors:
+        public: true
+

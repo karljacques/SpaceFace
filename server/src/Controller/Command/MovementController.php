@@ -6,10 +6,8 @@ namespace App\Controller\Command;
 
 use App\Command\MovementCommand;
 use App\Controller\AbstractCommandController;
-use App\Entity\JumpNode;
 use App\Exception\UserActionException;
 use App\Messenger\Message\UserSpecificMessage;
-use App\Repository\JumpNodeRepository;
 use App\Service\Executors\MovementCommandExecutor;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,24 +41,10 @@ class MovementController extends AbstractCommandController
 
         // Execute the command
         $this->commandExecutor->execute($move);
-
-        // Load the current sector data
-        /** @var JumpNodeRepository $jumpNodeRepository */
-        $jumpNodeRepository = $this->entityManager->getRepository(JumpNode::class);
-        $entryNodes = $jumpNodeRepository->findEntryNodeByLocation($move->getShip()->getLocation());
-
         $this->entityManager->flush();
 
         $bus->dispatch(new UserSpecificMessage($move->getShip()->getUser(), ['action' => 'move_success']));
 
-        return $this->json([
-            "success" => true,
-            "data" => [
-                "ship" => $move->getShip(),
-                'sector' => [
-                    'entryNodes' => $entryNodes
-                ]
-            ]
-        ], 200, [], ['groups' => ['basic', 'self']]);
+        return $this->response($move->getShip(), ['player', 'sector', 'system']);
     }
 }

@@ -13,6 +13,24 @@ class BoundingBox
         $this->end = $end;
     }
 
+    /**
+     * @return Vector2
+     */
+    public function getStart(): Vector2
+    {
+        return $this->start;
+    }
+
+    /**
+     * @return Vector2
+     */
+    public function getEnd(): Vector2
+    {
+        return $this->end;
+    }
+
+
+
     public function containsPoint(Vector2 $point): bool
     {
         if ($point->getX() < $this->start->getX()) {

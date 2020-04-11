@@ -7,12 +7,11 @@ namespace App\Controller;
 use App\Entity\Ship;
 use App\Entity\User;
 use App\Repository\JumpNodeRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 
-class StatusController extends AbstractController
+class StatusController extends AbstractGameController
 {
     protected Security $security;
     protected JumpNodeRepository $jumpNodeRepository;
@@ -34,16 +33,6 @@ class StatusController extends AbstractController
         /** @var Ship $ship */
         $ship = $user->getShips()->first();
 
-        $entryNodes = $this->jumpNodeRepository->findEntryNodeByLocation($ship->getLocation());
-
-        return $this->json([
-            "success" => true,
-            "data" => [
-                "ship" => $ship,
-                'sector' => [
-                    'entryNodes' => $entryNodes
-                ]
-            ]
-        ], 200, [], ['groups' => ['basic', 'self']]);
+        return $this->response($ship, ['sector', 'player']);
     }
 }

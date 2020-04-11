@@ -9,12 +9,13 @@ use App\Entity\User;
 use App\Service\Factories\Command\CommandFactoryInterface;
 use App\Service\Factories\Command\JumpCommandFactory;
 use App\Service\Factories\Command\MovementCommandFactory;
-use LogicException;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class AbstractCommandController extends AbstractController
+use LogicException;
+
+class AbstractCommandController extends AbstractGameController
 {
     public function createCommand(string $commandType): CommandInterface
     {
@@ -45,7 +46,7 @@ class AbstractCommandController extends AbstractController
 
     public static function getSubscribedServices()
     {
-        return parent::getSubscribedServices() + self::getCommandFactories();
+        return array_merge(parent::getSubscribedServices(), self::getCommandFactories());
     }
 
     private static function getCommandFactories(): array

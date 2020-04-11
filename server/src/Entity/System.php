@@ -55,10 +55,16 @@ class System
      */
     private $jumpNodes;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Sector", mappedBy="starSystem", orphanRemoval=true)
+     */
+    private $sectors;
+
     public function __construct()
     {
         $this->ships = new ArrayCollection();
         $this->jumpNodes = new ArrayCollection();
+        $this->sectors = new ArrayCollection();
     }
 
     public function setId(int $id): self
@@ -184,6 +190,37 @@ class System
     public function setDesignation(string $designation): self
     {
         $this->designation = $designation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sector[]
+     */
+    public function getSectors(): Collection
+    {
+        return $this->sectors;
+    }
+
+    public function addSector(Sector $sector): self
+    {
+        if (!$this->sectors->contains($sector)) {
+            $this->sectors[] = $sector;
+            $sector->setSystem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSector(Sector $sector): self
+    {
+        if ($this->sectors->contains($sector)) {
+            $this->sectors->removeElement($sector);
+            // set the owning side to null (unless already changed)
+            if ($sector->getSystem() === $this) {
+                $sector->setSystem(null);
+            }
+        }
 
         return $this;
     }
