@@ -8,6 +8,7 @@ use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Factory;
 
 class ShipFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -16,7 +17,7 @@ class ShipFixtures extends Fixture implements DependentFixtureInterface
         $users = $manager->getRepository(User::class)->findAll();
         $systems = $manager->getRepository(System::class)->findAll();
 
-        $factory = \Faker\Factory::create();
+        $factory = Factory::create();
 
         /** @var User $user */
         foreach ($users as $user) {

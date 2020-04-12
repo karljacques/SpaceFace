@@ -13,7 +13,7 @@
  */
 
 exports.assertion = function elementCount (selectorOrObject, count) {
-  let selector
+  let selector;
 
   // when called from a page object element or section
   if (typeof selectorOrObject === 'object' && selectorOrObject.selector) {
@@ -23,12 +23,12 @@ exports.assertion = function elementCount (selectorOrObject, count) {
     selector = selectorOrObject
   }
 
-  this.message = `Testing if element <${selector}> has count: ${count}`
-  this.expected = count
-  this.pass = val => val === count
-  this.value = res => res.value
+  this.message = `Testing if element <${selector}> has count: ${count}`;
+  this.expected = count;
+  this.pass = val => val === count;
+  this.value = res => res.value;
   function evaluator (_selector) {
     return document.querySelectorAll(_selector).length
   }
   this.command = cb => this.api.execute(evaluator, [selector], cb)
-}
+};

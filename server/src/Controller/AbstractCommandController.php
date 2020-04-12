@@ -11,6 +11,7 @@ use App\Service\Factories\Command\DockCommandFactory;
 use App\Service\Factories\Command\JumpCommandFactory;
 use App\Service\Factories\Command\MovementCommandFactory;
 
+use App\Service\Factories\Command\UndockCommandFactory;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -55,7 +56,8 @@ class AbstractCommandController extends AbstractGameController
         return [
             MovementCommandFactory::class,
             JumpCommandFactory::class,
-            DockCommandFactory::class
+            DockCommandFactory::class,
+            UndockCommandFactory::class
         ];
     }
 }

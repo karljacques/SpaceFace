@@ -31,7 +31,7 @@ class SchemaValidationSubscriber implements EventSubscriberInterface
 
         $schemaFilename = $request->get('_schema');
 
-        if (null === $schemaFilename)
+        if (null === $schemaFilename || '' === $schemaFilename)
             return;
 
         $schema = $this->loadSchema($schemaFilename);

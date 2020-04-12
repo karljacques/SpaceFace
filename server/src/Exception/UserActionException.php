@@ -4,8 +4,9 @@
 namespace App\Exception;
 
 use App\Service\Validator\UserActionViolation;
+use Exception;
 
-class UserActionException extends \Exception
+class UserActionException extends Exception
 {
     /** @var UserActionViolation[] */
     protected $violations;

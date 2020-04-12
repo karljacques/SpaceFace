@@ -18,4 +18,4 @@ module.exports = {
       .assert.elementPresent('.hello')
       .end()
   }
-}
+};
