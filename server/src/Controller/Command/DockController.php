@@ -4,22 +4,20 @@
 namespace App\Controller\Command;
 
 
-use App\Command\JumpCommand;
+use App\Command\DockCommand;
 use App\Controller\AbstractCommandController;
 use App\Exception\UserActionException;
-use App\Service\Executors\JumpCommandExecutor;
+use App\Service\Executors\DockCommandExecutor;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class JumpController extends AbstractCommandController
+class DockController extends AbstractCommandController
 {
-    protected $commandExecutor;
-    protected $entityManager;
+    protected DockCommandExecutor $commandExecutor;
+    protected EntityManagerInterface $entityManager;
 
     public function __construct(
-        JumpCommandExecutor $commandExecutor,
+        DockCommandExecutor $commandExecutor,
         EntityManagerInterface $entityManager
     )
     {
@@ -28,16 +26,14 @@ class JumpController extends AbstractCommandController
     }
 
     /**
-     * @Route("/jump", methods={"POST"}, defaults={"_schema": "jump.json"})
-     * @return JsonResponse
+     * @Route("/dock", methods={"POST"}, defaults={"_schema": "dock.json"})
      * @throws UserActionException
      */
-    public function index(): Response
+    public function index()
     {
-        /** @var JumpCommand $command */
-        $command = $this->createCommand(JumpCommand::class);
+        /** @var DockCommand $command */
+        $command = $this->createCommand(DockCommand::class);
 
-        // Execute the command
         $this->commandExecutor->execute($command);
         $this->entityManager->flush();
 

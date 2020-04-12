@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\JumpNode;
-use App\Util\Location;
+use App\Repository\Traits\LocatableEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -15,17 +15,10 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class JumpNodeRepository extends ServiceEntityRepository
 {
+    use LocatableEntityRepositoryTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, JumpNode::class);
-    }
-
-    public function findEntryNodeByLocation(Location $location)
-    {
-        return $this->findBy([
-            'entrySystem' => $location->getSystem(),
-            'entryX' => $location->getVector()->getX(),
-            'entryY' => $location->getVector()->getY()
-        ]);
     }
 }

@@ -26,6 +26,10 @@ class MovementCommandValidator extends AbstractCommandValidator
         $ship = $command->getShip();
         $system = $ship->getSystem();
 
+        if ($ship->isDocked()) {
+            $this->addViolation('You cannot move while docked');
+        }
+
         if (!$system->getBoundingBox()->containsPoint($command->getProposedPosition())) {
             $this->addViolation('Proposed movement is out of system bounds',
                 [

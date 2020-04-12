@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "dockable"
+  ],
+  "properties": {
+    "dockable": {
+      "type": "integer",
+      "minimum": 1
+    }
+  }
+}

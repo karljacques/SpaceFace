@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Command\CommandInterface;
 use App\Entity\User;
 use App\Service\Factories\Command\CommandFactoryInterface;
+use App\Service\Factories\Command\DockCommandFactory;
 use App\Service\Factories\Command\JumpCommandFactory;
 use App\Service\Factories\Command\MovementCommandFactory;
 
@@ -53,7 +54,8 @@ class AbstractCommandController extends AbstractGameController
     {
         return [
             MovementCommandFactory::class,
-            JumpCommandFactory::class
+            JumpCommandFactory::class,
+            DockCommandFactory::class
         ];
     }
 }

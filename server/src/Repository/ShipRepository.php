@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Ship;
+use App\Repository\Traits\LocatableEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -14,6 +15,8 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class ShipRepository extends ServiceEntityRepository
 {
+    use LocatableEntityRepositoryTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Ship::class);

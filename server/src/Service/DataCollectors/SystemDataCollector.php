@@ -19,7 +19,9 @@ class SystemDataCollector implements DataCollectorInterface
     public function collect(Ship $ship): array
     {
         return [
-            'sectors' => $this->sensors->getSectorsInRange($ship)
+            'sectors' => $this->sensors->getSectorsInRange($ship),
+            'dockables' => $this->sensors->getDockablesInRange($ship),
+            'entryNodes'=> $this->sensors->getNodesInRange($ship)
         ];
     }
 }

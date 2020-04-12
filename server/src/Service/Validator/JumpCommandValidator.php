@@ -19,7 +19,11 @@ class JumpCommandValidator extends AbstractCommandValidator
         $ship = $command->getShip();
         $node = $command->getNode();
 
-        if (!$ship->getLocation()->equals($node->getEntryLocation())) {
+        if ($ship->isDocked()) {
+            $this->addViolation('You cannot jump while docked');
+        }
+
+        if (!$ship->getLocation()->equals($node->getLocation())) {
             $this->addViolation('You are not at entry node');
         }
     }
