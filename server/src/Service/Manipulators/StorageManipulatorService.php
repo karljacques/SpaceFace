@@ -27,6 +27,7 @@ class StorageManipulatorService
             $storedCommodity->setQuantity($storedCommodity->getQuantity() + $quantity);
         } else {
             $storedCommodity = new StoredCommodity();
+            $storedCommodity->setQuantity($quantity);
 
             $this->entityManager->persist($storedCommodity);
 
@@ -52,9 +53,6 @@ class StorageManipulatorService
 
     protected function deleteStoredCommodity(StoredCommodity $storedCommodity): void
     {
-        $storage = $storedCommodity->getStorageComponent();
-        $storage->removeStoredCommodity($storedCommodity);
-
         $this->entityManager->remove($storedCommodity);
     }
 
@@ -71,6 +69,6 @@ class StorageManipulatorService
     {
         return $storage->getStoredCommodities()
             ->filter(fn(StoredCommodity $storedCommodity) => $storedCommodity->getCommodity()->getId() === $commodity->getId())
-            ->first();
+            ->first() ?: null;
     }
 }

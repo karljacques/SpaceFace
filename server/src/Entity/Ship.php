@@ -22,34 +22,34 @@ class Ship
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $fuel;
+    private int $fuel;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $maxFuel;
+    private int $maxFuel;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Dockable", inversedBy="ships")
      */
-    private $docked_at;
+    private ?Dockable $docked_at;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Component\Storage", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $storageComponent;
+    private Storage $storageComponent;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Character", inversedBy="ships")
      */
-    private $owner;
+    private Character $owner;
 
     /**
      * @Groups({"basic"})

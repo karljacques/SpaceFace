@@ -16,8 +16,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MovementController extends AbstractCommandController
 {
-    protected $commandExecutor;
-    protected $entityManager;
+    protected MovementCommandExecutor $commandExecutor;
+    protected EntityManagerInterface $entityManager;
 
     public function __construct(
         MovementCommandExecutor $commandExecutor,

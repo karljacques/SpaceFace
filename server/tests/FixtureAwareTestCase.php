@@ -1,9 +1,14 @@
 <?php
+
 namespace App\Tests;
+
+use App\Kernel;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectRepository;
 use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
 
 /**
@@ -15,11 +20,28 @@ trait FixtureAwareTestCase
     /**
      * @var ORMExecutor
      */
-    private $fixtureExecutor;
+    private ?ORMExecutor $fixtureExecutor = null;
     /**
      * @var ContainerAwareLoader
      */
-    private $fixtureLoader;
+    private ?ContainerAwareLoader $fixtureLoader = null;
+
+    protected function getEntityManager(): EntityManagerInterface
+    {
+        /** @var EntityManagerInterface $entityManager */
+
+        /** @var Kernel $kernel */
+        $kernel = self::$kernel;
+
+        $entityManager = $kernel->getContainer()->get('doctrine.orm.default_entity_manager');
+
+        return $entityManager;
+    }
+
+    protected function getRepository(string $class): ObjectRepository
+    {
+        return $this->getEntityManager()->getRepository($class);
+    }
 
     /**
      * Adds a new fixture to be loaded.
@@ -61,5 +83,11 @@ trait FixtureAwareTestCase
             $this->fixtureLoader = new ContainerAwareLoader(static::$kernel->getContainer());
         }
         return $this->fixtureLoader;
+    }
+
+    protected function addFixtureByName(string $name)
+    {
+        $fixture = static::$kernel->getContainer()->get("test.$name");
+        $this->addFixture($fixture);
     }
 }

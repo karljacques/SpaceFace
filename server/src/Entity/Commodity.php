@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use App\Entity\Join\MarketCommodity;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -30,6 +33,16 @@ class Commodity
      * @ORM\Column(type="integer")
      */
     private $weight;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Join\MarketCommodity", mappedBy="commodity")
+     */
+    private $marketCommodities;
+
+    public function __construct()
+    {
+        $this->marketCommodities = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -68,6 +81,37 @@ class Commodity
     public function setWeight(int $weight): self
     {
         $this->weight = $weight;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MarketCommodity[]
+     */
+    public function getMarketCommodities(): Collection
+    {
+        return $this->marketCommodities;
+    }
+
+    public function addMarketCommodity(MarketCommodity $marketCommodity): self
+    {
+        if (!$this->marketCommodities->contains($marketCommodity)) {
+            $this->marketCommodities[] = $marketCommodity;
+            $marketCommodity->setCommodity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMarketCommodity(MarketCommodity $marketCommodity): self
+    {
+        if ($this->marketCommodities->contains($marketCommodity)) {
+            $this->marketCommodities->removeElement($marketCommodity);
+            // set the owning side to null (unless already changed)
+            if ($marketCommodity->getCommodity() === $this) {
+                $marketCommodity->setCommodity(null);
+            }
+        }
 
         return $this;
     }

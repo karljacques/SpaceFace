@@ -5,3 +5,6 @@ services:
     test.App\DataFixtures\UserFixtures: '@App\DataFixtures\UserFixtures'
     test.App\DataFixtures\ShipFixtures: '@App\DataFixtures\ShipFixtures'
     test.App\DataFixtures\JumpNodeFixtures: '@App\DataFixtures\JumpNodeFixtures'
+    test.App\DataFixtures\Economy\CommodityFixtures: '@App\DataFixtures\Economy\CommodityFixtures'
+
+    test.App\Service\Manipulators\StorageManipulatorService: '@App\Service\Manipulators\StorageManipulatorService'

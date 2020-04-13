@@ -79,7 +79,7 @@ class MoveTest extends GameTestCase
         $user = $entityManager->getRepository(User::class)->findOneBy(['apiToken' => self::AUTH_TOKEN]);
 
         /** @var Ship $ship */
-        $ship = $user->getShips()->first();
+        $ship = $user->getCharacters()->first()->getShips()->first();
 
         $this->assertEquals(2, $ship->getY());
         $this->assertEquals(1, $ship->getX());
