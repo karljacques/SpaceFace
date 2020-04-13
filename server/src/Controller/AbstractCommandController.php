@@ -32,7 +32,7 @@ class AbstractCommandController extends AbstractGameController
 
         /** @var User $user */
         $user = $tokenStorageInterface->getToken()->getUser();
-        $ship = $user->getShips()->first();
+        $ship = $user->getCharacters()->first()->getShips()->first();
 
         /** @var RequestStack $requestStack */
         $requestStack = $this->get('request_stack');

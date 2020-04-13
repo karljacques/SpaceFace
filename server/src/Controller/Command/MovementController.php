@@ -43,7 +43,7 @@ class MovementController extends AbstractCommandController
         $this->commandExecutor->execute($move);
         $this->entityManager->flush();
 
-        $bus->dispatch(new UserSpecificMessage($move->getShip()->getUser(), ['action' => 'move_success']));
+        $bus->dispatch(new UserSpecificMessage($move->getShip()->getOwner()->getUser(), ['action' => 'move_success']));
 
         return $this->response($move->getShip(), ['player', 'sector', 'system']);
     }

@@ -3,7 +3,10 @@
 namespace App\Entity;
 
 
+use App\Entity\Component\Storage;
 use App\Entity\Traits\LocationTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -21,11 +24,6 @@ class Ship
      */
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="ships")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $user;
 
     /**
      * @ORM\Column(type="integer")
@@ -43,24 +41,23 @@ class Ship
     private $docked_at;
 
     /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Component\Storage", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $storageComponent;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Character", inversedBy="ships")
+     */
+    private $owner;
+
+    /**
      * @Groups({"basic"})
      * @return int
      */
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function getUser(): User
-    {
-        return $this->user;
-    }
-
-    public function setUser(User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
     }
 
     /**
@@ -110,5 +107,29 @@ class Ship
     public function isDocked(): bool
     {
         return $this->docked_at !== null;
+    }
+
+    public function getStorageComponent(): ?Storage
+    {
+        return $this->storageComponent;
+    }
+
+    public function setStorageComponent(Storage $storageComponent): self
+    {
+        $this->storageComponent = $storageComponent;
+
+        return $this;
+    }
+
+    public function getOwner(): ?Character
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?Character $owner): self
+    {
+        $this->owner = $owner;
+
+        return $this;
     }
 }

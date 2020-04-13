@@ -2,6 +2,8 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Character;
+use App\Entity\Component\Storage;
 use App\Entity\Ship;
 use App\Entity\System;
 use App\Entity\User;
@@ -14,20 +16,26 @@ class ShipFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        $users = $manager->getRepository(User::class)->findAll();
+        $characters = $manager->getRepository(Character::class)->findAll();
         $systems = $manager->getRepository(System::class)->findAll();
 
         $factory = Factory::create();
 
-        /** @var User $user */
-        foreach ($users as $user) {
+        /** @var Character $character */
+        foreach ($characters as $character) {
             $ship = new Ship();
-            $ship->setUser($user)
+            $ship->setOwner($character)
                 ->setSystem($factory->randomElement($systems))
                 ->setX(1)
                 ->setY(1)
                 ->setMaxFuel($factory->numberBetween(100, 200))
                 ->setFuel($ship->getMaxFuel());
+
+            $storage = new Storage();
+            $storage->setCapacity(100);
+            $ship->setStorageComponent($storage);
+
+            $manager->persist($storage);
             $manager->persist($ship);
         }
         $manager->flush();
@@ -43,7 +51,7 @@ class ShipFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return [
-            UserFixtures::class,
+            CharacterFixtures::class,
             SystemFixtures::class
         ];
     }

@@ -42,13 +42,13 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Ship", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Character", mappedBy="user")
      */
-    private $ships;
+    private $characters;
 
     public function __construct()
     {
-        $this->ships = new ArrayCollection();
+        $this->characters = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -145,30 +145,30 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Ship[]
+     * @return Collection|Character[]
      */
-    public function getShips(): Collection
+    public function getCharacters(): Collection
     {
-        return $this->ships;
+        return $this->characters;
     }
 
-    public function addShip(Ship $ship): self
+    public function addCharacter(Character $character): self
     {
-        if (!$this->ships->contains($ship)) {
-            $this->ships[] = $ship;
-            $ship->setUser($this);
+        if (!$this->characters->contains($character)) {
+            $this->characters[] = $character;
+            $character->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeShip(Ship $ship): self
+    public function removeCharacter(Character $character): self
     {
-        if ($this->ships->contains($ship)) {
-            $this->ships->removeElement($ship);
+        if ($this->characters->contains($character)) {
+            $this->characters->removeElement($character);
             // set the owning side to null (unless already changed)
-            if ($ship->getUser() === $this) {
-                $ship->setUser(null);
+            if ($character->getUser() === $this) {
+                $character->setUser(null);
             }
         }
 

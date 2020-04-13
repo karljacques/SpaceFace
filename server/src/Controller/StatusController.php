@@ -31,7 +31,8 @@ class StatusController extends AbstractGameController
         /** @var User $user */
         $user = $this->security->getUser();
         /** @var Ship $ship */
-        $ship = $user->getShips()->first();
+        dump($user->getCharacters()->first());
+        $ship = $user->getCharacters()->first()->getShips()->first();
 
         return $this->response($ship, ['sector', 'player', 'system']);
     }

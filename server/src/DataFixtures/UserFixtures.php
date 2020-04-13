@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class UserFixtures extends Fixture implements ContainerAwareInterface
 {
     /** @var ContainerInterface */
-    private $container;
+    private ?ContainerInterface $container;
 
     /**
      * Load data fixtures with the passed EntityManager
