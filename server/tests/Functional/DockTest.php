@@ -34,22 +34,6 @@ class DockTest extends GameTestCase
 
     }
 
-    protected function findFirstDockable(): Dockable
-    {
-        return collect($this->getRepository(Dockable::class)->findAll())->first();
-    }
-
-    protected function executeCommand(int $dockable): object
-    {
-        $body = json_encode([
-            'dockable' => $dockable
-        ]);
-
-        $uri = '/dock';
-
-        return $this->sendCommandRequest($uri, $body);
-    }
-
     public function testDockWhenDocked()
     {
         $dockable = $this->findFirstDockable();
@@ -74,5 +58,23 @@ class DockTest extends GameTestCase
 
         $this->assertTrue($result->success);
         $this->assertEquals($dockable, $ship->getDockedAt());
+    }
+
+
+    protected function findFirstDockable(): Dockable
+    {
+        return collect($this->getRepository(Dockable::class)->findAll())->first();
+    }
+
+
+    protected function executeCommand(int $dockable): object
+    {
+        $body = json_encode([
+            'dockable' => $dockable
+        ]);
+
+        $uri = '/dock';
+
+        return $this->sendCommandRequest($uri, $body);
     }
 }

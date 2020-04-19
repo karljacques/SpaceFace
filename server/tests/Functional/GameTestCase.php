@@ -66,7 +66,7 @@ class GameTestCase extends WebTestCase
      * @param string $body
      * @return mixed
      */
-    protected function sendCommandRequest(string $uri, string $body)
+    protected function sendCommandRequest(string $uri, ?string $body)
     {
         $this->client->request('POST', $uri, [], [], [
             'HTTP_X-AUTH-TOKEN' => GameTestCase::AUTH_TOKEN
@@ -78,5 +78,10 @@ class GameTestCase extends WebTestCase
     protected function flush(): void
     {
         $this->getEntityManager()->flush();
+    }
+
+    protected function findFirst(string $class)
+    {
+        return collect($this->getRepository($class)->findAll())->first();
     }
 }
