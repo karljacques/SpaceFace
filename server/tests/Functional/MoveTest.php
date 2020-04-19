@@ -62,16 +62,12 @@ class MoveTest extends GameTestCase
     public function testNotEnoughFuelToMove()
     {
         $ship = $this->getCurrentShip();
-
         $ship->setFuel(0);
-
-        $this->getEntityManager()->flush();
 
         $response = $this->executeCommand('up');
 
         $this->assertFalse($response->success);
 
-        $this->getEntityManager()->refresh($ship);
         $this->assertTrue($ship->getVector()->equals(new Vector2(1, 1)));
     }
 

@@ -20,7 +20,7 @@ class DockTest extends GameTestCase
 
     public function testDockWhenNotInSameLocation()
     {
-        $dockable = $this->findFirstDockable();
+        $dockable = $this->findFirst(Dockable::class);
         $ship = $this->getCurrentShip();
 
         $ship->setLocation(LocationHelper::offsetLocation($dockable->getLocation()));
@@ -36,7 +36,7 @@ class DockTest extends GameTestCase
 
     public function testDockWhenDocked()
     {
-        $dockable = $this->findFirstDockable();
+        $dockable = $this->findFirst(Dockable::class);
         $ship = $this->getCurrentShip();
 
         $ship->setDockedAt($dockable);
@@ -50,7 +50,7 @@ class DockTest extends GameTestCase
 
     public function testDockSuccessful()
     {
-        $dockable = $this->findFirstDockable();
+        $dockable = $this->findFirst(Dockable::class);
         $ship = $this->getCurrentShip();
 
         $ship->setLocation($dockable->getLocation());
@@ -59,13 +59,6 @@ class DockTest extends GameTestCase
         $this->assertTrue($result->success);
         $this->assertEquals($dockable, $ship->getDockedAt());
     }
-
-
-    protected function findFirstDockable(): Dockable
-    {
-        return collect($this->getRepository(Dockable::class)->findAll())->first();
-    }
-
 
     protected function executeCommand(int $dockable): object
     {

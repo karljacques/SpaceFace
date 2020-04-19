@@ -4,7 +4,6 @@ namespace App\Tests\Functional;
 
 use App\DataFixtures\JumpNodeFixtures;
 use App\Entity\JumpNode;
-use App\Repository\JumpNodeRepository;
 use App\Tests\Helpers\LocationHelper;
 
 class JumpTest extends GameTestCase
@@ -22,7 +21,8 @@ class JumpTest extends GameTestCase
 
     public function testJumpWhenAtEntryNode()
     {
-        $node = $this->getFirstNode();
+        /** @var JumpNode $node */
+        $node = $this->findFirst(JumpNode::class);
 
         $ship = $this->getCurrentShip();
         $ship->setLocation($node->getLocation());
@@ -39,7 +39,8 @@ class JumpTest extends GameTestCase
 
     public function testJumpNotAllowedFromExitNode()
     {
-        $node = $this->getFirstNode();
+        /** @var JumpNode $node */
+        $node = $this->findFirst(JumpNode::class);
         $ship = $this->getCurrentShip();
 
         $ship->setLocation($node->getExitLocation());
@@ -53,12 +54,10 @@ class JumpTest extends GameTestCase
 
     public function testJumpNotAllowedFromAdjacentSector()
     {
-        $node = $this->getFirstNode();
+        $node = $this->findFirst(JumpNode::class);
         $ship = $this->getCurrentShip();
 
         $ship->setLocation(LocationHelper::offsetLocation($node->getLocation()));
-
-        $this->getEntityManager()->flush();
 
         $response = $this->makeRequest($node->getId());
 
@@ -75,23 +74,8 @@ class JumpTest extends GameTestCase
             "node" => $nodeId
         ]);
 
-        $this->client->request('POST', '/jump', [], [], [
-            'HTTP_X-AUTH-TOKEN' => self::AUTH_TOKEN
-        ], $body);
+        $uri = '/jump';
 
-        return json_decode($this->client->getResponse()->getContent());
-    }
-
-    /**
-     * @return JumpNode
-     */
-    protected function getFirstNode(): JumpNode
-    {
-        /** @var JumpNodeRepository $jumpNodeRepository */
-        $jumpNodeRepository = $this->getRepository(JumpNode::class);
-
-        /** @var JumpNode $node */
-        $node = collect($jumpNodeRepository->findAll())->first();
-        return $node;
+        return $this->sendCommandRequest($uri, $body);
     }
 }
