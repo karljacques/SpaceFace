@@ -23,7 +23,7 @@ class Market
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Join\MarketCommodity", mappedBy="market")
      */
-    private ArrayCollection $marketCommodities;
+    private Collection $marketCommodities;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Dockable", inversedBy="market")

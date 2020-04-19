@@ -30,5 +30,7 @@ class MarketFixtures extends Fixture
 
             $manager->persist($market);
         }
+
+        $manager->flush();
     }
 }
