@@ -12,10 +12,8 @@ class MoveTest extends GameTestCase
 {
     use FixtureAwareTestCase;
 
-    const AUTH_TOKEN = '73d0e731888687f8dd1413215b5de938';
-
     /** @var KernelBrowser */
-    protected $client;
+    protected KernelBrowser $client;
 
     public function setUp(): void
     {
@@ -71,15 +69,7 @@ class MoveTest extends GameTestCase
 
         $this->assertIsObject($response->data);
 
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = static::$kernel->getContainer()->get('doctrine.orm.entity_manager');
-
-        // Load user
-        /** @var User $user */
-        $user = $entityManager->getRepository(User::class)->findOneBy(['apiToken' => self::AUTH_TOKEN]);
-
-        /** @var Ship $ship */
-        $ship = $user->getCharacters()->first()->getShips()->first();
+        $ship = $this->getCurrentShip();
 
         $this->assertEquals(2, $ship->getY());
         $this->assertEquals(1, $ship->getX());
@@ -97,5 +87,6 @@ class MoveTest extends GameTestCase
 
         return json_decode($this->client->getResponse()->getContent());
     }
+
 }
 

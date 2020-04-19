@@ -19,6 +19,12 @@ class StorageManipulatorService
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @param Storage $storage
+     * @param Commodity $commodity
+     * @param int $quantity
+     * @return StoredCommodity
+     */
     public function addCommodity(Storage $storage, Commodity $commodity, int $quantity): StoredCommodity
     {
         $storedCommodity = $this->findStoredCommodity($storage, $commodity);
@@ -38,6 +44,11 @@ class StorageManipulatorService
         return $storedCommodity;
     }
 
+    /**
+     * @param Storage $storage
+     * @param Commodity $commodity
+     * @param int $quantity
+     */
     public function removeCommodity(Storage $storage, Commodity $commodity, int $quantity): void
     {
         $storedCommodity = $this->findStoredCommodity($storage, $commodity);
@@ -51,11 +62,18 @@ class StorageManipulatorService
         $this->modifyCommodityQuantity($storedCommodity, $newQuantity);
     }
 
+    /**
+     * @param StoredCommodity $storedCommodity
+     */
     protected function deleteStoredCommodity(StoredCommodity $storedCommodity): void
     {
         $this->entityManager->remove($storedCommodity);
     }
 
+    /**
+     * @param StoredCommodity $storedCommodity
+     * @param int $newQuantity
+     */
     protected function modifyCommodityQuantity(StoredCommodity $storedCommodity, int $newQuantity): void
     {
         if ($newQuantity <= 0) {
@@ -65,6 +83,11 @@ class StorageManipulatorService
         }
     }
 
+    /**
+     * @param Storage $storage
+     * @param Commodity $commodity
+     * @return StoredCommodity|null
+     */
     protected function findStoredCommodity(Storage $storage, Commodity $commodity): ?StoredCommodity
     {
         return $storage->getStoredCommodities()
