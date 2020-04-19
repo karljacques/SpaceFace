@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Entity\Component\Market;
-use App\Entity\Component\Storage;
 use App\Entity\Traits\LocationTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -28,12 +27,12 @@ class Dockable
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Ship", mappedBy="docked_at")
      */
-    private ArrayCollection $ships;
+    private Collection $ships;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Component\Market", mappedBy="dockable")
      */
-    private ArrayCollection $markets;
+    private Collection $markets;
 
 
     public function __construct()

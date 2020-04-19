@@ -60,4 +60,23 @@ class GameTestCase extends WebTestCase
         $ship = $this->getShipFromUser($user);
         return $ship;
     }
+
+    /**
+     * @param string $uri
+     * @param string $body
+     * @return mixed
+     */
+    protected function sendCommandRequest(string $uri, string $body)
+    {
+        $this->client->request('POST', $uri, [], [], [
+            'HTTP_X-AUTH-TOKEN' => GameTestCase::AUTH_TOKEN
+        ], $body);
+
+        return json_decode($this->client->getResponse()->getContent());
+    }
+
+    protected function flush(): void
+    {
+        $this->getEntityManager()->flush();
+    }
 }

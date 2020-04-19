@@ -10,8 +10,8 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class Location
 {
-    private $system;
-    private $vector;
+    private System $system;
+    private Vector2 $vector;
 
     public function __construct(System $system, Vector2 $vector)
     {

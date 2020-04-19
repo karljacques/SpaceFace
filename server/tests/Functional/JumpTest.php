@@ -5,8 +5,7 @@ namespace App\Tests\Functional;
 use App\DataFixtures\JumpNodeFixtures;
 use App\Entity\JumpNode;
 use App\Repository\JumpNodeRepository;
-use App\Util\Location;
-use App\Util\Vector2;
+use App\Tests\Helpers\LocationHelper;
 
 class JumpTest extends GameTestCase
 {
@@ -57,13 +56,7 @@ class JumpTest extends GameTestCase
         $node = $this->getFirstNode();
         $ship = $this->getCurrentShip();
 
-        $shipLocation = new Location(
-            $node->getLocation()->getSystem(),
-            $node->getLocation()->getVector()
-                ->add(new Vector2(1, 0))
-        );
-
-        $ship->setLocation($shipLocation);
+        $ship->setLocation(LocationHelper::offsetLocation($node->getLocation()));
 
         $this->getEntityManager()->flush();
 
@@ -101,6 +94,4 @@ class JumpTest extends GameTestCase
         $node = collect($jumpNodeRepository->findAll())->first();
         return $node;
     }
-
-
 }

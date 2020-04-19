@@ -2,10 +2,8 @@
 
 namespace App\Tests\Functional;
 
-use App\Entity\Ship;
-use App\Entity\User;
 use App\Tests\FixtureAwareTestCase;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Util\Vector2;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 class MoveTest extends GameTestCase
@@ -59,6 +57,22 @@ class MoveTest extends GameTestCase
         $this->assertObjectHasAttribute('current_position', $error->details);
         $this->assertObjectHasAttribute('delta', $error->details);
         $this->assertObjectHasAttribute('proposed_position', $error->details);
+    }
+
+    public function testNotEnoughFuelToMove()
+    {
+        $ship = $this->getCurrentShip();
+
+        $ship->setFuel(0);
+
+        $this->getEntityManager()->flush();
+
+        $response = $this->executeCommand('up');
+
+        $this->assertFalse($response->success);
+
+        $this->getEntityManager()->refresh($ship);
+        $this->assertTrue($ship->getVector()->equals(new Vector2(1, 1)));
     }
 
     public function testSuccessfulMove()
