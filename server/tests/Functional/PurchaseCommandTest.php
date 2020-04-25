@@ -8,7 +8,30 @@ class PurchaseCommandTest extends GameTestCase
 {
     public function testNotEnoughMoney()
     {
+        // Get a market commodity to buy
 
+        // Dock at that market's dockable
+
+        // send request
+
+        // expect false
+    }
+
+    public function testSuccessful()
+    {
+        // Get a market commodity to buy
+
+        // Dock at that market's dockable
+
+        // send request
+
+        // expect true
+
+        // expect less money characters account
+
+        // expect commodity in ships storage
+
+        // expect less commodity in market's storage
     }
 
     protected function makeRequest(int $commodityId, int $marketId, int $quantity, int $price)
