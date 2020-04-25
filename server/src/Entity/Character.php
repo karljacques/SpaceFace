@@ -17,18 +17,23 @@ class Character
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="characters")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user;
+    private User $user;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Ship", mappedBy="owner")
      */
-    private $ships;
+    private Collection $ships;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private int $money = 0;
 
     public function __construct()
     {
@@ -79,6 +84,18 @@ class Character
                 $ship->setOwner(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMoney(): ?int
+    {
+        return $this->money;
+    }
+
+    public function setMoney(int $money): self
+    {
+        $this->money = $money;
 
         return $this;
     }

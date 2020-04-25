@@ -30,6 +30,16 @@ class MarketCommodity
      */
     private Commodity $commodity;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private ?int $sell;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private ?int $buy;
+
     public function getId(): int
     {
         return $this->id;
@@ -55,6 +65,30 @@ class MarketCommodity
     public function setCommodity(Commodity $commodity): self
     {
         $this->commodity = $commodity;
+
+        return $this;
+    }
+
+    public function getSell(): ?int
+    {
+        return $this->sell;
+    }
+
+    public function setSell(?int $sell): self
+    {
+        $this->sell = $sell;
+
+        return $this;
+    }
+
+    public function getBuy(): ?int
+    {
+        return $this->buy;
+    }
+
+    public function setBuy(?int $buy): self
+    {
+        $this->buy = $buy;
 
         return $this;
     }

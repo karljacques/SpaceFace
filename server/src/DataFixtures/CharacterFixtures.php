@@ -32,7 +32,9 @@ class CharacterFixtures extends Fixture implements DependentFixtureInterface
         foreach ($users as $user) {
             $character = new Character();
 
-            $character->setUser($user);
+            $character->setUser($user)
+                ->setMoney(1000_00);
+
             $manager->persist($character);
         }
 
