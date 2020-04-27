@@ -7,6 +7,9 @@ services:
     test.App\DataFixtures\JumpNodeFixtures: '@App\DataFixtures\JumpNodeFixtures'
     test.App\DataFixtures\Economy\CommodityFixtures: '@App\DataFixtures\Economy\CommodityFixtures'
     test.App\DataFixtures\DockableFixtures: '@App\DataFixtures\DockableFixtures'
+    test.App\DataFixtures\Economy\MarketDockableFixtures: '@App\DataFixtures\Economy\MarketDockableFixtures'
+    test.App\DataFixtures\Economy\MarketCommodityFixtures: '@App\DataFixtures\Economy\MarketCommodityFixtures'
+
 
     test.App\Service\Manipulators\StorageManipulatorService: '@App\Service\Manipulators\StorageManipulatorService'
 

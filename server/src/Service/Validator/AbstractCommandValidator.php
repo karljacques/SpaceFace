@@ -3,11 +3,13 @@
 namespace App\Service\Validator;
 
 use App\Command\CommandInterface;
+use App\Entity\Dockable;
+use App\Entity\Ship;
 use App\Exception\UserActionException;
 
 abstract class AbstractCommandValidator
 {
-    private $violations = [];
+    private array $violations = [];
 
     abstract protected function runValidation(CommandInterface $command);
 
@@ -33,8 +35,22 @@ abstract class AbstractCommandValidator
         $this->violations[] = new UserActionViolation($message, $details);
     }
 
+    protected function hasViolations()
+    {
+        return count($this->violations) > 0;
+    }
+
     private function isValid()
     {
         return count($this->violations) === 0;
+    }
+
+    protected function isDockedAt(Ship $ship, Dockable $dockable): bool
+    {
+        if (!$ship->isDocked()) {
+            return false;
+        }
+
+        return $ship->getDockedAt() === $dockable;
     }
 }

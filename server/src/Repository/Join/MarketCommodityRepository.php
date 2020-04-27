@@ -19,32 +19,12 @@ class MarketCommodityRepository extends ServiceEntityRepository
         parent::__construct($registry, MarketCommodity::class);
     }
 
-    // /**
-    //  * @return MarketCommodity[] Returns an array of MarketCommodity objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findOneBySellPrice(int $marketId, int $commodityId, int $price): ?MarketCommodity
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        return $this->findOneBy([
+            'market' => $marketId,
+            'commodity' => $commodityId,
+            'sell' => $price
+        ]);
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?MarketCommodity
-    {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

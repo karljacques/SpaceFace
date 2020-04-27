@@ -5,8 +5,6 @@ namespace App\Entity;
 
 use App\Entity\Component\Storage;
 use App\Entity\Traits\LocationTrait;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -38,7 +36,7 @@ class Ship
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Dockable", inversedBy="ships")
      */
-    private ?Dockable $docked_at;
+    private ?Dockable $docked_at = null;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Component\Storage", cascade={"persist", "remove"})

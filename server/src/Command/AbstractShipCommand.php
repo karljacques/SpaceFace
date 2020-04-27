@@ -8,8 +8,7 @@ use App\Entity\Ship;
 
 abstract class AbstractShipCommand implements CommandInterface
 {
-    /**  @var Ship */
-    protected $ship;
+    protected Ship $ship;
 
     public function __construct(Ship $ship)
     {

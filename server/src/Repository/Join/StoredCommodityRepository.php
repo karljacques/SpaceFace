@@ -2,6 +2,8 @@
 
 namespace App\Repository\Join;
 
+use App\Entity\Commodity;
+use App\Entity\Component\Storage;
 use App\Entity\Join\StoredCommodity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,32 +21,23 @@ class StoredCommodityRepository extends ServiceEntityRepository
         parent::__construct($registry, StoredCommodity::class);
     }
 
-    // /**
-    //  * @return StoredCommodity[] Returns an array of StoredCommodity objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function doesStorageContainCommodity(Storage $storage, Commodity $commodity, int $quantity): bool
     {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $dql = /** @lang DQL */
+            "SELECT 1 FROM App\Entity\Join\StoredCommodity sc
+             WHERE sc.commodity = :commodity AND sc.storage = :storage
+             AND sc.quantity > :quantity";
 
-    /*
-    public function findOneBySomeField($value): ?StoredCommodity
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $query = $this->getEntityManager()->createQuery($dql);
+
+        $query->setParameters([
+            'commodity' => $commodity,
+            'storage' => $storage,
+            'quantity' => $quantity
+        ]);
+
+        $result = $query->getResult();
+
+        return $result !== false;
     }
-    */
 }

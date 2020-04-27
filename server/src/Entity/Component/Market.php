@@ -28,7 +28,7 @@ class Market
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Dockable", inversedBy="market")
      */
-    private ?Dockable $dockable;
+    private ?Dockable $dockable = null;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Component\Storage", cascade={"persist", "remove"})

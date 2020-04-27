@@ -8,14 +8,13 @@ use App\Command\CommandInterface;
 use App\Entity\User;
 use App\Service\Factories\Command\CommandFactoryInterface;
 use App\Service\Factories\Command\DockCommandFactory;
+use App\Service\Factories\Command\Economy\Market\PurchaseCommandFactory;
 use App\Service\Factories\Command\JumpCommandFactory;
 use App\Service\Factories\Command\MovementCommandFactory;
-
 use App\Service\Factories\Command\UndockCommandFactory;
+use LogicException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-
-use LogicException;
 
 class AbstractCommandController extends AbstractGameController
 {
@@ -57,7 +56,8 @@ class AbstractCommandController extends AbstractGameController
             MovementCommandFactory::class,
             JumpCommandFactory::class,
             DockCommandFactory::class,
-            UndockCommandFactory::class
+            UndockCommandFactory::class,
+            PurchaseCommandFactory::class
         ];
     }
 }

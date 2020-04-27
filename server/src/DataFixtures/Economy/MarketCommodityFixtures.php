@@ -58,7 +58,7 @@ class MarketCommodityFixtures extends Fixture implements DependentFixtureInterfa
 
                 $storedCommodity = new StoredCommodity();
                 $storedCommodity->setCommodity($commodity)
-                    ->setStorageComponent($storage)
+                    ->setStorage($storage)
                     ->setQuantity(100);
 
                 $storage->addStoredCommodity($storedCommodity);
@@ -82,7 +82,7 @@ class MarketCommodityFixtures extends Fixture implements DependentFixtureInterfa
 
                 $storedCommodity = new StoredCommodity();
                 $storedCommodity->setCommodity($commodity)
-                    ->setStorageComponent($storage)
+                    ->setStorage($storage)
                     ->setQuantity(100);
 
                 $storage->addStoredCommodity($storedCommodity);

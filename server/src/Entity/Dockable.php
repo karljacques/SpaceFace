@@ -15,6 +15,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Dockable
 {
     use LocationTrait;
+    use TypedPropertySleepTrait;
 
     /**
      * @ORM\Id()
@@ -22,7 +23,7 @@ class Dockable
      * @ORM\Column(type="integer")
      * @Groups({"basic"})
      */
-    private int $id;
+    private ?int $id = null;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Ship", mappedBy="docked_at")

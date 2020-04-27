@@ -136,7 +136,7 @@ class StorageManipulatorServiceTest extends KernelTestCase
         /** @var StoredCommodity $storedCommodity */
         $storedCommodity = collect($this->getRepository(StoredCommodity::class)->findBy([
             'commodity' => $commodity->getId(),
-            'storageComponent' => $storage->getId()
+            'storage' => $storage->getId()
         ]))->first() ?: null;
 
         return $storedCommodity;

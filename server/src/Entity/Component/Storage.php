@@ -2,8 +2,8 @@
 
 namespace App\Entity\Component;
 
-use App\Entity\Commodity;
 use App\Entity\Join\StoredCommodity;
+use App\Entity\TypedPropertySleepTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,22 +13,23 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Storage
 {
+    use TypedPropertySleepTrait;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Join\StoredCommodity", mappedBy="storageComponent")
+     * @ORM\OneToMany(targetEntity="App\Entity\Join\StoredCommodity", mappedBy="storage")
      */
-    private $storedCommodities;
+    private Collection $storedCommodities;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $capacity;
+    private int $capacity;
 
     public function __construct()
     {
@@ -52,7 +53,7 @@ class Storage
     {
         if (!$this->storedCommodities->contains($storedCommodity)) {
             $this->storedCommodities[] = $storedCommodity;
-            $storedCommodity->setStorageComponent($this);
+            $storedCommodity->setStorage($this);
         }
 
         return $this;
@@ -63,8 +64,8 @@ class Storage
         if ($this->storedCommodities->contains($storedCommodity)) {
             $this->storedCommodities->removeElement($storedCommodity);
             // set the owning side to null (unless already changed)
-            if ($storedCommodity->getStorageComponent() === $this) {
-                $storedCommodity->setStorageComponent(null);
+            if ($storedCommodity->getStorage() === $this) {
+                $storedCommodity->setStorage(null);
             }
         }
 

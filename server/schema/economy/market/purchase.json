@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "commodity_id",
+    "market_id",
+    "quantity",
+    "price"
+  ],
+  "properties": {
+    "commodity_id": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "market_id": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "quantity": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "price": {
+      "type": "integer",
+      "minimum": 1
+    }
+  }
+}

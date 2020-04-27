@@ -16,38 +16,38 @@ class StoredCommodity
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Component\Storage", inversedBy="storedCommodities")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $storageComponent;
+    private Storage $storage;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Commodity")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $commodity;
+    private Commodity $commodity;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $quantity;
+    private int $quantity;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getStorageComponent(): ?Storage
+    public function getStorage(): ?Storage
     {
-        return $this->storageComponent;
+        return $this->storage;
     }
 
-    public function setStorageComponent(Storage $storageComponent): self
+    public function setStorage(Storage $storage): self
     {
-        $this->storageComponent = $storageComponent;
+        $this->storage = $storage;
 
         return $this;
     }
