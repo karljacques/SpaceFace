@@ -7,7 +7,7 @@ namespace App\Service\Executors;
 use App\Command\CommandInterface;
 use App\Command\UndockCommand;
 use App\Exception\UnexpectedCommandException;
-use App\Service\Validator\UndockCommandValidator;
+use App\Service\Validation\Command\Validator\UndockCommandValidator;
 
 class UndockCommandExecutor extends AbstractCommandExecutor
 {

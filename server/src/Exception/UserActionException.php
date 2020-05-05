@@ -3,7 +3,7 @@
 
 namespace App\Exception;
 
-use App\Service\Validator\UserActionViolation;
+use App\Service\Validation\Command\UserActionViolation;
 use Exception;
 
 class UserActionException extends Exception

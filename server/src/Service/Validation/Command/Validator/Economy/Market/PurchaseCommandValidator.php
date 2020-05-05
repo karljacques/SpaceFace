@@ -1,18 +1,18 @@
 <?php
 
 
-namespace App\Service\Validator\Economy\Market;
+namespace App\Service\Validation\Command\Validator\Economy\Market;
 
 
 use App\Command\CommandInterface;
 use App\Command\Economy\Market\PurchaseCommand;
 use App\Exception\UnexpectedCommandException;
 use App\Repository\Join\StoredCommodityRepository;
-use App\Service\Validator\AbstractCommandValidator;
-use App\Service\Validator\Rules\MustBeDockedAtRule;
-use App\Service\Validator\Rules\MustContainCommodityInStorageRule;
-use App\Service\Validator\Rules\MustHaveMoneyRule;
-use App\Service\Validator\Rules\MustHaveStorageSpaceRule;
+use App\Service\Validation\Command\Validator\AbstractCommandValidator;
+use App\Service\Validation\Rules\MustBeDockedAtRule;
+use App\Service\Validation\Rules\MustContainCommodityInStorageRule;
+use App\Service\Validation\Rules\MustHaveMoneyRule;
+use App\Service\Validation\Rules\MustHaveStorageSpaceRule;
 
 class PurchaseCommandValidator extends AbstractCommandValidator
 {

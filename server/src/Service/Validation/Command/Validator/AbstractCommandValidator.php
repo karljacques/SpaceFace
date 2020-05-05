@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Service\Validator;
+namespace App\Service\Validation\Command\Validator;
 
 use App\Command\CommandInterface;
 use App\Exception\UserActionException;
-use App\Service\Validator\Rules\RuleInterface;
+use App\Service\Validation\Command\UserActionViolation;
+use App\Service\Validation\Rules\RuleInterface;
 
 abstract class AbstractCommandValidator
 {

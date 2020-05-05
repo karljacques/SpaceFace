@@ -1,17 +1,16 @@
 <?php
 
 
-namespace App\Service\Validator;
+namespace App\Service\Validation\Command\Validator;
 
 
 use App\Command\CommandInterface;
 use App\Command\UndockCommand;
 use App\Exception\UnexpectedCommandException;
-use App\Service\Validator\Rules\MustBeDockedRule;
+use App\Service\Validation\Rules\MustBeDockedRule;
 
 class UndockCommandValidator extends AbstractCommandValidator
 {
-
     protected function getValidationRules(CommandInterface $command): array
     {
         if (!$command instanceof UndockCommand) {

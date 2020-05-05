@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Service\Validator;
+namespace App\Service\Validation\Command\Validator;
 
 use App\Command\CommandInterface;
 use App\Command\MovementCommand;
 use App\Exception\UnexpectedCommandException;
 use App\Service\Calculators\MovementCostCalculatorInterface;
-use App\Service\Validator\Rules\MustBeWithinSystemRule;
-use App\Service\Validator\Rules\MustHaveFuelRule;
-use App\Service\Validator\Rules\MustNotBeDockedRule;
+use App\Service\Validation\Rules\MustBeWithinSystemRule;
+use App\Service\Validation\Rules\MustHaveFuelRule;
+use App\Service\Validation\Rules\MustNotBeDockedRule;
 
 class MovementCommandValidator extends AbstractCommandValidator
 {

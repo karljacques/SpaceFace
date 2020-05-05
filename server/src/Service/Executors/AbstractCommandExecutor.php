@@ -6,7 +6,7 @@ namespace App\Service\Executors;
 
 use App\Command\CommandInterface;
 use App\Exception\UserActionException;
-use App\Service\Validator\AbstractCommandValidator;
+use App\Service\Validation\Command\Validator\AbstractCommandValidator;
 
 abstract class AbstractCommandExecutor
 {

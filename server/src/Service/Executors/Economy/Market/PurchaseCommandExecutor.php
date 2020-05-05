@@ -9,7 +9,7 @@ use App\Command\Economy\Market\PurchaseCommand;
 use App\Exception\UnexpectedCommandException;
 use App\Service\Executors\AbstractCommandExecutor;
 use App\Service\Manipulators\StorageTransferService;
-use App\Service\Validator\Economy\Market\PurchaseCommandValidator;
+use App\Service\Validation\Command\Validator\Economy\Market\PurchaseCommandValidator;
 
 class PurchaseCommandExecutor extends AbstractCommandExecutor
 {

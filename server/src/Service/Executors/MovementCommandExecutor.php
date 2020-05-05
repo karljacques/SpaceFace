@@ -5,7 +5,7 @@ namespace App\Service\Executors;
 use App\Command\CommandInterface;
 use App\Command\MovementCommand;
 use App\Exception\UnexpectedCommandException;
-use App\Service\Validator\MovementCommandValidator;
+use App\Service\Validation\Command\Validator\MovementCommandValidator;
 
 class MovementCommandExecutor extends AbstractCommandExecutor
 {

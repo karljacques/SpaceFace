@@ -7,7 +7,7 @@ namespace App\Service\Executors;
 use App\Command\CommandInterface;
 use App\Command\DockCommand;
 use App\Exception\UnexpectedCommandException;
-use App\Service\Validator\DockCommandValidator;
+use App\Service\Validation\Command\Validator\DockCommandValidator;
 
 class DockCommandExecutor extends AbstractCommandExecutor
 {

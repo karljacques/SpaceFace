@@ -7,7 +7,7 @@ namespace App\Service\Executors;
 use App\Command\CommandInterface;
 use App\Command\JumpCommand;
 use App\Exception\UnexpectedCommandException;
-use App\Service\Validator\JumpCommandValidator;
+use App\Service\Validation\Command\Validator\JumpCommandValidator;
 
 class JumpCommandExecutor extends AbstractCommandExecutor
 {

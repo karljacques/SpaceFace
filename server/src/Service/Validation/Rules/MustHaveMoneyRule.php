@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Service\Validator\Rules;
+namespace App\Service\Validation\Rules;
 
 
 use App\Entity\Character;
