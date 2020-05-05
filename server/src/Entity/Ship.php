@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ShipRepository")
  */
-class Ship
+class Ship implements Locatable
 {
     use LocationTrait;
 
@@ -21,7 +21,6 @@ class Ship
      * @ORM\Column(type="integer")
      */
     private int $id;
-
 
     /**
      * @ORM\Column(type="integer")

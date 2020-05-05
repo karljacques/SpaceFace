@@ -7,10 +7,12 @@ namespace App\Service\Validator;
 use App\Command\CommandInterface;
 use App\Command\JumpCommand;
 use App\Exception\UnexpectedCommandException;
+use App\Service\Validator\Rules\MustHaveSameLocationRule;
+use App\Service\Validator\Rules\MustNotBeDockedRule;
 
 class JumpCommandValidator extends AbstractCommandValidator
 {
-    protected function runValidation(CommandInterface $command)
+    protected function getValidationRules(CommandInterface $command): array
     {
         if (!$command instanceof JumpCommand) {
             throw new UnexpectedCommandException($command, JumpCommand::class);
@@ -19,12 +21,9 @@ class JumpCommandValidator extends AbstractCommandValidator
         $ship = $command->getShip();
         $node = $command->getNode();
 
-        if ($ship->isDocked()) {
-            $this->addViolation('You cannot jump while docked');
-        }
-
-        if (!$ship->getLocation()->equals($node->getLocation())) {
-            $this->addViolation('You are not at entry node');
-        }
+        return [
+            new MustNotBeDockedRule($ship),
+            new MustHaveSameLocationRule($ship, $node)
+        ];
     }
 }

@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\JumpNodeRepository")
  */
-class JumpNode
+class JumpNode implements Locatable
 {
     use LocationTrait;
 

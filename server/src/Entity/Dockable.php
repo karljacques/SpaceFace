@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DockableRepository")
  */
-class Dockable
+class Dockable implements Locatable
 {
     use LocationTrait;
     use TypedPropertySleepTrait;

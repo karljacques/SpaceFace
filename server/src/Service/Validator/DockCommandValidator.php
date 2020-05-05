@@ -7,10 +7,12 @@ namespace App\Service\Validator;
 use App\Command\CommandInterface;
 use App\Command\DockCommand;
 use App\Exception\UnexpectedCommandException;
+use App\Service\Validator\Rules\MustHaveSameLocationRule;
+use App\Service\Validator\Rules\MustNotBeDockedRule;
 
 class DockCommandValidator extends AbstractCommandValidator
 {
-    protected function runValidation(CommandInterface $command)
+    protected function getValidationRules(CommandInterface $command): array
     {
         if (!$command instanceof DockCommand) {
             throw new UnexpectedCommandException($command, DockCommand::class);
@@ -19,12 +21,9 @@ class DockCommandValidator extends AbstractCommandValidator
         $ship = $command->getShip();
         $dockable = $command->getDockable();
 
-        if ($ship->isDocked()) {
-            $this->addViolation('Already docked');
-        }
-
-        if (!$ship->getLocation()->equals($dockable->getLocation())) {
-            $this->addViolation('You must be at the same location as the dockable');
-        }
+        return [
+            new MustNotBeDockedRule($ship),
+            new MustHaveSameLocationRule($ship, $dockable)
+        ];
     }
 }

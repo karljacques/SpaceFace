@@ -24,7 +24,7 @@ class MovementCommandExecutor extends AbstractCommandExecutor
         }
 
         $ship = $command->getShip();
-        $ship->setVector($command->getProposedPosition());
+        $ship->setLocation($command->getProposedLocation());
 
         $ship->setFuel($ship->getFuel() - $command->getFuelCost());
     }

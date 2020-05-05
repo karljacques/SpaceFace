@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\Ship;
 use App\Service\Factories\Command\MovementCommandFactory;
+use App\Util\Location;
 use App\Util\Vector2;
 
 class MovementCommand extends AbstractShipCommand
@@ -36,11 +37,11 @@ class MovementCommand extends AbstractShipCommand
     }
 
     /**
-     * @return Vector2
+     * @return Location
      */
-    public function getProposedPosition(): Vector2
+    public function getProposedLocation(): Location
     {
-        return $this->proposedPosition;
+        return new Location($this->ship->getSystem(), $this->proposedPosition);
     }
 
     /**

@@ -7,11 +7,12 @@ namespace App\Service\Validator;
 use App\Command\CommandInterface;
 use App\Command\UndockCommand;
 use App\Exception\UnexpectedCommandException;
+use App\Service\Validator\Rules\MustBeDockedRule;
 
 class UndockCommandValidator extends AbstractCommandValidator
 {
 
-    protected function runValidation(CommandInterface $command)
+    protected function getValidationRules(CommandInterface $command): array
     {
         if (!$command instanceof UndockCommand) {
             throw new UnexpectedCommandException($command, UndockCommand::class);
@@ -19,8 +20,8 @@ class UndockCommandValidator extends AbstractCommandValidator
 
         $ship = $command->getShip();
 
-        if (!$ship->isDocked()) {
-            $this->addViolation('Ship not docked');
-        }
+        return [
+            new MustBeDockedRule($ship)
+        ];
     }
 }
