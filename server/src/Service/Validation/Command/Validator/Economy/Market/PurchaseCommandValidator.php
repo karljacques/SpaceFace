@@ -9,10 +9,10 @@ use App\Command\Economy\Market\PurchaseCommand;
 use App\Exception\UnexpectedCommandException;
 use App\Repository\Join\StoredCommodityRepository;
 use App\Service\Validation\Command\Validator\AbstractCommandValidator;
-use App\Service\Validation\Rules\MustBeDockedAtRule;
-use App\Service\Validation\Rules\MustContainCommodityInStorageRule;
-use App\Service\Validation\Rules\MustHaveMoneyRule;
-use App\Service\Validation\Rules\MustHaveStorageSpaceRule;
+use App\Service\Validation\Rules\Character\MustHaveMoneyRule;
+use App\Service\Validation\Rules\Docking\MustBeDockedAtRule;
+use App\Service\Validation\Rules\Storage\MustContainCommodityInStorageRule;
+use App\Service\Validation\Rules\Storage\MustHaveStorageSpaceRule;
 
 class PurchaseCommandValidator extends AbstractCommandValidator
 {
@@ -38,7 +38,6 @@ class PurchaseCommandValidator extends AbstractCommandValidator
             new MustHaveMoneyRule($ship->getOwner(), $command->getCost()),
             new MustHaveStorageSpaceRule($ship->getStorageComponent(), $storageRequired),
             new MustContainCommodityInStorageRule(
-                $this->storedCommodityRepository,
                 $marketCommodity->getMarket()->getStorage(),
                 $marketCommodity->getCommodity(),
                 $command->getQuantity()

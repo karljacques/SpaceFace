@@ -1,20 +1,15 @@
 <?php
 
 
-namespace App\Service\Validation\Rules;
+namespace App\Service\Validation\Rules\Character;
 
 
 use App\Entity\Character;
+use App\Service\Validation\Rules\RuleInterface;
 
 class MustHaveMoneyRule implements RuleInterface
 {
-    /**
-     * @var Character
-     */
     private Character $character;
-    /**
-     * @var int
-     */
     private int $requiredMoney;
 
     public function __construct(Character $character, int $requiredMoney)
@@ -28,8 +23,19 @@ class MustHaveMoneyRule implements RuleInterface
         return 'You do not have enough money for this transaction';
     }
 
-    public function validate(): bool
+    /**
+     * @return Character
+     */
+    public function getCharacter(): Character
     {
-        return $this->character->getMoney() >= $this->requiredMoney;
+        return $this->character;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRequiredMoney(): int
+    {
+        return $this->requiredMoney;
     }
 }

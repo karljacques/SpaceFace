@@ -6,9 +6,9 @@ use App\Command\CommandInterface;
 use App\Command\MovementCommand;
 use App\Exception\UnexpectedCommandException;
 use App\Service\Calculators\MovementCostCalculatorInterface;
-use App\Service\Validation\Rules\MustBeWithinSystemRule;
-use App\Service\Validation\Rules\MustHaveFuelRule;
-use App\Service\Validation\Rules\MustNotBeDockedRule;
+use App\Service\Validation\Rules\Docking\MustNotBeDockedRule;
+use App\Service\Validation\Rules\Ship\MustHaveFuelRule;
+use App\Service\Validation\Rules\System\MustBeWithinSystemRule;
 
 class MovementCommandValidator extends AbstractCommandValidator
 {

@@ -1,11 +1,12 @@
 <?php
 
 
-namespace App\Service\Validation\Rules;
+namespace App\Service\Validation\Rules\Docking;
 
 
 use App\Entity\Dockable;
 use App\Entity\Ship;
+use App\Service\Validation\Rules\RuleInterface;
 
 class MustBeDockedAtRule implements RuleInterface
 {
@@ -23,13 +24,21 @@ class MustBeDockedAtRule implements RuleInterface
         return 'You are not docked at the target';
     }
 
-
-    public function validate(): bool
+    /**
+     * @return Ship
+     */
+    public function getShip(): Ship
     {
-        if (!$this->ship->isDocked()) {
-            return false;
-        }
-
-        return $this->ship->getDockedAt() === $this->dockable;
+        return $this->ship;
     }
+
+    /**
+     * @return Dockable
+     */
+    public function getDockable(): Dockable
+    {
+        return $this->dockable;
+    }
+
+
 }
