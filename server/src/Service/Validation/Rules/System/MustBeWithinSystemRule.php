@@ -1,9 +1,10 @@
 <?php
 
 
-namespace App\Service\Validation\Rules;
+namespace App\Service\Validation\Rules\System;
 
 
+use App\Service\Validation\Rules\RuleInterface;
 use App\Util\Location;
 
 class MustBeWithinSystemRule implements RuleInterface
@@ -23,10 +24,11 @@ class MustBeWithinSystemRule implements RuleInterface
         return 'Proposed location is out of system bounds';
     }
 
-    public function validate(): bool
+    /**
+     * @return Location
+     */
+    public function getLocation(): Location
     {
-        $system = $this->location->getSystem();
-
-        return $system->getBoundingBox()->containsPoint($this->location->getVector());
+        return $this->location;
     }
 }

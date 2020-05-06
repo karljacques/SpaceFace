@@ -1,10 +1,11 @@
 <?php
 
 
-namespace App\Service\Validation\Rules;
+namespace App\Service\Validation\Rules\Ship;
 
 
 use App\Entity\Ship;
+use App\Service\Validation\Rules\RuleInterface;
 
 class MustHaveFuelRule implements RuleInterface
 {
@@ -28,8 +29,19 @@ class MustHaveFuelRule implements RuleInterface
         return 'Not enough fuel';
     }
 
-    public function validate(): bool
+    /**
+     * @return Ship
+     */
+    public function getShip(): Ship
     {
-        return $this->ship->getFuel() >= $this->required;
+        return $this->ship;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRequired(): int
+    {
+        return $this->required;
     }
 }

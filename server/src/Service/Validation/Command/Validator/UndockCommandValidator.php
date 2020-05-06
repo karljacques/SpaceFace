@@ -7,7 +7,7 @@ namespace App\Service\Validation\Command\Validator;
 use App\Command\CommandInterface;
 use App\Command\UndockCommand;
 use App\Exception\UnexpectedCommandException;
-use App\Service\Validation\Rules\MustBeDockedRule;
+use App\Service\Validation\Rules\Docking\MustBeDockedRule;
 
 class UndockCommandValidator extends AbstractCommandValidator
 {
