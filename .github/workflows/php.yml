@@ -22,15 +22,15 @@ jobs:
         run: composer validate
         working-directory: ${{env.working-directory}}
 
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest
-        working-directory: ${{env.working-directory}}
-
       - name: Cache PHP dependencies
         uses: actions/cache@v1
         with:
-          path: vendor
+          path: ./server/vendor
           key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+        working-directory: ${{env.working-directory}}
 
       # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
       # Docs: https://getcomposer.org/doc/articles/scripts.md
@@ -50,6 +50,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: Cache PHP dependencies
+        uses: actions/cache@v1
+        with:
+          path: ./server/vendor
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
 
       - name: Run Unit Tests
         run: php bin/phpunit --configuration phpunit.xml.dist tests/Unit --teamcity
