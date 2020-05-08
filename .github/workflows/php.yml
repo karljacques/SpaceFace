@@ -31,15 +31,6 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
         working-directory: ${{env.working-directory}}
-
-      # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-      # Docs: https://getcomposer.org/doc/articles/scripts.md
-      - name: Initialise test database
-        run: php bin/console doctrine:schema:create --env=test
-        working-directory: ${{env.working-directory}}
-
-
-
   unit_tests:
     needs: build
     runs-on: ubuntu-latest
@@ -60,4 +51,54 @@ jobs:
       - name: Run Unit Tests
         run: php bin/phpunit --configuration phpunit.xml.dist tests/Unit --teamcity
         working-directory: ${{env.working-directory}}
+
+    integration_tests:
+      needs: build
+      runs-on: ubuntu-latest
+      container: karljacques/spaceface-test-container:latest
+      env:
+        working-directory: ./server
+        APP_ENV: test
+
+      steps:
+        - uses: actions/checkout@v2
+
+        - name: Cache PHP dependencies
+          uses: actions/cache@v1
+          with:
+            path: ./server/vendor
+            key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
+
+        - name: Initialise test database
+          run: php bin/console doctrine:schema:create --env=test
+          working-directory: ${{env.working-directory}}
+
+        - name: Run Integration Tests
+          run: php bin/phpunit --configuration phpunit.xml.dist tests/Integration --teamcity
+          working-directory: ${{env.working-directory}}
+
+    functional_tests:
+      needs: build
+      runs-on: ubuntu-latest
+      container: karljacques/spaceface-test-container:latest
+      env:
+        working-directory: ./server
+        APP_ENV: test
+
+      steps:
+        - uses: actions/checkout@v2
+
+        - name: Cache PHP dependencies
+          uses: actions/cache@v1
+          with:
+            path: ./server/vendor
+            key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
+
+        - name: Initialise test database
+          run: php bin/console doctrine:schema:create --env=test
+          working-directory: ${{env.working-directory}}
+
+        - name: Run Integration Tests
+          run: php bin/phpunit --configuration phpunit.xml.dist tests/Functional --teamcity
+          working-directory: ${{env.working-directory}}
 
