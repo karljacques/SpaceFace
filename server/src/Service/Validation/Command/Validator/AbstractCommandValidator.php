@@ -21,9 +21,12 @@ abstract class AbstractCommandValidator implements ServiceSubscriberInterface
 
     /**
      * @param CommandInterface $command
+     *
+     * @return void
      * @throws UserActionException
+     *
      */
-    public function validate(CommandInterface $command)
+    public function validate(CommandInterface $command): void
     {
         $rules = $this->getValidationRules($command);
 

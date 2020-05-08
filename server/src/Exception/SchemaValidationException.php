@@ -8,7 +8,7 @@ use Exception;
 
 class SchemaValidationException extends Exception
 {
-    protected $errors;
+    protected array $errors;
 
     public function __construct(array $errors)
     {

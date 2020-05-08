@@ -18,7 +18,7 @@ class DockableFixtures extends Fixture implements DependentFixtureInterface
      * Load data fixtures with the passed EntityManager
      * @param ObjectManager $manager
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $systems = $manager->getRepository(System::class)->findAll();
 

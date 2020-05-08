@@ -10,7 +10,7 @@ use App\Service\Factories\Command\JumpCommandFactory;
 
 class JumpCommand extends AbstractShipCommand
 {
-    protected $node;
+    protected JumpNode $node;
 
     public function __construct(Ship $ship, JumpNode $node)
     {

@@ -57,37 +57,6 @@ class Character
         return $this;
     }
 
-    /**
-     * @return Collection|Ship[]
-     */
-    public function getShips(): Collection
-    {
-        return $this->ships;
-    }
-
-    public function addShip(Ship $ship): self
-    {
-        if (!$this->ships->contains($ship)) {
-            $this->ships[] = $ship;
-            $ship->setOwner($this);
-        }
-
-        return $this;
-    }
-
-    public function removeShip(Ship $ship): self
-    {
-        if ($this->ships->contains($ship)) {
-            $this->ships->removeElement($ship);
-            // set the owning side to null (unless already changed)
-            if ($ship->getOwner() === $this) {
-                $ship->setOwner(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getMoney(): ?int
     {
         return $this->money;
@@ -98,5 +67,13 @@ class Character
         $this->money = $money;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Ship>
+     */
+    public function getShips(): Collection
+    {
+        return $this->ships;
     }
 }

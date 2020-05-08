@@ -23,6 +23,7 @@ class PurchaseController extends AbstractCommandController
      */
     public function index(PurchaseCommandExecutor $commandExecutor, EntityManagerInterface $entityManager)
     {
+        /** @var PurchaseCommand $command */
         $command = $this->createCommand(PurchaseCommand::class);
 
         $commandExecutor->execute($command);

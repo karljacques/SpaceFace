@@ -23,7 +23,10 @@ class SchemaValidationSubscriber implements EventSubscriberInterface
 
     /**
      * @param RequestEvent $event
+     *
+     * @return void
      * @throws SchemaValidationException
+     *
      */
     public function onRequest(RequestEvent $event)
     {

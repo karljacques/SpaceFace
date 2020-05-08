@@ -6,7 +6,6 @@ use App\Entity\Character;
 use App\Entity\Component\Storage;
 use App\Entity\Ship;
 use App\Entity\System;
-use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -14,6 +13,9 @@ use Faker\Factory;
 
 class ShipFixtures extends Fixture implements DependentFixtureInterface
 {
+    /**
+     * @return void
+     */
     public function load(ObjectManager $manager)
     {
         $characters = $manager->getRepository(Character::class)->findAll();
@@ -46,7 +48,7 @@ class ShipFixtures extends Fixture implements DependentFixtureInterface
      * This method must return an array of fixtures classes
      * on which the implementing class depends on
      *
-     * @return array class-string[]
+     * @return array<class-string>
      */
     public function getDependencies()
     {

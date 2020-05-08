@@ -10,6 +10,9 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
 class SchemaValidationExceptionListener
 {
+    /**
+     * @return void
+     */
     public function onKernelException(ExceptionEvent $event)
     {
         $exception = $event->getThrowable();

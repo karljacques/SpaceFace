@@ -9,6 +9,7 @@ use App\Controller\AbstractCommandController;
 use App\Exception\UserActionException;
 use App\Service\Executors\UndockCommandExecutor;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UndockController extends AbstractCommandController
@@ -29,7 +30,7 @@ class UndockController extends AbstractCommandController
      * @Route("/undock", methods={"POST"}, defaults={"_schema": ""})
      * @throws UserActionException
      */
-    public function index()
+    public function index(): Response
     {
         /** @var UndockCommand $command */
         $command = $this->createCommand(UndockCommand::class);

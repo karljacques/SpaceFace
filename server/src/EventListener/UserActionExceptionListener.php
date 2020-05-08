@@ -11,6 +11,9 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
 class UserActionExceptionListener
 {
+    /**
+     * @return void
+     */
     public function onKernelException(ExceptionEvent $event)
     {
         $exception = $event->getThrowable();
@@ -19,7 +22,7 @@ class UserActionExceptionListener
             return;
         }
 
-        $errors = collect($exception->getViolations())->map(function(UserActionViolation $violation) {
+        $errors = collect($exception->getViolations())->map(function (UserActionViolation $violation) {
             return [
                 'type' => 'action',
                 'message' => $violation->getMessage(),

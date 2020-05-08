@@ -27,9 +27,12 @@ abstract class AbstractCommandExecutor
 
     /**
      * @param CommandInterface $command
+     *
+     * @return void
      * @throws UserActionException
+     *
      */
-    public function execute(CommandInterface $command)
+    public function execute(CommandInterface $command): void
     {
         $this->validator->validate($command);
 
