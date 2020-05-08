@@ -101,4 +101,3 @@ jobs:
       - name: Run Integration Tests
         run: php bin/phpunit --configuration phpunit.xml.dist tests/Functional --teamcity
         working-directory: ${{env.working-directory}}
-
