@@ -16,7 +16,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
+      - uses: docker://karljacques/spaceface-test-container:lastest
+      
       - name: Validate composer.json and composer.lock
         run: composer validate
         working-directory: ${{env.working-directory}}
