@@ -53,8 +53,8 @@ jobs:
 
         - name: Download artifacts
           uses: actions/download-artifact@v1
-            with:
-              name: vendor
+          with:
+            name: vendor
 
         - name: Run Unit Tests
           run: php bin/phpunit --configuration phpunit.xml.dist tests/Unit --teamcity
