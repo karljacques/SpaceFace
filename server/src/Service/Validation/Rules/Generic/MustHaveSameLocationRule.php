@@ -1,10 +1,11 @@
 <?php
 
 
-namespace App\Service\Validation\Rules;
+namespace App\Service\Validation\Rules\Generic;
 
 
 use App\Entity\Locatable;
+use App\Service\Validation\Rules\RuleInterface;
 
 class MustHaveSameLocationRule implements RuleInterface
 {
@@ -28,8 +29,21 @@ class MustHaveSameLocationRule implements RuleInterface
         return 'Not in same location';
     }
 
-    public function validate(): bool
+    /**
+     * @return Locatable
+     */
+    public function getA(): Locatable
     {
-        return $this->a->getLocation()->equals($this->b->getLocation());
+        return $this->a;
     }
+
+    /**
+     * @return Locatable
+     */
+    public function getB(): Locatable
+    {
+        return $this->b;
+    }
+
+
 }

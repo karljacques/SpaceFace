@@ -2,15 +2,14 @@
 
 namespace App;
 
-use function dirname;
-use const PHP_VERSION_ID;
-
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
+use function dirname;
+use const PHP_VERSION_ID;
 
 class Kernel extends BaseKernel
 {
@@ -20,7 +19,7 @@ class Kernel extends BaseKernel
 
     public function registerBundles(): iterable
     {
-        $contents = require $this->getProjectDir().'/config/bundles.php';
+        $contents = require $this->getProjectDir() . '/config/bundles.php';
         foreach ($contents as $class => $envs) {
             if ($envs[$this->environment] ?? $envs['all'] ?? false) {
                 yield new $class();
@@ -57,6 +56,11 @@ class Kernel extends BaseKernel
 
     public function getCacheDir()
     {
-        return '/var/symfony/'.$this->environment.'/cache';
+        // TODO: change this if we get GitHub actions running in our own container
+        if ($this->environment === 'test') {
+            return parent::getCacheDir();
+        }
+
+        return '/var/symfony/' . $this->environment . '/cache';
     }
 }

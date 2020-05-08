@@ -1,10 +1,11 @@
 <?php
 
 
-namespace App\Service\Validation\Rules;
+namespace App\Service\Validation\Rules\Storage;
 
 
 use App\Entity\Component\Storage;
+use App\Service\Validation\Rules\RuleInterface;
 
 class MustHaveStorageSpaceRule implements RuleInterface
 {
@@ -22,8 +23,21 @@ class MustHaveStorageSpaceRule implements RuleInterface
         return 'You do not have enough storage space';
     }
 
-    public function validate(): bool
+    /**
+     * @return Storage
+     */
+    public function getStorage(): Storage
     {
-        return $this->storage->getFreeCapacity() >= $this->storageRequired;
+        return $this->storage;
     }
+
+    /**
+     * @return int
+     */
+    public function getStorageRequired(): int
+    {
+        return $this->storageRequired;
+    }
+
+
 }

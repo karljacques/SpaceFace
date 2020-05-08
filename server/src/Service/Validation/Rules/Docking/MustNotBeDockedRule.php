@@ -1,10 +1,11 @@
 <?php
 
 
-namespace App\Service\Validation\Rules;
+namespace App\Service\Validation\Rules\Docking;
 
 
 use App\Entity\Ship;
+use App\Service\Validation\Rules\RuleInterface;
 
 class MustNotBeDockedRule implements RuleInterface
 {
@@ -20,8 +21,11 @@ class MustNotBeDockedRule implements RuleInterface
         return 'Must not be docked';
     }
 
-    public function validate(): bool
+    /**
+     * @return Ship
+     */
+    public function getShip(): Ship
     {
-        return false === $this->ship->isDocked();
+        return $this->ship;
     }
 }

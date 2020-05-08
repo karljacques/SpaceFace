@@ -21,6 +21,7 @@ class UndockTest extends GameTestCase
     {
         $result = $this->executeCommand();
 
+        dump($result);
         $this->assertFalse($result->success);
     }
 
