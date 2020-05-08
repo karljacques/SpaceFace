@@ -5,16 +5,15 @@ namespace App\Service\Executors\Economy\Market;
 
 
 use App\Command\CommandInterface;
-use App\Command\Economy\Market\PurchaseCommand;
+use App\Command\Economy\Market\SellCommand;
 use App\Exception\UnexpectedCommandException;
 use App\Service\Executors\AbstractCommandExecutor;
 use App\Service\Manipulators\StorageTransferService;
-use App\Service\Validation\Rules\Character\MustHaveMoneyRule;
 use App\Service\Validation\Rules\Docking\MustBeDockedAtRule;
 use App\Service\Validation\Rules\Storage\MustContainCommodityInStorageRule;
 use App\Service\Validation\Rules\Storage\MustHaveStorageSpaceRule;
 
-class PurchaseCommandExecutor extends AbstractCommandExecutor
+class SellCommandExecutor extends AbstractCommandExecutor
 {
     protected StorageTransferService $storageTransferService;
 
@@ -25,42 +24,42 @@ class PurchaseCommandExecutor extends AbstractCommandExecutor
 
     protected function executeCommand(CommandInterface $command): void
     {
-        if (!$command instanceof PurchaseCommand) {
-            throw new UnexpectedCommandException($command, PurchaseCommand::class);
+        if (!$command instanceof SellCommand) {
+            throw new UnexpectedCommandException($command, SellCommand::class);
         }
 
         $ship = $command->getShip();
 
         $character = $ship->getOwner();
-        $character->setMoney($character->getMoney() - $command->getTotalValue());
+        $character->setMoney($character->getMoney() + $command->getTotalValue());
 
         $marketCommodity = $command->getMarketCommodity();
         $commodity = $marketCommodity->getCommodity();
 
         $this->storageTransferService->transferCommodity(
             $commodity,
-            $marketCommodity->getMarket()->getStorage(),
             $ship->getStorageComponent(),
+            $marketCommodity->getMarket()->getStorage(),
             $command->getQuantity()
         );
     }
 
     protected function getValidationRules(CommandInterface $command): array
     {
-        if (!$command instanceof PurchaseCommand) {
-            throw new UnexpectedCommandException($command, PurchaseCommand::class);
+        if (!$command instanceof SellCommand) {
+            throw new UnexpectedCommandException($command, SellCommand::class);
         }
 
         $ship = $command->getShip();
         $marketCommodity = $command->getMarketCommodity();
+        $market = $marketCommodity->getMarket();
         $storageRequired = $marketCommodity->getCommodity()->getSize() * $command->getQuantity();
 
         return [
             new MustBeDockedAtRule($ship, $marketCommodity->getMarket()->getDockable()),
-            new MustHaveMoneyRule($ship->getOwner(), $command->getTotalValue()),
-            new MustHaveStorageSpaceRule($ship->getStorageComponent(), $storageRequired),
+            new MustHaveStorageSpaceRule($market->getStorage(), $storageRequired),
             new MustContainCommodityInStorageRule(
-                $marketCommodity->getMarket()->getStorage(),
+                $ship->getStorageComponent(),
                 $marketCommodity->getCommodity(),
                 $command->getQuantity()
             )

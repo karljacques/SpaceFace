@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Service\Factories\Command\CommandFactoryInterface;
 use App\Service\Factories\Command\DockCommandFactory;
 use App\Service\Factories\Command\Economy\Market\PurchaseCommandFactory;
+use App\Service\Factories\Command\Economy\Market\SellCommandFactory;
 use App\Service\Factories\Command\JumpCommandFactory;
 use App\Service\Factories\Command\MovementCommandFactory;
 use App\Service\Factories\Command\UndockCommandFactory;
@@ -58,7 +59,8 @@ class AbstractCommandController extends AbstractGameController
             JumpCommandFactory::class,
             DockCommandFactory::class,
             UndockCommandFactory::class,
-            PurchaseCommandFactory::class
+            PurchaseCommandFactory::class,
+            SellCommandFactory::class
         ];
     }
 }

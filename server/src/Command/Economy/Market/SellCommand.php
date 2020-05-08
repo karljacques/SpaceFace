@@ -7,9 +7,9 @@ namespace App\Command\Economy\Market;
 use App\Command\AbstractShipCommand;
 use App\Entity\Join\MarketCommodity;
 use App\Entity\Ship;
-use App\Service\Factories\Command\Economy\Market\PurchaseCommandFactory;
+use App\Service\Factories\Command\Economy\Market\SellCommandFactory;
 
-class PurchaseCommand extends AbstractShipCommand
+class SellCommand extends AbstractShipCommand
 {
     protected MarketCommodity $marketCommodity;
     protected int $quantity;
@@ -24,7 +24,7 @@ class PurchaseCommand extends AbstractShipCommand
 
     public static function getFactoryName(): string
     {
-        return PurchaseCommandFactory::class;
+        return SellCommandFactory::class;
     }
 
     /**
@@ -37,7 +37,7 @@ class PurchaseCommand extends AbstractShipCommand
 
     public function getTotalValue(): int
     {
-        return $this->marketCommodity->getSell() * $this->getQuantity();
+        return $this->marketCommodity->getBuy() * $this->getQuantity();
     }
 
     /**

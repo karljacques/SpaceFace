@@ -7,7 +7,6 @@ namespace App\Service\Executors;
 use App\Command\CommandInterface;
 use App\Command\JumpCommand;
 use App\Exception\UnexpectedCommandException;
-use App\Service\Validation\Command\Validator\JumpCommandValidator;
 use App\Service\Validation\Rules\Docking\MustNotBeDockedRule;
 use App\Service\Validation\Rules\Generic\MustHaveSameLocationRule;
 

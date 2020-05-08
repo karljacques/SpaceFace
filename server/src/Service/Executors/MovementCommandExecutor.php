@@ -5,7 +5,6 @@ namespace App\Service\Executors;
 use App\Command\CommandInterface;
 use App\Command\MovementCommand;
 use App\Exception\UnexpectedCommandException;
-use App\Service\Validation\Command\Validator\MovementCommandValidator;
 use App\Service\Validation\Rules\Docking\MustNotBeDockedRule;
 use App\Service\Validation\Rules\Ship\MustHaveFuelRule;
 use App\Service\Validation\Rules\System\MustBeWithinSystemRule;
