@@ -56,11 +56,6 @@ class Kernel extends BaseKernel
 
     public function getCacheDir()
     {
-        // TODO: change this if we get GitHub actions running in our own container
-        if ($this->environment === 'test') {
-            return parent::getCacheDir();
-        }
-
         return '/var/symfony/' . $this->environment . '/cache';
     }
 }

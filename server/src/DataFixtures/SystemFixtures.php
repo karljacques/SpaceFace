@@ -9,6 +9,9 @@ use Faker\Factory;
 
 class SystemFixtures extends Fixture
 {
+    /**
+     * @return void
+     */
     public function load(ObjectManager $manager)
     {
         $systemCount = 5;

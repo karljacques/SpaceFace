@@ -30,7 +30,7 @@ class MarketCommodityFixtures extends Fixture implements DependentFixtureInterfa
     /**
      * @inheritDoc
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         // Load all markets
         /** @var Market[] $markets */

@@ -5,6 +5,7 @@ namespace App\Security;
 
 
 use App\Repository\UserRepository;
+use LogicException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +17,7 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 
 class TokenAuthenticator extends AbstractGuardAuthenticator
 {
-    private $userRepository;
+    private UserRepository $userRepository;
 
     public function __construct(UserRepository $userRepository)
     {
@@ -45,11 +46,17 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
 
     /**
      * @param Request $request
-     * @return mixed Any non-null value
+     * @return string Any non-null value
      */
     public function getCredentials(Request $request): string
     {
-        return $request->headers->get('X-AUTH-TOKEN');
+        $token = $request->headers->get('X-AUTH-TOKEN');
+
+        if (null === $token) {
+            throw new LogicException('This should not pass supports check');
+        }
+
+        return $token;
     }
 
     /**

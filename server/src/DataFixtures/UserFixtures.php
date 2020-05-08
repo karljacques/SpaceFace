@@ -14,8 +14,11 @@ class UserFixtures extends Fixture implements ContainerAwareInterface
     private ?ContainerInterface $container;
 
     /**
-     * Load data fixtures with the passed EntityManager
+     *  Load data fixtures with the passed EntityManager
+     *
      * @param ObjectManager $manager
+     *
+     * @return void
      */
     public function load(ObjectManager $manager)
     {
@@ -31,8 +34,11 @@ class UserFixtures extends Fixture implements ContainerAwareInterface
     }
 
     /**
-     * Sets the container.
+     *  Sets the container.
+     *
      * @param ContainerInterface|null $container
+     *
+     * @return void
      */
     public function setContainer(ContainerInterface $container = null)
     {

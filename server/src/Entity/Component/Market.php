@@ -3,7 +3,6 @@
 namespace App\Entity\Component;
 
 use App\Entity\Dockable;
-use App\Entity\Join\MarketCommodity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -44,37 +43,6 @@ class Market
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return Collection|MarketCommodity[]
-     */
-    public function getMarketCommodities(): Collection
-    {
-        return $this->marketCommodities;
-    }
-
-    public function addMarketCommodity(MarketCommodity $marketCommodity): self
-    {
-        if (!$this->marketCommodities->contains($marketCommodity)) {
-            $this->marketCommodities[] = $marketCommodity;
-            $marketCommodity->setMarket($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMarketCommodity(MarketCommodity $marketCommodity): self
-    {
-        if ($this->marketCommodities->contains($marketCommodity)) {
-            $this->marketCommodities->removeElement($marketCommodity);
-            // set the owning side to null (unless already changed)
-            if ($marketCommodity->getMarket() === $this) {
-                $marketCommodity->setMarket(null);
-            }
-        }
-
-        return $this;
     }
 
     public function getDockable(): ?Dockable

@@ -4,8 +4,8 @@ namespace App\Service\Validation\Command;
 
 class UserActionViolation
 {
-    protected $message;
-    protected $details;
+    protected string $message;
+    protected array $details;
 
     public function __construct(string $message, array $details)
     {

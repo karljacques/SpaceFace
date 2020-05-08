@@ -31,6 +31,8 @@ class MarketDockableFixtures extends Fixture implements DependentFixtureInterfac
 
     /**
      * @inheritDoc
+     *
+     * @return void
      */
     public function load(ObjectManager $manager)
     {
