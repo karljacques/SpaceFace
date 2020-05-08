@@ -48,15 +48,15 @@ jobs:
       working-directory: ./server
       APP_ENV: test
 
-      steps:
-        - uses: actions/checkout@v2
+    steps:
+      - uses: actions/checkout@v2
 
-        - name: Download artifacts
-          uses: actions/download-artifact@v1
-          with:
-            name: vendor
+      - name: Download artifacts
+        uses: actions/download-artifact@v1
+        with:
+          name: vendor
 
-        - name: Run Unit Tests
-          run: php bin/phpunit --configuration phpunit.xml.dist tests/Unit --teamcity
-          working-directory: ${{env.working-directory}}
+      - name: Run Unit Tests
+        run: php bin/phpunit --configuration phpunit.xml.dist tests/Unit --teamcity
+        working-directory: ${{env.working-directory}}
 
