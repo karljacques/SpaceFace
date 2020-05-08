@@ -29,6 +29,6 @@ jobs:
       # Docs: https://getcomposer.org/doc/articles/scripts.md
 
       - name: Run test suite
-        run: php .bin/phpunit --configuration phpunit.xml.dist tests --teamcity
+        run: php bin/phpunit --configuration phpunit.xml.dist tests --teamcity
         working-directory: ${{env.working-directory}}
 
