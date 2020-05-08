@@ -28,7 +28,7 @@ class DockTest extends GameTestCase
         $this->flush();
 
         $result = $this->executeCommand($dockable->getId());
-
+        dump($result);
         $this->assertFalse($result->success);
         $this->assertNull($ship->getDockedAt());
 
