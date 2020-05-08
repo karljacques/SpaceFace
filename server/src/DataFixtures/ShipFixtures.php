@@ -13,6 +13,9 @@ use Faker\Factory;
 
 class ShipFixtures extends Fixture implements DependentFixtureInterface
 {
+    /**
+     * @return void
+     */
     public function load(ObjectManager $manager)
     {
         $characters = $manager->getRepository(Character::class)->findAll();

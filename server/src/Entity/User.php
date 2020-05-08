@@ -136,7 +136,9 @@ class User implements UserInterface
     }
 
     /**
+     * @return void
      * @see UserInterface
+     *
      */
     public function eraseCredentials()
     {

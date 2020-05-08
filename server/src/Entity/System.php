@@ -15,6 +15,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class System
 {
+    use TypedPropertySleepTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

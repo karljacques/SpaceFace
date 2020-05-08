@@ -24,8 +24,11 @@ class JumpNodeFixtures extends Fixture implements DependentFixtureInterface
     }
 
     /**
-     * Load data fixtures with the passed EntityManager
+     *  Load data fixtures with the passed EntityManager
+     *
      * @param ObjectManager $manager
+     *
+     * @return void
      */
     public function load(ObjectManager $manager)
     {

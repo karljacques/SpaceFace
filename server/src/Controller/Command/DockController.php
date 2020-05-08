@@ -9,6 +9,7 @@ use App\Controller\AbstractCommandController;
 use App\Exception\UserActionException;
 use App\Service\Executors\DockCommandExecutor;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DockController extends AbstractCommandController
@@ -29,7 +30,7 @@ class DockController extends AbstractCommandController
      * @Route("/dock", methods={"POST"}, defaults={"_schema": "dock.json"})
      * @throws UserActionException
      */
-    public function index()
+    public function index(): Response
     {
         /** @var DockCommand $command */
         $command = $this->createCommand(DockCommand::class);

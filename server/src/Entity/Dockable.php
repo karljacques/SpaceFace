@@ -23,7 +23,7 @@ class Dockable implements Locatable
      * @ORM\Column(type="integer")
      * @Groups({"basic"})
      */
-    private ?int $id = null;
+    private int $id;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Ship", mappedBy="docked_at")

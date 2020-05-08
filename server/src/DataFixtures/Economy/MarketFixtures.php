@@ -14,6 +14,8 @@ class MarketFixtures extends Fixture
 {
     /**
      * @inheritDoc
+     *
+     * @return void
      */
     public function load(ObjectManager $manager)
     {

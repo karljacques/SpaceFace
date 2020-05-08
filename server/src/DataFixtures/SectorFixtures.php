@@ -22,8 +22,11 @@ class SectorFixtures extends Fixture implements DependentFixtureInterface
     }
 
     /**
-     * Load data fixtures with the passed EntityManager
+     *  Load data fixtures with the passed EntityManager
+     *
      * @param ObjectManager $manager
+     *
+     * @return void
      */
     public function load(ObjectManager $manager)
     {
@@ -46,6 +49,8 @@ class SectorFixtures extends Fixture implements DependentFixtureInterface
      * @param System $system
      * @param int $x
      * @param int $y
+     *
+     * @return void
      */
     private function createSector(ObjectManager $manager, System $system, int $x, int $y)
     {

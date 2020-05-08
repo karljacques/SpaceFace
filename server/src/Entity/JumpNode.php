@@ -44,7 +44,7 @@ class JumpNode implements Locatable
         return $this->id;
     }
 
-    public function setExitLocation(Location $location)
+    public function setExitLocation(Location $location): void
     {
         $this->exitSystem = $location->getSystem();
         $this->exitX = $location->getVector()->getX();

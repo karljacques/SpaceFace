@@ -44,7 +44,7 @@ class CommodityFixtures extends Fixture
     /**
      * @inheritDoc
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         foreach (self::COMMODITIES as $name => $details) {
             $commodity = new Commodity();

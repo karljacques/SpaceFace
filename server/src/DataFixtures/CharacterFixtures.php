@@ -24,7 +24,7 @@ class CharacterFixtures extends Fixture implements DependentFixtureInterface
     /**
      * @inheritDoc
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         /** @var User[] $users */
         $users = $manager->getRepository(User::class)->findAll();
