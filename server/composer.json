@@ -1,6 +1,8 @@
 {
     "type": "project",
     "license": "proprietary",
+    "name": "SpaceFace",
+    "description": "A game in space",
     "require": {
         "php": "^7.4",
         "ext-ctype": "*",
