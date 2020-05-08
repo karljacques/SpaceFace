@@ -1,4 +1,4 @@
-name: PHP Composer
+name: Server
 
 on:
   push:
@@ -26,14 +26,35 @@ jobs:
         run: composer install --prefer-dist --no-progress --no-suggest
         working-directory: ${{env.working-directory}}
 
+      - name: Upload Vendor Artifacts
+        uses: actions/upload-artifact@v1
+        working-directory: ${{env.working-directory}}
+        with:
+          name: vendor
+          path: vendor
+
       # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
       # Docs: https://getcomposer.org/doc/articles/scripts.md
-
       - name: Initialise test database
         run: php bin/console doctrine:schema:create --env=test
         working-directory: ${{env.working-directory}}
 
-      - name: Run test suite
-        run: php bin/phpunit --configuration phpunit.xml.dist tests --teamcity
-        working-directory: ${{env.working-directory}}
+
+  unit_tests:
+    needs: build
+    uses: actions/download-artifact@v1
+      with:
+        name: vendor
+    runs-on: ubuntu-latest
+    container: karljacques/spaceface-test-container:latest
+    env:
+      working-directory: ./server
+      APP_ENV: test
+
+      steps:
+        - uses: actions/checkout@v2
+
+        - name: Run Unit Tests
+          run: php bin/phpunit --configuration phpunit.xml.dist tests/Unit --teamcity
+          working-directory: ${{env.working-directory}}
 
