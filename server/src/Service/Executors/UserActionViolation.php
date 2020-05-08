@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Validation\Command;
+namespace App\Service\Executors;
 
 class UserActionViolation
 {
