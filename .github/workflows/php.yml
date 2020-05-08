@@ -26,17 +26,18 @@ jobs:
         run: composer install --prefer-dist --no-progress --no-suggest
         working-directory: ${{env.working-directory}}
 
-      - name: Upload Vendor Artifacts
-        uses: actions/upload-artifact@v1
+      - name: Cache PHP dependencies
+        uses: actions/cache@v1
         with:
-          name: vendor
-          path: ./server/vendor
+          path: vendor
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
 
       # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
       # Docs: https://getcomposer.org/doc/articles/scripts.md
       - name: Initialise test database
         run: php bin/console doctrine:schema:create --env=test
         working-directory: ${{env.working-directory}}
+
 
 
   unit_tests:
@@ -49,11 +50,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
-      - name: Download artifacts
-        uses: actions/download-artifact@v1
-        with:
-          name: vendor
 
       - name: Run Unit Tests
         run: php bin/phpunit --configuration phpunit.xml.dist tests/Unit --teamcity
