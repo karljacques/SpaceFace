@@ -31,6 +31,31 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
         working-directory: ${{env.working-directory}}
+
+  lint:
+    needs: build
+    runs-on: ubuntu-latest
+      container: karljacques/spaceface-test-container:latest
+      env:
+        working-directory: ./server
+        APP_ENV: test
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache PHP dependencies
+        uses: actions/cache@v1
+        with:
+          path: ./server/vendor
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
+
+      - name: Lint Container
+        run: php bin/console lint:container
+        
+      - name: Static Analysis
+        run: ./vendor/bin/psalm
+        working-directory: ${{env.working-directory}}
+
   unit_tests:
     needs: build
     runs-on: ubuntu-latest

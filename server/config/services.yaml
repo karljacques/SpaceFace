@@ -46,9 +46,6 @@ services:
         public: true
         autowire: true
 
-    App\Service\DataCollectors:
-        public: true
-
     App\Service\Validation\Command\Validator\RuleLocator:
         arguments:
             - !tagged_locator
