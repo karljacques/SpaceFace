@@ -28,10 +28,9 @@ jobs:
 
       - name: Upload Vendor Artifacts
         uses: actions/upload-artifact@v1
-        working-directory: ${{env.working-directory}}
         with:
           name: vendor
-          path: ./vendor
+          path: ./server/vendor
 
       # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
       # Docs: https://getcomposer.org/doc/articles/scripts.md
