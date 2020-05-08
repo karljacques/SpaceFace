@@ -42,7 +42,7 @@ class Storage
     }
 
     /**
-     * @return Collection|StoredCommodity[]
+     * @return Collection<int, StoredCommodity>
      */
     public function getStoredCommodities(): Collection
     {
@@ -54,19 +54,6 @@ class Storage
         if (!$this->storedCommodities->contains($storedCommodity)) {
             $this->storedCommodities[] = $storedCommodity;
             $storedCommodity->setStorage($this);
-        }
-
-        return $this;
-    }
-
-    public function removeStoredCommodity(StoredCommodity $storedCommodity): self
-    {
-        if ($this->storedCommodities->contains($storedCommodity)) {
-            $this->storedCommodities->removeElement($storedCommodity);
-            // set the owning side to null (unless already changed)
-            if ($storedCommodity->getStorage() === $this) {
-                $storedCommodity->setStorage(null);
-            }
         }
 
         return $this;
@@ -113,6 +100,4 @@ class Storage
 
         return $weight;
     }
-
-
 }

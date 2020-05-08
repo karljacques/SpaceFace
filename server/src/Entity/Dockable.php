@@ -48,64 +48,18 @@ class Dockable implements Locatable
     }
 
     /**
-     * @return Collection|Ship[]
+     * @return Collection<int, Ship>
      */
     public function getShips(): Collection
     {
         return $this->ships;
     }
 
-    public function addShip(Ship $ship): self
-    {
-        if (!$this->ships->contains($ship)) {
-            $this->ships[] = $ship;
-            $ship->setDockedAt($this);
-        }
-
-        return $this;
-    }
-
-    public function removeShip(Ship $ship): self
-    {
-        if ($this->ships->contains($ship)) {
-            $this->ships->removeElement($ship);
-            // set the owning side to null (unless already changed)
-            if ($ship->getDockedAt() === $this) {
-                $ship->setDockedAt(null);
-            }
-        }
-
-        return $this;
-    }
-
     /**
-     * @return Collection|Market[]
+     * @return Collection<int, Market>
      */
     public function getMarkets(): Collection
     {
         return $this->markets;
-    }
-
-    public function addMarket(Market $market): self
-    {
-        if (!$this->markets->contains($market)) {
-            $this->markets[] = $market;
-            $market->setDockable($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMarket(Market $market): self
-    {
-        if ($this->markets->contains($market)) {
-            $this->markets->removeElement($market);
-            // set the owning side to null (unless already changed)
-            if ($market->getDockable() === $this) {
-                $market->setDockable(null);
-            }
-        }
-
-        return $this;
     }
 }

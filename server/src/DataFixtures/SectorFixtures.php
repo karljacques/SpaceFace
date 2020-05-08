@@ -10,10 +10,11 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
+use Faker\Generator;
 
 class SectorFixtures extends Fixture implements DependentFixtureInterface
 {
-    protected $faker;
+    protected Generator $faker;
 
     public function __construct()
     {

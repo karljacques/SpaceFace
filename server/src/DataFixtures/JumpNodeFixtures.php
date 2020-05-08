@@ -14,13 +14,11 @@ use Doctrine\Persistence\ObjectManager;
 class JumpNodeFixtures extends Fixture implements DependentFixtureInterface
 {
 
+
     /**
-     * This method must return an array of fixtures classes
-     * on which the implementing class depends on
-     *
-     * @return string[]
+     * @return array<class-string>
      */
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [SystemFixtures::class];
     }

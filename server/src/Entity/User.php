@@ -17,34 +17,34 @@ class User implements UserInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $username;
+    private string $username;
 
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
      * @var string
      * @ORM\Column(type="string", unique=true, nullable=false)
      */
-    private $apiToken;
+    private string $apiToken;
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private $password;
+    private string $password;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Character", mappedBy="user")
      */
-    private $characters;
+    private Collection $characters;
 
     public function __construct()
     {
@@ -145,33 +145,10 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Character[]
+     * @return Collection<int, Character>
      */
     public function getCharacters(): Collection
     {
         return $this->characters;
-    }
-
-    public function addCharacter(Character $character): self
-    {
-        if (!$this->characters->contains($character)) {
-            $this->characters[] = $character;
-            $character->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCharacter(Character $character): self
-    {
-        if ($this->characters->contains($character)) {
-            $this->characters->removeElement($character);
-            // set the owning side to null (unless already changed)
-            if ($character->getUser() === $this) {
-                $character->setUser(null);
-            }
-        }
-
-        return $this;
     }
 }

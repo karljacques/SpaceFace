@@ -7,6 +7,7 @@ use App\Entity\User;
 class UserSpecificMessage
 {
     protected User $user;
+    /** @var mixed */
     protected $message;
 
     public function __construct(User $user, $message)

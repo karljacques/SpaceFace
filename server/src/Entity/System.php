@@ -21,44 +21,44 @@ class System
      * @ORM\Column(type="integer")
      * @Groups({"basic"})
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"basic"})
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="string", length=4)
      * @Groups({"basic"})
      */
-    private $designation;
+    private string $designation;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Ship", mappedBy="system")
      */
-    private $ships;
+    private Collection $ships;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $sizeX;
+    private int $sizeX;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $sizeY;
+    private int $sizeY;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\JumpNode", mappedBy="entrySystem")
      */
-    private $jumpNodes;
+    private Collection $jumpNodes;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Sector", mappedBy="starSystem", orphanRemoval=true)
      */
-    private $sectors;
+    private Collection $sectors;
 
     public function __construct()
     {
@@ -92,34 +92,11 @@ class System
     }
 
     /**
-     * @return Collection|Ship[]
+     * @return Collection<int, Ship>
      */
     public function getShips(): Collection
     {
         return $this->ships;
-    }
-
-    public function addShip(Ship $ship): self
-    {
-        if (!$this->ships->contains($ship)) {
-            $this->ships[] = $ship;
-            $ship->setSystem($this);
-        }
-
-        return $this;
-    }
-
-    public function removeShip(Ship $ship): self
-    {
-        if ($this->ships->contains($ship)) {
-            $this->ships->removeElement($ship);
-            // set the owning side to null (unless already changed)
-            if ($ship->getSystem() === $this) {
-                $ship->setSystem(null);
-            }
-        }
-
-        return $this;
     }
 
     public function getBoundingBox(): BoundingBox
@@ -152,34 +129,11 @@ class System
     }
 
     /**
-     * @return Collection|JumpNode[]
+     * @return Collection<int, JumpNode>
      */
     public function getJumpNodes(): Collection
     {
         return $this->jumpNodes;
-    }
-
-    public function addJumpNode(JumpNode $jumpNode): self
-    {
-        if (!$this->jumpNodes->contains($jumpNode)) {
-            $this->jumpNodes[] = $jumpNode;
-            $jumpNode->setEntrySystem($this);
-        }
-
-        return $this;
-    }
-
-    public function removeJumpNode(JumpNode $jumpNode): self
-    {
-        if ($this->jumpNodes->contains($jumpNode)) {
-            $this->jumpNodes->removeElement($jumpNode);
-            // set the owning side to null (unless already changed)
-            if ($jumpNode->getEntrySystem() === $this) {
-                $jumpNode->setEntrySystem(null);
-            }
-        }
-
-        return $this;
     }
 
     public function getDesignation(): ?string
@@ -195,33 +149,10 @@ class System
     }
 
     /**
-     * @return Collection|Sector[]
+     * @return Collection<int, Sector>
      */
     public function getSectors(): Collection
     {
         return $this->sectors;
-    }
-
-    public function addSector(Sector $sector): self
-    {
-        if (!$this->sectors->contains($sector)) {
-            $this->sectors[] = $sector;
-            $sector->setSystem($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSector(Sector $sector): self
-    {
-        if ($this->sectors->contains($sector)) {
-            $this->sectors->removeElement($sector);
-            // set the owning side to null (unless already changed)
-            if ($sector->getSystem() === $this) {
-                $sector->setSystem(null);
-            }
-        }
-
-        return $this;
     }
 }
