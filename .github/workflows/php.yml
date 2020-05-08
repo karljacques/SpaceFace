@@ -31,7 +31,7 @@ jobs:
         working-directory: ${{env.working-directory}}
         with:
           name: vendor
-          path: vendor
+          path: ./vendor
 
       # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
       # Docs: https://getcomposer.org/doc/articles/scripts.md
@@ -42,9 +42,6 @@ jobs:
 
   unit_tests:
     needs: build
-    uses: actions/download-artifact@v1
-      with:
-        name: vendor
     runs-on: ubuntu-latest
     container: karljacques/spaceface-test-container:latest
     env:
@@ -53,6 +50,11 @@ jobs:
 
       steps:
         - uses: actions/checkout@v2
+
+        - name: Download artifacts
+          uses: actions/download-artifact@v1
+            with:
+              name: vendor
 
         - name: Run Unit Tests
           run: php bin/phpunit --configuration phpunit.xml.dist tests/Unit --teamcity
