@@ -35,10 +35,10 @@ jobs:
   lint:
     needs: build
     runs-on: ubuntu-latest
-      container: karljacques/spaceface-test-container:latest
-      env:
-        working-directory: ./server
-        APP_ENV: test
+    container: karljacques/spaceface-test-container:latest
+    env:
+      working-directory: ./server
+      APP_ENV: test
 
     steps:
       - uses: actions/checkout@v2
@@ -51,7 +51,7 @@ jobs:
 
       - name: Lint Container
         run: php bin/console lint:container
-        
+
       - name: Static Analysis
         run: ./vendor/bin/psalm
         working-directory: ${{env.working-directory}}
