@@ -6,7 +6,7 @@ use App\Entity\Character;
 use App\Service\Validation\Rules\Character\MustHaveMoneyRule;
 use App\Service\Validation\Rules\Character\MustHaveMoneyRuleValidator;
 use App\Service\Validation\Rules\RuleValidatorInterface;
-use App\Tests\Service\Validation\Rules\AbstractRuleValidator;
+use App\Tests\Unit\Service\Validation\Rules\AbstractRuleValidator;
 
 class MustHaveMoneyRuleValidatorTest extends AbstractRuleValidator
 {

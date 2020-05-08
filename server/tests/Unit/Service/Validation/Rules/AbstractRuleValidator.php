@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Tests\Service\Validation\Rules;
+namespace App\Tests\Unit\Service\Validation\Rules;
 
 
 use App\Service\Validation\Rules\RuleInterface;
