@@ -28,7 +28,7 @@ class MarketCommodityRepository extends ServiceEntityRepository
         ]);
     }
 
-    public function findOneByBuyPrice($marketId, $commodityId, $price): ?MarketCommodity
+    public function findOneByBuyPrice(int $marketId, int $commodityId, int $price): ?MarketCommodity
     {
         return $this->findOneBy([
             'market' => $marketId,
