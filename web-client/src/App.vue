@@ -14,7 +14,7 @@
 
     @Component({
         provide: {
-            'CONTAINER': container
+            container,
         }
     })
     export default class App extends Vue {

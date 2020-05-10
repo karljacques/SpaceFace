@@ -16,7 +16,8 @@ abstract class HttpInterface {
 
     public abstract put<T = any, R = HttpResponse<T>>(url: string, data?: any, config?: HttpRequestConfig): Promise<R>;
 
-    public abstract patch<T = any, R = HttpResponse<T>>(url: string, data?: any, config?: HttpRequestConfig): Promise<R>;
+    public abstract patch<T = any, R = HttpResponse<T>>
+    (url: string, data?: any, config?: HttpRequestConfig): Promise<R>;
 }
 
 export {HttpInterface};

@@ -34,8 +34,8 @@
 
         protected entryNodes: any[] = [];
 
-        protected http: HttpInterface = this.container.get<HttpInterface>(HttpInterface);
-        protected ws: WebSocketClient = this.container.get<WebSocketClient>(WebSocketClient);
+        protected http: HttpInterface = this.get(HttpInterface);
+        protected ws: WebSocketClient = this.get(WebSocketClient);
 
         public async created() {
             //

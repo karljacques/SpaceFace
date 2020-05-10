@@ -27,15 +27,17 @@ class AxiosHttp implements HttpInterface {
     }
 
     public patch<T = any, R = HttpResponse<T>>(url: string, data?: any, config?: HttpRequestConfig): Promise<R> {
-        return this.axios.patch(url, config as AxiosRequestConfig);
+        return this.axios.patch(url, data, config as AxiosRequestConfig);
     }
 
     public post<T = any, R = HttpResponse<T>>(url: string, data?: any, config?: HttpRequestConfig): Promise<R> {
-        return this.axios.post(url, config as AxiosRequestConfig);
+        debugger;
+
+        return this.axios.post(url, data, config as AxiosRequestConfig);
     }
 
     public put<T = any, R = HttpResponse<T>>(url: string, data?: any, config?: HttpRequestConfig): Promise<R> {
-        return this.axios.put(url, config as AxiosRequestConfig);
+        return this.axios.put(url, data, config as AxiosRequestConfig);
     }
 
     public request<T = any, R = HttpResponse<T>>(config: HttpRequestConfig): Promise<R> {
