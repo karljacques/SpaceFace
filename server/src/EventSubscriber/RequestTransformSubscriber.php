@@ -9,6 +9,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class RequestTransformSubscriber implements EventSubscriberInterface
 {
     /**
+     * @param ControllerEvent $event
      * @return void
      */
     public function onKernelController(ControllerEvent $event)
