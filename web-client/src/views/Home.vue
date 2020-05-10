@@ -17,7 +17,7 @@
 
         <div v-if="entryNodes">
             <div v-for="node in entryNodes">
-                target: ({{ node.exitSystem.designation }}) {{node.exitSystem.name}}
+                target: ({{ node.exitLocation.system.designation }}) {{node.exitLocation.system.name}}
 
                 <button class="btn btn-primary" @click="jump(node.id)">Jump</button>
             </div>
@@ -28,7 +28,8 @@
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
 
-    import {network} from "@/Network";
+    import {http} from '@/services/connectivity/http';
+    import {WebSocketClient} from '@/services/connectivity/websocket';
 
     @Component({})
     export default class Home extends Vue {
@@ -36,48 +37,20 @@
         protected y: number = 0;
         protected systemDesignation: string = '';
 
-        protected entryNodes: Array<any> = [];
+        protected entryNodes: any[] = [];
 
-        protected ws!: WebSocket;
+        protected ws!: WebSocketClient;
 
         public async created() {
-            this.refreshStatus();
+            this.ws = new WebSocketClient();
+            this.ws.connect();
 
-            const token = await Home.getTicket();
-
-            this.connect(token);
-
-
-        }
-
-        protected connect(token: string) {
-            try {
-                this.ws = new WebSocket("ws://localhost:9502/" + token, []);
-                console.log('Connection open');
-                this.ws.onmessage = function (data) {
-                    console.log(data);
-                };
-
-                this.ws.onclose = () => {
-                    console.log('Connection Closed');
-                    this.connect(token);
-                }
-            } catch (e) {
-                setTimeout(() => this.connect(token), 5000);
-            }
-
-
-        }
-
-        protected static async getTicket(): Promise<string> {
-            const response = await network.get('/authentication/ticket');
-
-            return response.data.data.token;
+            await this.refreshStatus();
         }
 
         protected async onClickDirection(direction: string) {
-            const response = await network.post('/move', {
-                direction
+            const response = await http.post('/move', {
+                direction,
             });
             console.log('response');
 
@@ -85,22 +58,22 @@
         }
 
         protected async jump(node: number) {
-            const response = await network.post('/jump', {
-               node
+            const response = await http.post('/jump', {
+                node,
             });
 
             this.updateFromServer(response.data.data);
         }
 
         protected async refreshStatus() {
-            const response = await network.get('/status');
+            const response = await http.get('/status');
             this.updateFromServer(response.data.data);
         }
 
         protected updateFromServer(data: any) {
-            this.x = data.ship.location.position.x;
-            this.y = data.ship.location.position.y;
-            this.systemDesignation = data.ship.location.system.designation;
+            this.x = data.player.ship.location.position.x;
+            this.y = data.player.ship.location.position.y;
+            this.systemDesignation = data.player.ship.location.system.designation;
 
             this.entryNodes = data.sector.entryNodes;
 

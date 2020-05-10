@@ -1,7 +1,23 @@
 <template>
-    <div id="app" class="container-fluid">
-        <router-view></router-view>
-    </div>
+    <v-app id="inspire">
+        <v-navigation-drawer app clipped>
+            <v-list dense>
+                <v-list-item link>
+                    <v-list-item-action>
+                        <v-icon>mdi-view-dashboard</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                        <v-list-item-title>Dashboard</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+            </v-list>
+        </v-navigation-drawer>
+        <v-content>
+            <v-container>
+                <router-view></router-view>
+            </v-container>
+        </v-content>
+    </v-app>
 </template>
 
 <script lang="ts">
@@ -9,16 +25,8 @@
 
     @Component({})
     export default class App extends Vue {
-
+        public created() {
+            this.$vuetify.theme.dark = true
+        }
     }
 </script>
-
-<style lang="scss">
-    #app {
-        font-family: Avenir, Helvetica, Arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-
-        margin-top: 60px;
-    }
-</style>
