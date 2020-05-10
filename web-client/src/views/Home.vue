@@ -1,15 +1,6 @@
 <template>
     <div>
-        <div style="width: 150px; text-align: center">
-            <button class="btn" @click="onClickDirection('up')"><i class="fa fa-arrow-up"></i></button>
-            <br>
-            <button class="btn" @click="onClickDirection('left')"><i class="fa fa-arrow-left"></i></button>
-            <button class="btn" @click="refreshStatus"><i class="fa fa-square"></i></button>
-
-            <button class="btn" @click="onClickDirection('right')"><i class="fa fa-arrow-right"></i></button>
-            <br>
-            <button class="btn" @click="onClickDirection('down')"><i class="fa fa-arrow-down"></i></button>
-        </div>
+        <navigational-controls></navigational-controls>
         <br>
         system: {{ systemDesignation }}
         x: {{ x }}
@@ -30,8 +21,11 @@
 
     import {http} from '@/services/connectivity/http';
     import {WebSocketClient} from '@/services/connectivity/websocket';
+    import NavigationalControls from '@/views/game/components/navigation/NavigationalControls.vue';
 
-    @Component({})
+    @Component({
+        components: {NavigationalControls}
+    })
     export default class Home extends Vue {
         protected x: number = 0;
         protected y: number = 0;
@@ -43,19 +37,12 @@
 
         public async created() {
             this.ws = new WebSocketClient();
-            this.ws.connect();
-
-            await this.refreshStatus();
+            //
+            // this.ws.connect();
+            // this.refreshStatus();
         }
 
-        protected async onClickDirection(direction: string) {
-            const response = await http.post('/move', {
-                direction,
-            });
-            console.log('response');
 
-            this.updateFromServer(response.data.data);
-        }
 
         protected async jump(node: number) {
             const response = await http.post('/jump', {
@@ -65,10 +52,6 @@
             this.updateFromServer(response.data.data);
         }
 
-        protected async refreshStatus() {
-            const response = await http.get('/status');
-            this.updateFromServer(response.data.data);
-        }
 
         protected updateFromServer(data: any) {
             this.x = data.player.ship.location.position.x;
