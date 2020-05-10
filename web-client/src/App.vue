@@ -10,11 +10,16 @@
 
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
+    import {container} from '@/container';
 
-    @Component({})
+    @Component({
+        provide: {
+            'CONTAINER': container
+        }
+    })
     export default class App extends Vue {
         public created() {
-            this.$vuetify.theme.dark = true
+            this.$vuetify.theme.dark = true;
         }
     }
 </script>

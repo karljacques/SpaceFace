@@ -16,13 +16,17 @@
 </template>
 
 <script lang="ts">
-    import {Component, Vue} from 'vue-property-decorator';
-    import {http} from '@/services/connectivity/http';
+    import {Component} from 'vue-property-decorator';
+    import {HttpInterface} from '@/services/connectivity/HttpInterface';
+    import {VueContainer} from '@/VueContainer';
 
     @Component({})
-    export default class NavigationalControls extends Vue {
+    export default class NavigationalControls extends VueContainer {
+        protected http: HttpInterface = this.container.get<HttpInterface>(HttpInterface);
+
         protected async onClickDirection(direction: string) {
-            const response = await http.post('/move', {
+            debugger;
+            const response = await this.http.post('/move', {
                 direction,
             });
 
@@ -30,7 +34,7 @@
         }
 
         protected async refreshStatus() {
-            const response = await http.get('/status');
+            const response = await this.http.get('/status');
             // this.updateFromServer(response.data.data);
         }
     }

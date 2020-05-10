@@ -1,16 +1,18 @@
-import {http} from '@/services/connectivity/http';
+import {provide} from 'inversify-binding-decorators';
+import {inject} from 'inversify';
+import {HttpInterface} from '@/services/connectivity/HttpInterface';
 
+@provide(WebSocketClient)
 class WebSocketClient {
     protected ws: WebSocket | null = null;
+    protected http: HttpInterface;
 
-    protected static async getTicket(): Promise<string> {
-        const response = await http.get('/authentication/ticket');
-
-        return response.data.data.token;
+    public constructor(@inject(HttpInterface) http: HttpInterface) {
+        this.http = http;
     }
 
     public async connect() {
-        const token = await WebSocketClient.getTicket();
+        const token = await this.getTicket();
 
         try {
             this.ws = new WebSocket('ws://localhost:9502/' + token, []);
@@ -27,6 +29,13 @@ class WebSocketClient {
         } catch (e) {
             setTimeout(() => this.connect(), 5000);
         }
+    }
+
+    protected async getTicket(): Promise<string> {
+
+        const response = await this.http.get('/authentication/ticket');
+
+        return response.data.data.token;
     }
 }
 

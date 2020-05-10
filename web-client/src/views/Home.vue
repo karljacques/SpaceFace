@@ -17,35 +17,35 @@
 </template>
 
 <script lang="ts">
-    import {Component, Vue} from 'vue-property-decorator';
+    import {Component} from 'vue-property-decorator';
 
-    import {http} from '@/services/connectivity/http';
-    import {WebSocketClient} from '@/services/connectivity/websocket';
+    import {WebSocketClient} from '@/services/connectivity/WebSocket';
     import NavigationalControls from '@/views/game/components/navigation/NavigationalControls.vue';
+    import {HttpInterface} from '@/services/connectivity/HttpInterface';
+    import {VueContainer} from '@/VueContainer';
 
     @Component({
-        components: {NavigationalControls}
+        components: {NavigationalControls},
     })
-    export default class Home extends Vue {
+    export default class Home extends VueContainer {
         protected x: number = 0;
         protected y: number = 0;
         protected systemDesignation: string = '';
 
         protected entryNodes: any[] = [];
 
-        protected ws!: WebSocketClient;
+        protected http: HttpInterface = this.container.get<HttpInterface>(HttpInterface);
+        protected ws: WebSocketClient = this.container.get<WebSocketClient>(WebSocketClient);
 
         public async created() {
-            this.ws = new WebSocketClient();
             //
             // this.ws.connect();
             // this.refreshStatus();
         }
 
 
-
         protected async jump(node: number) {
-            const response = await http.post('/jump', {
+            const response = await this.http.post('/jump', {
                 node,
             });
 
