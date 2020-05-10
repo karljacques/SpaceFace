@@ -9,8 +9,8 @@ class WebSocketClient {
         return response.data.data.token;
     }
 
-    public connect() {
-        const token = WebSocketClient.getTicket();
+    public async connect() {
+        const token = await WebSocketClient.getTicket();
 
         try {
             this.ws = new WebSocket('ws://localhost:9502/' + token, []);
