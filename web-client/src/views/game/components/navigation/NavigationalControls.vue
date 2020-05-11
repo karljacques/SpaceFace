@@ -5,7 +5,7 @@
                 <v-btn @click="onClickDirection('up')" text><i class="fa fa-2x fa-arrow-up"></i></v-btn>
                 <br>
                 <v-btn @click="onClickDirection('left')" text><i class="fa fa-2x fa-arrow-left"></i></v-btn>
-                <v-btn @click="refreshStatus" text><i class="fa fa-2x fa-square"></i></v-btn>
+                <v-btn text><i class="fa fa-2x fa-square"></i></v-btn>
 
                 <v-btn @click="onClickDirection('right')" text><i class="fa fa-2x fa-arrow-right"></i></v-btn>
                 <br>
@@ -17,7 +17,6 @@
 
 <script lang="ts">
     import {Component} from 'vue-property-decorator';
-    import {HttpInterface} from '@/services/connectivity/HttpInterface';
     import {VueContainer} from '@/VueContainer';
     import {namespace} from 'vuex-class';
 
@@ -25,8 +24,6 @@
 
     @Component({})
     export default class NavigationalControls extends VueContainer {
-        protected http: HttpInterface = this.container.get<HttpInterface>(HttpInterface);
-
         @ship.Action
         public moveInDirection!: (direction: string) => void;
 
@@ -34,9 +31,9 @@
             this.moveInDirection(direction);
         }
 
-        protected async refreshStatus() {
-            const response = await this.http.get('/status');
-            // this.updateFromServer(response.data.data);
-        }
+        // protected async refreshStatus() {
+        //     const response = await this.http.get('/status');
+        //     // this.updateFromServer(response.data.data);
+        // }
     }
 </script>

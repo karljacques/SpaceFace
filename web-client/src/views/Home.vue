@@ -2,9 +2,7 @@
     <div>
         <navigational-controls></navigational-controls>
         <br>
-        system: {{ systemDesignation }}
-        x: {{ x }}
-        y: {{ y }}
+        <navigational-information v-if="shipLoaded"></navigational-information>
 
         <div v-if="entryNodes">
             <div v-for="node in entryNodes">
@@ -23,14 +21,18 @@
     import NavigationalControls from '@/views/game/components/navigation/NavigationalControls.vue';
     import {HttpInterface} from '@/services/connectivity/HttpInterface';
     import {VueContainer} from '@/VueContainer';
+    import NavigationalInformation from '@/views/game/components/navigation/NavigationalInformation.vue';
+    import {namespace} from 'vuex-class';
+
+    const ship = namespace('ship');
 
     @Component({
-        components: {NavigationalControls},
+        components: {NavigationalInformation, NavigationalControls},
     })
     export default class Home extends VueContainer {
-        protected x: number = 0;
-        protected y: number = 0;
-        protected systemDesignation: string = '';
+
+        @ship.Getter
+        protected shipLoaded!: boolean;
 
         protected entryNodes: any[] = [];
 
@@ -48,19 +50,8 @@
             const response = await this.http.post('/jump', {
                 node,
             });
-
-            this.updateFromServer(response.data.data);
         }
 
-
-        protected updateFromServer(data: any) {
-            this.x = data.player.ship.location.position.x;
-            this.y = data.player.ship.location.position.y;
-            this.systemDesignation = data.player.ship.location.system.designation;
-
-            this.entryNodes = data.sector.entryNodes;
-
-        }
     }
 </script>
 
