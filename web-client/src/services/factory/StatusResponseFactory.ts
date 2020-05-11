@@ -11,6 +11,9 @@ export class StatusResponseFactory {
 
         const ship = new Ship(location);
 
+        ship.fuel = shipData.fuel;
+        ship.maxFuel = shipData.maxFuel;
+
         return new StatusResponseData(ship);
     }
 }

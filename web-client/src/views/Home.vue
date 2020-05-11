@@ -3,6 +3,8 @@
         <navigational-controls></navigational-controls>
         <br>
         <navigational-information v-if="shipLoaded"></navigational-information>
+        <br>
+        <general-status v-if="shipLoaded"></general-status>
 
         <div v-if="entryNodes">
             <div v-for="node in entryNodes">
@@ -23,11 +25,12 @@
     import {VueContainer} from '@/VueContainer';
     import NavigationalInformation from '@/views/game/components/navigation/NavigationalInformation.vue';
     import {namespace} from 'vuex-class';
+    import GeneralStatus from '@/views/game/components/status/GeneralStatus.vue';
 
     const ship = namespace('ship');
 
     @Component({
-        components: {NavigationalInformation, NavigationalControls},
+        components: {GeneralStatus, NavigationalInformation, NavigationalControls},
     })
     export default class Home extends VueContainer {
 
