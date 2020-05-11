@@ -31,8 +31,6 @@ class AxiosHttp implements HttpInterface {
     }
 
     public post<T = any, R = HttpResponse<T>>(url: string, data?: any, config?: HttpRequestConfig): Promise<R> {
-        debugger;
-
         return this.axios.post(url, data, config as AxiosRequestConfig);
     }
 

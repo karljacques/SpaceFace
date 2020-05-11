@@ -19,18 +19,19 @@
     import {Component} from 'vue-property-decorator';
     import {HttpInterface} from '@/services/connectivity/HttpInterface';
     import {VueContainer} from '@/VueContainer';
+    import {namespace} from 'vuex-class';
+
+    const ship = namespace('ship');
 
     @Component({})
     export default class NavigationalControls extends VueContainer {
         protected http: HttpInterface = this.container.get<HttpInterface>(HttpInterface);
 
-        protected async onClickDirection(direction: string) {
-            debugger;
-            const response = await this.http.post('/move', {
-                direction,
-            });
+        @ship.Action
+        public moveInDirection!: (direction: string) => void;
 
-            // this.updateFromServer(response.data.data);
+        protected async onClickDirection(direction: string) {
+            this.moveInDirection(direction);
         }
 
         protected async refreshStatus() {

@@ -3,9 +3,11 @@ import 'reflect-metadata';
 import {Container} from 'inversify';
 import {buildProviderModule} from 'inversify-binding-decorators';
 import {AxiosHttp} from '@/services/connectivity/AxiosHttp';
+import {HttpInterface} from '@/services/connectivity/HttpInterface';
+
 import '@/services/connectivity/HttpInterface';
 import '@/services/connectivity/WebSocket';
-import {HttpInterface} from '@/services/connectivity/HttpInterface';
+import '@/services/api/ship/MovementAPIController';
 
 const container = new Container();
 container.load(buildProviderModule());
