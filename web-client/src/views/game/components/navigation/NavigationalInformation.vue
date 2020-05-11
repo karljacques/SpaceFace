@@ -12,14 +12,18 @@
     import {VueContainer} from '@/VueContainer';
     import Component from 'vue-class-component';
     import {namespace} from 'vuex-class';
-    import {Location} from '@/objects/entity/Location';
+    import {Ship} from '@/objects/entity/Ship';
 
     const ship = namespace('ship');
 
     @Component({})
     export default class NavigationalInformation extends VueContainer {
         @ship.Getter
-        protected currentLocation!: Location;
+        protected currentShip!: Ship;
+
+        get currentLocation() {
+            return this.currentShip.location;
+        }
 
     }
 </script>

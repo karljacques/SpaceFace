@@ -11,6 +11,9 @@
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
     import {container} from '@/container';
+    import {namespace} from 'vuex-class';
+
+    const ship = namespace('ship');
 
     @Component({
         provide: {
@@ -18,7 +21,13 @@
         },
     })
     export default class App extends Vue {
+
+        @ship.Action
+        protected refresh!: () => void;
+
         public created() {
+            this.refresh();
+
             this.$vuetify.theme.dark = true;
         }
     }

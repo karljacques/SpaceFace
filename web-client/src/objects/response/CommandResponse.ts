@@ -12,23 +12,15 @@ export class CommandResponse<T> {
         return this._success;
     }
 
-    set success(value: boolean) {
-        this._success = value;
-    }
-
     get errors(): UserActionError[] {
         return this._errors;
     }
 
-    set errors(value: UserActionError[]) {
-        this._errors = value;
-    }
+    get data(): T {
+        if (!this._data) {
+            throw new Error('LogicException - Data not defined');
+        }
 
-    get data(): T | null {
         return this._data;
-    }
-
-    set data(value: T | null) {
-        this._data = value;
     }
 }

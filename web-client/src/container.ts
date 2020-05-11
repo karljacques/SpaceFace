@@ -8,6 +8,7 @@ import {HttpInterface} from '@/services/connectivity/HttpInterface';
 import '@/services/connectivity/HttpInterface';
 import '@/services/connectivity/WebSocket';
 import '@/services/api/ship/MovementAPIController';
+import '@/services/api/ship/StatusAPIController';
 
 const container = new Container();
 container.load(buildProviderModule());

@@ -1,25 +1,21 @@
 import {AbstractAPIController} from '@/services/api/AbstractAPIController';
-import {provide} from 'inversify-binding-decorators';
 import {CommandResponse} from '@/objects/response/CommandResponse';
-import {HttpError} from '@/services/connectivity/interface/HttpError';
-import {UserActionError} from '@/objects/response/UserActionError';
 import {StatusResponseData} from '@/objects/response/StatusResponseData';
 import {inject} from 'inversify';
 import {StatusResponseFactory} from '@/services/factory/StatusResponseFactory';
+import {HttpError} from '@/services/connectivity/interface/HttpError';
+import {UserActionError} from '@/objects/response/UserActionError';
+import {provide} from 'inversify-binding-decorators';
 
-@provide(MovementAPIController)
-export class MovementAPIController extends AbstractAPIController {
+@provide(StatusAPIController)
+export class StatusAPIController extends AbstractAPIController {
     @inject(StatusResponseFactory) protected statusResponseFactory!: StatusResponseFactory;
 
-    public async moveInDirection(direction: string): Promise<CommandResponse<StatusResponseData>> {
-        const request = {
-            direction,
-        };
-
-        const uri = '/move';
+    public async refresh(): Promise<CommandResponse<StatusResponseData>> {
+        const uri = '/status';
 
         try {
-            const response = await this.http.post(uri, request);
+            const response = await this.http.get(uri);
 
             return new CommandResponse<StatusResponseData>(
                 response.data.success,

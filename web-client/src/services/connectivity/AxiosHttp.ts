@@ -16,7 +16,11 @@ class AxiosHttp implements HttpInterface {
     }
 
     public get<T = any, R = HttpResponse<T>>(url: string, config?: HttpRequestConfig): Promise<R> {
-        return this.axios.get(url, config as AxiosRequestConfig);
+        try {
+            return this.axios.get(url, config as AxiosRequestConfig);
+        } catch (e) {
+            throw e as HttpError;
+        }
     }
 
     public head<T = any, R = HttpResponse<T>>(url: string, config?: HttpRequestConfig): Promise<R> {
