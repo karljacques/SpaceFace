@@ -20,4 +20,17 @@ abstract class HttpInterface {
     (url: string, data?: any, config?: HttpRequestConfig): Promise<R>;
 }
 
-export {HttpInterface};
+const mockHttpInterfaceFactory = (): HttpInterface => {
+    return {
+        get: jest.fn(),
+        post: jest.fn(),
+        head: jest.fn(),
+        request: jest.fn(),
+        options: jest.fn(),
+        put: jest.fn(),
+        patch: jest.fn(),
+        delete: jest.fn(),
+    };
+};
+
+export {HttpInterface, mockHttpInterfaceFactory};
