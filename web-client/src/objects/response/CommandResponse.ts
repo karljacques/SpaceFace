@@ -1,7 +1,9 @@
+import {UserActionError} from '@/objects/response/UserActionError';
+
 export class CommandResponse<T> {
     public constructor(
         protected  _success: boolean,
-        protected  _errors: string[],
+        protected  _errors: UserActionError[],
         protected _data: T | null = null,
     ) {
     }
@@ -14,11 +16,11 @@ export class CommandResponse<T> {
         this._success = value;
     }
 
-    get errors(): string[] {
+    get errors(): UserActionError[] {
         return this._errors;
     }
 
-    set errors(value: string[]) {
+    set errors(value: UserActionError[]) {
         this._errors = value;
     }
 

@@ -1,31 +1,14 @@
+import {Location} from '@/objects/entity/Location';
+
 export class Ship {
-    private _systemId: number = 0;
-
-    get systemId(): number {
-        return this._systemId;
+    constructor(protected _location: Location) {
     }
 
-    set systemId(value: number) {
-        this._systemId = value;
+    get location(): Location {
+        return this._location;
     }
 
-    private _x: number = 0;
-
-    get x(): number {
-        return this._x;
-    }
-
-    set x(value: number) {
-        this._x = value;
-    }
-
-    private _y: number = 0;
-
-    get y(): number {
-        return this._y;
-    }
-
-    set y(value: number) {
-        this._y = value;
+    set location(value: Location) {
+        this._location = value;
     }
 }

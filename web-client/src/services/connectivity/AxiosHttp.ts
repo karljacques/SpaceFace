@@ -2,6 +2,7 @@ import axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
 import {HttpInterface} from '@/services/connectivity/HttpInterface';
 import {HttpRequestConfig} from '@/services/connectivity/interface/HttpRequestConfig';
 import {HttpResponse} from '@/services/connectivity/interface/HttpResponse';
+import {HttpError} from '@/services/connectivity/interface/HttpError';
 
 class AxiosHttp implements HttpInterface {
     protected axios: AxiosInstance;
@@ -31,7 +32,11 @@ class AxiosHttp implements HttpInterface {
     }
 
     public post<T = any, R = HttpResponse<T>>(url: string, data?: any, config?: HttpRequestConfig): Promise<R> {
-        return this.axios.post(url, data, config as AxiosRequestConfig);
+        try {
+            return this.axios.post(url, data, config as AxiosRequestConfig);
+        } catch (e) {
+            throw e as HttpError;
+        }
     }
 
     public put<T = any, R = HttpResponse<T>>(url: string, data?: any, config?: HttpRequestConfig): Promise<R> {
