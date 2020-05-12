@@ -1,7 +1,7 @@
-import {HttpInterface} from '@/services/connectivity/HttpInterface';
+import {HttpClient} from '@/services/connectivity/HttpClient';
 import {inject, injectable} from 'inversify';
 
 @injectable()
 export abstract class AbstractAPIController {
-    @inject(HttpInterface) protected http!: HttpInterface;
+    @inject(HttpClient) protected http!: HttpClient;
 }

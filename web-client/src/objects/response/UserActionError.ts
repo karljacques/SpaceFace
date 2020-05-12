@@ -1,12 +1,16 @@
 import {HttpError} from '@/services/connectivity/interface/HttpError';
 
 export class UserActionError {
-    constructor(protected message: string, protected details: object) {
+    constructor(protected _message: string, protected details: object) {
     }
 
-    public static fromHttpError(error: HttpError) {
+    get message(): string {
+        return this._message;
+    }
+
+    public static fromHttpError(error: HttpError): UserActionError[] {
         if (error.response?.data?.errors == null) {
-            return ['Server Communication Failure'];
+            return [new UserActionError('Server Communication Failure', [])];
         }
 
         return error.response.data.errors.map((x: any) => new UserActionError(x.message, x.details));

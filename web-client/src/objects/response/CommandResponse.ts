@@ -1,6 +1,12 @@
 import {UserActionError} from '@/objects/response/UserActionError';
 
-export class CommandResponse<T> {
+export interface CommandResponseInterface<T> {
+    readonly success: boolean;
+    readonly errors: UserActionError[];
+    readonly data: T;
+}
+
+export class CommandResponse<T> implements CommandResponseInterface<T> {
     public constructor(
         protected  _success: boolean,
         protected  _errors: UserActionError[],

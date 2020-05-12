@@ -1,10 +1,10 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
-import {HttpInterface} from '@/services/connectivity/HttpInterface';
+import {HttpClient} from '@/services/connectivity/HttpClient';
 import {HttpRequestConfig} from '@/services/connectivity/interface/HttpRequestConfig';
 import {HttpResponse} from '@/services/connectivity/interface/HttpResponse';
 import {HttpError} from '@/services/connectivity/interface/HttpError';
 
-class AxiosHttp implements HttpInterface {
+class AxiosHttp implements HttpClient {
     protected axios: AxiosInstance;
 
     constructor(options: object) {

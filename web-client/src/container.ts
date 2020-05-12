@@ -3,9 +3,9 @@ import 'reflect-metadata';
 import {Container} from 'inversify';
 import {buildProviderModule} from 'inversify-binding-decorators';
 import {AxiosHttp} from '@/services/connectivity/AxiosHttp';
-import {HttpInterface} from '@/services/connectivity/HttpInterface';
+import {HttpClient} from '@/services/connectivity/HttpClient';
 
-import '@/services/connectivity/HttpInterface';
+import '@/services/connectivity/HttpClient';
 import '@/services/connectivity/WebSocket';
 import '@/services/api/ship/MovementAPIController';
 import '@/services/api/ship/StatusAPIController';
@@ -20,6 +20,6 @@ const http = new AxiosHttp({
     },
 });
 
-container.bind<HttpInterface>(HttpInterface).toConstantValue(http);
+container.bind<HttpClient>(HttpClient).toConstantValue(http);
 
 export {container};

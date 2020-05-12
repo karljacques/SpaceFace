@@ -1,7 +1,7 @@
 import {HttpResponse} from '@/services/connectivity/interface/HttpResponse';
 import {HttpRequestConfig} from '@/services/connectivity/interface/HttpRequestConfig';
 
-abstract class HttpInterface {
+abstract class HttpClient {
     public abstract request<T = any, R = HttpResponse<T>>(config: HttpRequestConfig): Promise<R>;
 
     public abstract get<T = any, R = HttpResponse<T>>(url: string, config?: HttpRequestConfig): Promise<R>;
@@ -20,7 +20,7 @@ abstract class HttpInterface {
     (url: string, data?: any, config?: HttpRequestConfig): Promise<R>;
 }
 
-const mockHttpInterfaceFactory = (): HttpInterface => {
+const mockHttpClientFactory = (): HttpClient => {
     return {
         get: jest.fn(),
         post: jest.fn(),
@@ -33,4 +33,4 @@ const mockHttpInterfaceFactory = (): HttpInterface => {
     };
 };
 
-export {HttpInterface, mockHttpInterfaceFactory};
+export {HttpClient, mockHttpClientFactory};

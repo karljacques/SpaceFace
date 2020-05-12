@@ -1,13 +1,13 @@
 import {provide} from 'inversify-binding-decorators';
 import {inject} from 'inversify';
-import {HttpInterface} from '@/services/connectivity/HttpInterface';
+import {HttpClient} from '@/services/connectivity/HttpClient';
 
 @provide(WebSocketClient)
 class WebSocketClient {
     protected ws: WebSocket | null = null;
-    protected http: HttpInterface;
+    protected http: HttpClient;
 
-    public constructor(@inject(HttpInterface) http: HttpInterface) {
+    public constructor(@inject(HttpClient) http: HttpClient) {
         this.http = http;
     }
 
