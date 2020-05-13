@@ -5,6 +5,8 @@
         <navigational-information v-if="shipLoaded"></navigational-information>
         <br>
         <general-status v-if="shipLoaded"></general-status>
+        <br>
+        <mini-map-container v-if="shipLoaded"></mini-map-container>
     </div>
 </template>
 
@@ -16,11 +18,12 @@
     import NavigationalInformation from '@/views/game/components/navigation/NavigationalInformation.vue';
     import {namespace} from 'vuex-class';
     import GeneralStatus from '@/views/game/components/status/GeneralStatus.vue';
+    import MiniMapContainer from '@/views/game/components/navigation/MiniMapContainer.vue';
 
     const ship = namespace('ship');
 
     @Component({
-        components: {GeneralStatus, NavigationalInformation, NavigationalControls},
+        components: {MiniMapContainer, GeneralStatus, NavigationalInformation, NavigationalControls},
     })
     export default class PrimaryLayout extends VueContainer {
         @ship.Getter

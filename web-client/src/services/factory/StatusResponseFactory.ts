@@ -2,6 +2,7 @@ import {StatusResponseData} from '@/objects/response/StatusResponseData';
 import {Location} from '@/objects/entity/Location';
 import {Ship} from '@/objects/entity/Ship';
 import {provide} from 'inversify-binding-decorators';
+import {Sector} from '@/objects/entity/Sector';
 
 @provide(StatusResponseFactory)
 export class StatusResponseFactory {
@@ -14,6 +15,10 @@ export class StatusResponseFactory {
         ship.fuel = shipData.fuel;
         ship.maxFuel = shipData.maxFuel;
 
-        return new StatusResponseData(ship);
+        const sectors: Sector[] = data.system.sectors.map((x: any): Sector => {
+            return new Sector(x.type, Location.create(x.location));
+        });
+
+        return new StatusResponseData(ship, sectors);
     }
 }

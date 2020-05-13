@@ -22,6 +22,14 @@ export class Location {
         this._position = value;
     }
 
+    public equals(location: Location) {
+        if (location.system.id !== this.system.id) {
+            return false;
+        }
+
+        return location.position.equals(this.position);
+    }
+
     public static create(data: any): Location {
         const system = System.create(data.system);
         const vector = Vector2.create(data.position);

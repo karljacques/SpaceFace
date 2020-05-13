@@ -3,10 +3,12 @@ import {Ship} from '@/objects/entity/Ship';
 import {VuexContainerModule} from '@/store/modules/VuexContainerModule';
 import {MovementAPIController} from '@/services/api/ship/MovementAPIController';
 import {StatusAPIController} from '@/services/api/ship/StatusAPIController';
+import {Sector} from '@/objects/entity/Sector';
 
 @Module({namespaced: true})
 class ShipModule extends VuexContainerModule {
     protected ship: Ship | null = null;
+    protected sectors: Sector[] = [];
 
     protected movementApiController: MovementAPIController = this.get(MovementAPIController);
     protected statusApiController: StatusAPIController = this.get(StatusAPIController);
@@ -23,9 +25,18 @@ class ShipModule extends VuexContainerModule {
         return this.ship;
     }
 
+    get nearbySectors(): Sector[] {
+        return this.sectors;
+    }
+
     @Mutation
     public setShip(ship: Ship): void {
         this.ship = ship;
+    }
+
+    @Mutation
+    public setSectors(sectors: Sector[]): void {
+        this.sectors = sectors;
     }
 
     @Action
@@ -34,6 +45,7 @@ class ShipModule extends VuexContainerModule {
 
         if (result.success) {
             this.context.commit('setShip', result.data.ship);
+            this.context.commit('setSectors', result.data.sectors);
         }
     }
 
@@ -43,6 +55,7 @@ class ShipModule extends VuexContainerModule {
 
         if (result.success) {
             this.context.commit('setShip', result.data.ship);
+            this.context.commit('setSectors', result.data.sectors);
         }
     }
 }
