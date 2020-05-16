@@ -3,6 +3,7 @@ import {Location} from '@/objects/entity/Location';
 import {Ship} from '@/objects/entity/Ship';
 import {provide} from 'inversify-binding-decorators';
 import {Sector} from '@/objects/entity/Sector';
+import {JumpNode} from '@/objects/entity/JumpNode';
 
 @provide(StatusResponseFactory)
 export class StatusResponseFactory {
@@ -19,6 +20,16 @@ export class StatusResponseFactory {
             return new Sector(x.type, Location.create(x.location));
         });
 
-        return new StatusResponseData(ship, sectors);
+        const jumpNodes: JumpNode[] = data.system.entryNodes.map((x: any): JumpNode => {
+            const jumpNode = new JumpNode(x.id, Location.create(x.location));
+
+            if (x.exitLocation) {
+                jumpNode.exitLocation = Location.create(x.exitLocation);
+            }
+
+            return jumpNode;
+        });
+
+        return new StatusResponseData(ship, sectors, jumpNodes);
     }
 }
