@@ -7,7 +7,7 @@
                 <v-card-text>
                     <h3>Destination</h3>
                     <location-component :location="node.exitLocation"></location-component>
-                    <v-btn color="warning">Jump</v-btn>
+                    <v-btn @click="jump(node)" color="warning">Jump</v-btn>
                 </v-card-text>
             </v-card>
         </v-card-text>
@@ -32,6 +32,9 @@
 
         @ship.Getter
         protected currentShip!: Ship;
+
+        @ship.Action
+        protected jump!: (node: JumpNode) => void;
 
         get currentLocation(): Location {
             return this.currentShip.location;

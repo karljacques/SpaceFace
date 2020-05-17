@@ -5,6 +5,7 @@ import {MovementAPIController} from '@/services/api/ship/MovementAPIController';
 import {StatusAPIController} from '@/services/api/ship/StatusAPIController';
 import {Sector} from '@/objects/entity/Sector';
 import {JumpNode} from '@/objects/entity/JumpNode';
+import {JumpAPIController} from '@/services/api/ship/JumpAPIController';
 
 @Module({namespaced: true})
 class ShipModule extends VuexContainerModule {
@@ -14,6 +15,8 @@ class ShipModule extends VuexContainerModule {
 
     protected movementApiController: MovementAPIController = this.get(MovementAPIController);
     protected statusApiController: StatusAPIController = this.get(StatusAPIController);
+    protected jumpApiController: JumpAPIController = this.get(JumpAPIController);
+
 
     get shipLoaded(): boolean {
         return this.ship !== null;
@@ -53,6 +56,17 @@ class ShipModule extends VuexContainerModule {
     @Action
     public async moveInDirection(direction: string): Promise<void> {
         const result = await this.movementApiController.moveInDirection(direction);
+
+        if (result.success) {
+            this.context.commit('setShip', result.data.ship);
+            this.context.commit('setSectors', result.data.sectors);
+            this.context.commit('setJumpNodes', result.data.jumpNodes);
+        }
+    }
+
+    @Action
+    public async jump(jumpNode: JumpNode): Promise<void> {
+        const result = await this.jumpApiController.jump(jumpNode);
 
         if (result.success) {
             this.context.commit('setShip', result.data.ship);
