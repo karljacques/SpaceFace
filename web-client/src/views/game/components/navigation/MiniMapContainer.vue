@@ -5,9 +5,9 @@
                 <tbody>
                 <tr v-for="row in rows">
                     <td :style="{'background-color': getSectorColor(sector)}"
-                        style="border: 1px solid white; width:45px; height:45px;"
+                        class="sector-cell"
                         v-for="sector in row">
-
+                        {{ getSectorLetter(sector) }}
                     </td>
                 </tr>
                 </tbody>
@@ -24,6 +24,7 @@
     import {Ship} from '@/objects/entity/Ship';
     import {Vector2} from '@/objects/entity/Vector2';
     import {Location} from '@/objects/entity/Location';
+    import {JumpNode} from '@/objects/entity/JumpNode';
 
     const ship = namespace('ship');
 
@@ -34,6 +35,9 @@
 
         @ship.Getter
         protected nearbySectors!: Sector[];
+
+        @ship.Getter
+        protected nearbyJumpNodes!: JumpNode[];
 
         @ship.Getter
         protected currentShip!: Ship;
@@ -83,9 +87,34 @@
 
             return 'orange';
         }
+
+        protected getSectorLetter(sector: Sector | null): string {
+            if (sector === null) {
+                return '';
+            }
+
+            let str = '';
+
+            if (this.nearbyJumpNodes.find((x: JumpNode) => x.location.equals(sector.location))) {
+                str += 'N';
+            }
+
+            return str;
+        }
     }
 </script>
 
 <style scoped>
+    table {
+        border: 1px solid #ccc;
+    }
 
+    .sector-cell {
+        border: 1px dotted #aaa;
+        width: 45px;
+        height: 45px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 20px
+    }
 </style>
