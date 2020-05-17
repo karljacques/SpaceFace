@@ -16,8 +16,7 @@
                     <station-information-container/>
                 </template>
                 <template v-else>
-                    <h1>Docked</h1>
-                    <v-btn @click="undock" color="error">Undock</v-btn>
+                    <docked-overview/>
                 </template>
 
             </template>
@@ -42,11 +41,13 @@
     import JumpNodeInformation from '@/views/game/components/navigation/JumpNodeInformation.vue';
     import StationInformationContainer from '@/views/game/components/navigation/StationInformationContainer.vue';
     import {Ship} from '@/objects/entity/Ship';
+    import DockedOverview from '@/views/game/components/dockable/DockedOverview.vue';
 
     const ship = namespace('ship');
 
     @Component({
         components: {
+            DockedOverview,
             StationInformationContainer,
             JumpNodeInformation,
             MiniMapContainer,
@@ -61,9 +62,6 @@
 
         @ship.Getter
         protected currentShip!: Ship;
-
-        @ship.Action
-        protected undock!: () => void;
     }
 </script>
 
