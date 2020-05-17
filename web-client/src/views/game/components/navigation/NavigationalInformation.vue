@@ -1,9 +1,7 @@
 <template>
     <v-card width="230">
         <v-card-text>
-            System: {{ currentLocation.system.designation }} ({{ currentLocation.system.name }})<br>
-            X: {{ currentLocation.position.x }}<br>
-            Y: {{ currentLocation.position.y }}<br>
+            <location-component :location="currentLocation"/>
         </v-card-text>
     </v-card>
 </template>
@@ -13,10 +11,13 @@
     import Component from 'vue-class-component';
     import {namespace} from 'vuex-class';
     import {Ship} from '@/objects/entity/Ship';
+    import LocationComponent from '@/views/game/components/navigation/LocationComponent.vue';
 
     const ship = namespace('ship');
 
-    @Component({})
+    @Component({
+        components: {LocationComponent}
+    })
     export default class NavigationalInformation extends VueContainer {
         @ship.Getter
         protected currentShip!: Ship;

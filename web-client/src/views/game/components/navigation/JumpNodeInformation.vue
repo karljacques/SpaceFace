@@ -2,9 +2,14 @@
     <v-card v-if="jumpNodesInSector.length > 0">
         <v-card-title>Jump Nodes</v-card-title>
         <v-card-text>
-            <div v-for="node in jumpNodesInSector">
-                {{ node.id }}
-            </div>
+            <v-card v-for="node in jumpNodesInSector">
+                <v-card-title></v-card-title>
+                <v-card-text>
+                    <h3>Destination</h3>
+                    <location-component :location="node.exitLocation"></location-component>
+                    <v-btn color="warning">Jump</v-btn>
+                </v-card-text>
+            </v-card>
         </v-card-text>
     </v-card>
 </template>
@@ -15,10 +20,12 @@
     import {JumpNode} from '@/objects/entity/JumpNode';
     import {Location} from '@/objects/entity/Location';
     import {Ship} from '@/objects/entity/Ship';
+    import LocationComponent from '@/views/game/components/navigation/LocationComponent.vue';
 
     const ship = namespace('ship');
-
-    @Component
+    @Component({
+        components: {LocationComponent}
+    })
     export default class JumpNodeInformation extends Vue {
         @ship.Getter
         protected nearbyJumpNodes!: JumpNode[];
