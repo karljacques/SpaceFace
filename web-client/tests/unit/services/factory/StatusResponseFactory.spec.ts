@@ -27,6 +27,11 @@ describe('StatusResponseFactory', () => {
                     maxFuel: 250,
                 },
             },
+            system: {
+                sectors: [],
+                dockables: [],
+                entryNodes: [],
+            },
         };
 
         const response = factory.createStatusResponse(data);
