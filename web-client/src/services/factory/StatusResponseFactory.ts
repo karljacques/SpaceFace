@@ -4,6 +4,7 @@ import {Ship} from '@/objects/entity/Ship';
 import {provide} from 'inversify-binding-decorators';
 import {Sector} from '@/objects/entity/Sector';
 import {JumpNode} from '@/objects/entity/JumpNode';
+import {Dockable} from '@/objects/entity/Dockable';
 
 @provide(StatusResponseFactory)
 export class StatusResponseFactory {
@@ -30,6 +31,10 @@ export class StatusResponseFactory {
             return jumpNode;
         });
 
-        return new StatusResponseData(ship, sectors, jumpNodes);
+        const dockables: Dockable[] = data.system.dockables.map((x: any): Dockable => {
+            return Dockable.create(x);
+        });
+
+        return new StatusResponseData(ship, sectors, jumpNodes, dockables);
     }
 }

@@ -4,10 +4,10 @@
             <table style="border-collapse: collapse;">
                 <tbody>
                 <tr v-for="row in rows">
-                    <td :style="{'background-color': getSectorColor(sector)}"
+                    <td :style="{'background-color': getSectorColor(location)}"
                         class="sector-cell"
-                        v-for="sector in row">
-                        {{ getSectorLetter(sector) }}
+                        v-for="location in row">
+                        {{ getSectorLetter(location) }}
                     </td>
                 </tr>
                 </tbody>
@@ -40,15 +40,18 @@
         protected nearbyJumpNodes!: JumpNode[];
 
         @ship.Getter
+        protected nearbyDockables!: JumpNode[];
+
+        @ship.Getter
         protected currentShip!: Ship;
 
         get position(): Vector2 {
             return this.currentShip.location.position;
         }
 
-        get rows(): Array<Array<Sector | null>> {
+        get rows(): Array<Array<Location>> {
 
-            const grid: Array<Array<Sector | null>> = [];
+            const grid: Array<Array<Location>> = [];
 
             for (let relativeY = 0; relativeY < (this.mapSize * 2) + 1; relativeY++) {
                 grid[(this.mapSize * 2) - relativeY] = [];
@@ -56,8 +59,7 @@
                     const x = relativeX + this.position.x - this.mapSize;
                     const y = relativeY + this.position.y - this.mapSize;
 
-                    const location = this.createLocationFromCoordinates(x, y);
-                    grid[(this.mapSize * 2) - relativeY][relativeX] = this.sectorAtLocation(location);
+                    grid[(this.mapSize * 2) - relativeY][relativeX] = this.createLocationFromCoordinates(x, y);
                 }
             }
             return grid;
@@ -71,7 +73,13 @@
             return new Location(this.currentShip.location.system, new Vector2(x, y));
         }
 
-        protected getSectorColor(sector: Sector | null): string {
+        protected getSectorColor(location: Location): string {
+            if (location.position.x < 1 || location.position.y < 1) {
+                return '#1d1d1d';
+            }
+
+            const sector = this.sectorAtLocation(location);
+
             if (sector === null) {
                 return 'black';
             }
@@ -88,17 +96,16 @@
             return 'orange';
         }
 
-        protected getSectorLetter(sector: Sector | null): string {
-            if (sector === null) {
-                return '';
-            }
-
+        protected getSectorLetter(location: Location): string {
             let str = '';
 
-            if (this.nearbyJumpNodes.find((x: JumpNode) => x.location.equals(sector.location))) {
+            if (this.nearbyJumpNodes.find((x: JumpNode) => x.location.equals(location))) {
                 str += 'N';
             }
 
+            if (this.nearbyDockables.find((x: JumpNode) => x.location.equals(location))) {
+                str += 'S';
+            }
             return str;
         }
     }

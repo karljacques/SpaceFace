@@ -6,12 +6,15 @@ import {StatusAPIController} from '@/services/api/ship/StatusAPIController';
 import {Sector} from '@/objects/entity/Sector';
 import {JumpNode} from '@/objects/entity/JumpNode';
 import {JumpAPIController} from '@/services/api/ship/JumpAPIController';
+import {StatusResponseData} from '@/objects/response/StatusResponseData';
+import {Dockable} from '@/objects/entity/Dockable';
 
 @Module({namespaced: true})
 class ShipModule extends VuexContainerModule {
     protected ship: Ship | null = null;
     protected sectors: Sector[] = [];
     protected jumpNodes: JumpNode[] = [];
+    protected dockables: Dockable[] = [];
 
     protected movementApiController: MovementAPIController = this.get(MovementAPIController);
     protected statusApiController: StatusAPIController = this.get(StatusAPIController);
@@ -38,6 +41,10 @@ class ShipModule extends VuexContainerModule {
         return this.jumpNodes;
     }
 
+    get nearbyDockables(): Dockable[] {
+        return this.dockables;
+    }
+
     @Mutation
     public setShip(ship: Ship): void {
         this.ship = ship;
@@ -53,14 +60,20 @@ class ShipModule extends VuexContainerModule {
         this.jumpNodes = jumpNodes;
     }
 
+    @Mutation
+    public setData(data: StatusResponseData): void {
+        this.ship = data.ship;
+        this.jumpNodes = data.jumpNodes;
+        this.sectors = data.sectors;
+        this.dockables = data.dockables;
+    }
+
     @Action
     public async moveInDirection(direction: string): Promise<void> {
         const result = await this.movementApiController.moveInDirection(direction);
 
         if (result.success) {
-            this.context.commit('setShip', result.data.ship);
-            this.context.commit('setSectors', result.data.sectors);
-            this.context.commit('setJumpNodes', result.data.jumpNodes);
+            this.context.commit('setData', result.data);
         }
     }
 
@@ -69,9 +82,7 @@ class ShipModule extends VuexContainerModule {
         const result = await this.jumpApiController.jump(jumpNode);
 
         if (result.success) {
-            this.context.commit('setShip', result.data.ship);
-            this.context.commit('setSectors', result.data.sectors);
-            this.context.commit('setJumpNodes', result.data.jumpNodes);
+            this.context.commit('setData', result.data);
         }
     }
 
@@ -80,9 +91,7 @@ class ShipModule extends VuexContainerModule {
         const result = await this.statusApiController.refresh();
 
         if (result.success) {
-            this.context.commit('setShip', result.data.ship);
-            this.context.commit('setSectors', result.data.sectors);
-            this.context.commit('setJumpNodes', result.data.jumpNodes);
+            this.context.commit('setData', result.data);
         }
     }
 }
