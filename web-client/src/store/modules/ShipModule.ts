@@ -5,7 +5,6 @@ import {MovementAPIController} from '@/services/api/ship/MovementAPIController';
 import {StatusAPIController} from '@/services/api/ship/StatusAPIController';
 import {Sector} from '@/objects/entity/Sector';
 import {JumpNode} from '@/objects/entity/JumpNode';
-import {JumpAPIController} from '@/services/api/ship/JumpAPIController';
 import {StatusResponseData} from '@/objects/response/StatusResponseData';
 import {Dockable} from '@/objects/entity/Dockable';
 
@@ -18,7 +17,6 @@ class ShipModule extends VuexContainerModule {
 
     protected movementApiController: MovementAPIController = this.get(MovementAPIController);
     protected statusApiController: StatusAPIController = this.get(StatusAPIController);
-    protected jumpApiController: JumpAPIController = this.get(JumpAPIController);
 
 
     get shipLoaded(): boolean {
@@ -46,21 +44,6 @@ class ShipModule extends VuexContainerModule {
     }
 
     @Mutation
-    public setShip(ship: Ship): void {
-        this.ship = ship;
-    }
-
-    @Mutation
-    public setSectors(sectors: Sector[]): void {
-        this.sectors = sectors;
-    }
-
-    @Mutation
-    public setJumpNodes(jumpNodes: JumpNode[]): void {
-        this.jumpNodes = jumpNodes;
-    }
-
-    @Mutation
     public setData(data: StatusResponseData): void {
         this.ship = data.ship;
         this.jumpNodes = data.jumpNodes;
@@ -70,7 +53,7 @@ class ShipModule extends VuexContainerModule {
 
     @Action
     public async moveInDirection(direction: string): Promise<void> {
-        const result = await this.movementApiController.moveInDirection(direction);
+        const result = await this.movementApiController.move(direction);
 
         if (result.success) {
             this.context.commit('setData', result.data);
@@ -79,7 +62,25 @@ class ShipModule extends VuexContainerModule {
 
     @Action
     public async jump(jumpNode: JumpNode): Promise<void> {
-        const result = await this.jumpApiController.jump(jumpNode);
+        const result = await this.movementApiController.jump(jumpNode);
+
+        if (result.success) {
+            this.context.commit('setData', result.data);
+        }
+    }
+
+    @Action
+    public async dock(dockable: Dockable): Promise<void> {
+        const result = await this.movementApiController.dock(dockable);
+
+        if (result.success) {
+            this.context.commit('setData', result.data);
+        }
+    }
+
+    @Action
+    public async undock(): Promise<void> {
+        const result = await this.movementApiController.undock();
 
         if (result.success) {
             this.context.commit('setData', result.data);

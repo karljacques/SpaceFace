@@ -10,7 +10,18 @@
             <br>
         </v-col>
         <v-col cols="6">
-            <jump-node-information></jump-node-information>
+            <template v-if="shipLoaded">
+                <template v-if="!currentShip.docked">
+                    <jump-node-information></jump-node-information>
+                    <station-information-container/>
+                </template>
+                <template v-else>
+                    <h1>Docked</h1>
+                    <v-btn @click="undock" color="error">Undock</v-btn>
+                </template>
+
+            </template>
+
         </v-col>
         <v-col>
             <mini-map-container v-if="shipLoaded"></mini-map-container>
@@ -29,11 +40,14 @@
     import GeneralStatus from '@/views/game/components/status/GeneralStatus.vue';
     import MiniMapContainer from '@/views/game/components/navigation/MiniMapContainer.vue';
     import JumpNodeInformation from '@/views/game/components/navigation/JumpNodeInformation.vue';
+    import StationInformationContainer from '@/views/game/components/navigation/StationInformationContainer.vue';
+    import {Ship} from '@/objects/entity/Ship';
 
     const ship = namespace('ship');
 
     @Component({
         components: {
+            StationInformationContainer,
             JumpNodeInformation,
             MiniMapContainer,
             GeneralStatus,
@@ -44,6 +58,12 @@
     export default class PrimaryLayout extends VueContainer {
         @ship.Getter
         protected shipLoaded!: boolean;
+
+        @ship.Getter
+        protected currentShip!: Ship;
+
+        @ship.Action
+        protected undock!: () => void;
     }
 </script>
 

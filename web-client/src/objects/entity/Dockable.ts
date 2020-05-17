@@ -3,7 +3,7 @@ import {Location} from '@/objects/entity/Location';
 export class Dockable {
     private _location!: Location;
 
-    public constructor(protected id: number) {
+    public constructor(protected _id: number) {
     }
 
     get location(): Location {
@@ -16,5 +16,10 @@ export class Dockable {
         dockable._location = Location.create(data.location);
 
         return dockable;
+    }
+
+
+    get id(): number {
+        return this._id;
     }
 }

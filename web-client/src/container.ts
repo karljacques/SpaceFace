@@ -9,7 +9,6 @@ import '@/services/connectivity/HttpClient';
 import '@/services/connectivity/WebSocket';
 import '@/services/api/ship/MovementAPIController';
 import '@/services/api/ship/StatusAPIController';
-import '@/services/api/ship/JumpAPIController';
 
 const container = new Container();
 container.load(buildProviderModule());

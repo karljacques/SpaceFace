@@ -40,7 +40,7 @@ describe('MovementAPIController', () => {
 
         const controller = container.get(MovementAPIController);
 
-        const commandResponsePromise = controller.moveInDirection('direction');
+        const commandResponsePromise = controller.move('direction');
 
         it('should create a CommandResponse object', () => {
             return commandResponsePromise.then((commandResponse: any) => {
@@ -75,7 +75,7 @@ describe('MovementAPIController', () => {
 
         const controller = container.get(MovementAPIController);
 
-        const commandResponsePromise = controller.moveInDirection('direction');
+        const commandResponsePromise = controller.move('direction');
 
         it('should return a failing CommandResponse object', () => {
             return commandResponsePromise.then((commandResponse: any) => {

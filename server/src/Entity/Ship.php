@@ -101,6 +101,10 @@ class Ship implements Locatable
         return $this;
     }
 
+    /**
+     * @Groups({"self"})
+     * @return bool
+     */
     public function isDocked(): bool
     {
         return $this->docked_at !== null;
@@ -123,7 +127,7 @@ class Ship implements Locatable
         return $this->owner;
     }
 
-    public function setOwner(?Character $owner): self
+    public function setOwner(Character $owner): self
     {
         $this->owner = $owner;
 
