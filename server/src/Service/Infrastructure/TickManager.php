@@ -4,23 +4,22 @@
 namespace App\Service\Infrastructure;
 
 
+use App\Entity\ShipRealtimeStatus;
 use App\Messenger\Message\UserSpecificMessage;
 use App\Repository\ShipRepository;
-use Psr\Cache\CacheItemPoolInterface;
+use App\Service\ShipStatusCache;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class TickManager
 {
     private MessageBusInterface $bus;
-    /** Delete Me **/
-    private CacheItemPoolInterface $cache;
-    /** Delete Me **/
+    private ShipStatusCache $cache;
     private ShipRepository $shipRepository;
 
     public function __construct(
         MessageBusInterface $bus,
         ShipRepository $shipRepository,
-        CacheItemPoolInterface $cache
+        ShipStatusCache $cache
     )
     {
         $this->bus = $bus;
@@ -33,29 +32,21 @@ class TickManager
         $ships = $this->shipRepository->findAll();
 
         foreach ($ships as $ship) {
-            $shipKey = sprintf('ship_%s_power', $ship->getId());
-
-            $cacheItem = $this->cache->getItem($shipKey);
+            $cacheItem = $this->cache->getShipStatus($ship);
 
             if (!$cacheItem->isHit()) {
                 continue;
             }
 
-            $power = $cacheItem->get();
+            /** @var ShipRealtimeStatus $status */
+            $status = $cacheItem->get();
 
-            $power = $power + 10;
+            $status->setPower($status->getPower() + 10);
 
-            if ($power >= $ship->getMaxPower()) {
-                $power = $ship->getMaxPower();
-                $this->cache->deleteItem($shipKey);
-            } else {
-                $cacheItem->set($power);
-                $this->cache->save($cacheItem);
-            }
-
+            $this->cache->persist($cacheItem);
             $this->bus->dispatch(new UserSpecificMessage($ship->getOwner()->getUser(), [
                 'event' => 'update',
-                'power' => $power
+                'power' => $status->getPower()
             ]));
         }
 

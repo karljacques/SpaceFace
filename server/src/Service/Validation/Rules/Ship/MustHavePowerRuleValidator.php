@@ -4,16 +4,16 @@
 namespace App\Service\Validation\Rules\Ship;
 
 
+use App\Service\ShipStatusCache;
 use App\Service\Validation\Rules\RuleInterface;
 use App\Service\Validation\Rules\RuleValidatorInterface;
-use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class MustHavePowerRuleValidator implements RuleValidatorInterface
 {
-    private CacheItemPoolInterface $cache;
+    private ShipStatusCache $cache;
 
-    public function __construct(CacheItemPoolInterface $cache)
+    public function __construct(ShipStatusCache $cache)
     {
         $this->cache = $cache;
     }
@@ -24,12 +24,10 @@ class MustHavePowerRuleValidator implements RuleValidatorInterface
             throw new UnexpectedTypeException($rule, MustHavePowerRule::class);
         }
 
-        $shipKey = sprintf("ship_%s_power", $rule->getShip()->getId());
-        $powerItem = $this->cache->getItem($shipKey);
+        $item = $this->cache->getShipStatus($rule->getShip());
+        $power = $item->get()->getPower();
 
-        $power = $powerItem->isHit() ? $powerItem->get() : $rule->getShip()->getMaxPower();
-
-
+        /**  */
         return $rule->getRequiredPower() <= $power;
     }
 }

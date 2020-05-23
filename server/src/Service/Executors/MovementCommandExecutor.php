@@ -4,19 +4,19 @@ namespace App\Service\Executors;
 
 use App\Command\CommandInterface;
 use App\Command\MovementCommand;
+use App\Entity\ShipRealtimeStatus;
 use App\Exception\UnexpectedCommandException;
+use App\Service\ShipStatusCache;
 use App\Service\Validation\Rules\Docking\MustNotBeDockedRule;
 use App\Service\Validation\Rules\Ship\MustHaveFuelRule;
 use App\Service\Validation\Rules\Ship\MustHavePowerRule;
 use App\Service\Validation\Rules\System\MustBeWithinSystemRule;
-use Psr\Cache\CacheItemPoolInterface;
 
 class MovementCommandExecutor extends AbstractCommandExecutor
 {
-    /** Delete Me **/
-    private CacheItemPoolInterface $cache;
+    private ShipStatusCache $cache;
 
-    public function __construct(CacheItemPoolInterface $cache)
+    public function __construct(ShipStatusCache $cache)
     {
         $this->cache = $cache;
     }
@@ -36,14 +36,12 @@ class MovementCommandExecutor extends AbstractCommandExecutor
         $ship->setFuel($ship->getFuel() - $command->getFuelCost());
 
 
-        $cacheItem = $this->cache->getItem(sprintf('ship_%s_power', $ship->getId()));
+        $item = $this->cache->getShipStatus($ship);
+        /** @var ShipRealtimeStatus $status */
+        $status = $item->get();
 
-        if (!$cacheItem->isHit()) {
-            $cacheItem->set($ship->getMaxPower());
-        }
-
-        $cacheItem->set($cacheItem->get() - 100);
-        $this->cache->save($cacheItem);
+        $status->setPower($status->getPower() - 100);
+        $this->cache->persist($item);
     }
 
     protected function getValidationRules(CommandInterface $command): array

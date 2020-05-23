@@ -5,24 +5,25 @@ namespace App\Service\Normalizer;
 
 
 use App\Entity\Ship;
-use Psr\Cache\CacheItemPoolInterface;
+use App\Service\ShipStatusCache;
 use Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class ShipPowerNormalizer implements ContextAwareNormalizerInterface
 {
     private ObjectNormalizer $normalizer;
-    private CacheItemPoolInterface $cache;
+    /** Delete Me **/
+    private ShipStatusCache $shipStatusCache;
 
     /**
      * ShipPowerNormalizer constructor.
      * @param ObjectNormalizer $normalizer
-     * @param CacheItemPoolInterface $cache
+     * @param ShipStatusCache $shipStatusCache
      */
-    public function __construct(ObjectNormalizer $normalizer, CacheItemPoolInterface $cache)
+    public function __construct(ObjectNormalizer $normalizer, ShipStatusCache $shipStatusCache)
     {
         $this->normalizer = $normalizer;
-        $this->cache = $cache;
+        $this->shipStatusCache = $shipStatusCache;
     }
 
     public function supportsNormalization($data, string $format = null, array $context = [])
@@ -45,8 +46,8 @@ class ShipPowerNormalizer implements ContextAwareNormalizerInterface
 
     private function getPower(Ship $ship): int
     {
-        $cacheItem = $this->cache->getItem(sprintf('ship_%s_power', $ship->getId()));
+        $item = $this->shipStatusCache->getShipStatus($ship);
 
-        return $cacheItem->isHit() ? $cacheItem->get() : $ship->getMaxPower();
+        return $item->get()->getPower();
     }
 }
