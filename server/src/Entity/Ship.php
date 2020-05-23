@@ -34,6 +34,7 @@ class Ship implements Locatable
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Dockable", inversedBy="ships")
+     * @Groups({"self"})
      */
     private ?Dockable $docked_at = null;
 

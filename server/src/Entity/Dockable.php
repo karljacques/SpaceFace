@@ -32,6 +32,7 @@ class Dockable implements Locatable
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Component\Market", mappedBy="dockable")
+     * @Groups({"basic"})
      */
     private Collection $markets;
 

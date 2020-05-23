@@ -5,6 +5,7 @@ namespace App\Entity\Join;
 use App\Entity\Commodity;
 use App\Entity\Component\Market;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Join\MarketCommodityRepository")
@@ -15,6 +16,7 @@ class MarketCommodity
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"basic"})
      */
     private int $id;
 
@@ -27,16 +29,19 @@ class MarketCommodity
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Commodity", inversedBy="marketCommodities")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"basic"})
      */
     private Commodity $commodity;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"basic"})
      */
     private ?int $sell;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"basic"})
      */
     private ?int $buy;
 
