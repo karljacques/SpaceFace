@@ -46,6 +46,10 @@ services:
         public: true
         autowire: true
 
+    App\Service\Infrastructure\TickManager:
+        public: true
+        autowire: true
+
     App\Service\Validation\RuleValidatorLocator:
         arguments:
             - !tagged_locator

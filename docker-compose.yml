@@ -59,6 +59,22 @@ services:
         networks:
             - db
             - redis
+
+    php-swoole-tick-server:
+        build: ./php-swoole
+        volumes:
+            - ./server:/var/www:cached
+        depends_on:
+            - db
+            - redis
+        environment:
+            AUTORELOAD_PROGRAMS: "swoole"
+            AUTORELOAD_ANY_FILES: 1
+            MODE: "TICK_SERVER"
+        networks:
+            - db
+            - redis
+
     nginx:
         image: nginx:latest
         ports:

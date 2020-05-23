@@ -18,6 +18,8 @@ $kernel->boot();
 
 $websocket->on("start", function (Swoole\WebSocket\Server $server) {
     echo "Swoole WebSocket Server is started at http://127.0.0.1:9502\n";
+
+
 });
 
 $websocket->on('open', function (Swoole\WebSocket\Server $websocket, Swoole\Http\Request $request) use (&$kernel, $connectionTable) {

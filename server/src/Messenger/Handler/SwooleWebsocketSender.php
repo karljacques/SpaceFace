@@ -13,8 +13,6 @@ class SwooleWebsocketSender implements MessageHandlerInterface
 
     public function __invoke(UserSpecificMessage $message)
     {
-        return;
-
         $data = json_encode(
             [
                 'user_id' => $message->getUser()->getId(),
