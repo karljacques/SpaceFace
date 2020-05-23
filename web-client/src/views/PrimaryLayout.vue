@@ -30,10 +30,9 @@
 </template>
 
 <script lang="ts">
-    import {Component} from 'vue-property-decorator';
+    import {Component, Vue} from 'vue-property-decorator';
 
     import NavigationalControls from '@/views/game/components/navigation/NavigationalControls.vue';
-    import {VueContainer} from '@/VueContainer';
     import NavigationalInformation from '@/views/game/components/navigation/NavigationalInformation.vue';
     import {namespace} from 'vuex-class';
     import GeneralStatus from '@/views/game/components/status/GeneralStatus.vue';
@@ -56,7 +55,7 @@
             NavigationalControls
         },
     })
-    export default class PrimaryLayout extends VueContainer {
+    export default class PrimaryLayout extends Vue {
         @ship.Getter
         protected shipLoaded!: boolean;
 

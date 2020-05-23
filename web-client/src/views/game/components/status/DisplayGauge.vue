@@ -3,12 +3,11 @@
 </template>
 
 <script lang="ts">
-    import {VueContainer} from '@/VueContainer';
     import Component from 'vue-class-component';
-    import {Prop} from 'vue-property-decorator';
+    import {Prop, Vue} from 'vue-property-decorator';
 
     @Component
-    export default class DisplayGauge extends VueContainer {
+    export default class DisplayGauge extends Vue {
         @Prop() protected current!: number;
         @Prop() protected maximum!: number;
 

@@ -7,18 +7,18 @@
 </template>
 
 <script lang="ts">
-    import {VueContainer} from '@/VueContainer';
     import Component from 'vue-class-component';
     import {namespace} from 'vuex-class';
     import {Ship} from '@/objects/entity/Ship';
     import LocationComponent from '@/views/game/components/navigation/LocationComponent.vue';
+    import {Vue} from 'vue-property-decorator';
 
     const ship = namespace('ship');
 
     @Component({
         components: {LocationComponent}
     })
-    export default class NavigationalInformation extends VueContainer {
+    export default class NavigationalInformation extends Vue {
         @ship.Getter
         protected currentShip!: Ship;
 

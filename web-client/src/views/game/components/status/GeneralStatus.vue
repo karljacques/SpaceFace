@@ -11,18 +11,18 @@
 </template>
 
 <script lang="ts">
-    import {VueContainer} from '@/VueContainer';
     import Component from 'vue-class-component';
     import DisplayGauge from '@/views/game/components/status/DisplayGauge.vue';
     import {namespace} from 'vuex-class';
     import {Ship} from '@/objects/entity/Ship';
+    import {Vue} from 'vue-property-decorator';
 
     const ship = namespace('ship');
 
     @Component({
         components: {DisplayGauge}
     })
-    export default class GeneralStatus extends VueContainer {
+    export default class GeneralStatus extends Vue {
         @ship.Getter
         protected currentShip!: Ship;
     }

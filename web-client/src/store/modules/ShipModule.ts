@@ -7,6 +7,12 @@ import {Sector} from '@/objects/entity/Sector';
 import {JumpNode} from '@/objects/entity/JumpNode';
 import {StatusResponseData} from '@/objects/response/StatusResponseData';
 import {Dockable} from '@/objects/entity/Dockable';
+import {WebSocketClient} from '@/services/connectivity/WebSocket';
+import {container} from '@/container';
+
+console.log(container);
+const webSocketClient = container.get<WebSocketClient>(WebSocketClient);
+
 
 @Module({namespaced: true})
 class ShipModule extends VuexContainerModule {
@@ -17,7 +23,6 @@ class ShipModule extends VuexContainerModule {
 
     protected movementApiController: MovementAPIController = this.get(MovementAPIController);
     protected statusApiController: StatusAPIController = this.get(StatusAPIController);
-
 
     get shipLoaded(): boolean {
         return this.ship !== null;
@@ -49,6 +54,11 @@ class ShipModule extends VuexContainerModule {
         this.jumpNodes = data.jumpNodes;
         this.sectors = data.sectors;
         this.dockables = data.dockables;
+    }
+
+    @Mutation
+    public setPower(power: number): void {
+        this.ship.power = power;
     }
 
     @Action

@@ -16,14 +16,13 @@
 </template>
 
 <script lang="ts">
-    import {Component} from 'vue-property-decorator';
-    import {VueContainer} from '@/VueContainer';
+    import {Component, Vue} from 'vue-property-decorator';
     import {namespace} from 'vuex-class';
 
     const ship = namespace('ship');
 
     @Component({})
-    export default class NavigationalControls extends VueContainer {
+    export default class NavigationalControls extends Vue {
         @ship.Action
         public moveInDirection!: (direction: string) => void;
 

@@ -54,6 +54,7 @@ class TickManager
             }
 
             $this->bus->dispatch(new UserSpecificMessage($ship->getOwner()->getUser(), [
+                'event' => 'update',
                 'power' => $power
             ]));
         }

@@ -1,13 +1,16 @@
-import {provide} from 'inversify-binding-decorators';
 import {inject} from 'inversify';
 import {HttpClient} from '@/services/connectivity/HttpClient';
+import {sharedProvide} from '@/sharedProvide';
 
-@provide(WebSocketClient)
+@sharedProvide(WebSocketClient)
 class WebSocketClient {
     protected ws: WebSocket | null = null;
     protected http: HttpClient;
 
+    protected eventMap: Record<string, Array<(data: any) => void>> = {};
+
     public constructor(@inject(HttpClient) http: HttpClient) {
+        console.log('CONSTRUCT');
         this.http = http;
     }
 
@@ -18,6 +21,14 @@ class WebSocketClient {
             this.ws = new WebSocket('ws://localhost:9502/' + token, []);
             console.log('Connection open');
             this.ws.onmessage = (data) => {
+                const response = JSON.parse(data.data);
+                const listeners = this.eventMap[response.event] ?? [];
+                console.log(this.eventMap);
+                console.log(listeners);
+                for (const listener of listeners) {
+                    listener(response);
+                }
+
                 console.log(data);
             };
 
@@ -29,6 +40,14 @@ class WebSocketClient {
         } catch (e) {
             setTimeout(() => this.connect(), 5000);
         }
+    }
+
+    public on(event: string, callback: (data: any) => void): void {
+        if (!this.eventMap[event]) {
+            this.eventMap[event] = [];
+        }
+        this.eventMap[event].push(callback);
+        console.log(this.eventMap);
     }
 
     protected async getTicket(): Promise<string> {
