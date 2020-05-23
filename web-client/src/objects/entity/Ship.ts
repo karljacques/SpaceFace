@@ -4,6 +4,9 @@ export class Ship {
     private _maxFuel: number = 0;
     private _fuel: number = 0;
 
+    private _maxPower: number = 0;
+    private _power: number = 0;
+
     private _docked: boolean = false;
 
     constructor(protected _location: Location) {
@@ -40,5 +43,22 @@ export class Ship {
 
     set docked(value: boolean) {
         this._docked = value;
+    }
+
+
+    get maxPower(): number {
+        return this._maxPower;
+    }
+
+    set maxPower(value: number) {
+        this._maxPower = value;
+    }
+
+    get power(): number {
+        return this._power;
+    }
+
+    set power(value: number) {
+        this._power = value;
     }
 }

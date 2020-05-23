@@ -1,5 +1,18 @@
 version: '3.7'
 services:
+    redis:
+        image: redis
+        ports:
+            - 6379:6379
+        networks:
+            - redis
+
+    redis-insight:
+        image: redislabs/redisinsight
+        ports:
+            - 8001:8001
+        networks:
+            - redis
     db:
         container_name: db
         image: mariadb
@@ -28,6 +41,7 @@ services:
             MODE: "HTTP"
         networks:
             - db
+            - redis
 
     php-swoole-websocket:
         container_name: php-swoole-websocket
@@ -44,8 +58,7 @@ services:
             MODE: "WEBSOCKET"
         networks:
             - db
-
-
+            - redis
     nginx:
         image: nginx:latest
         ports:
@@ -69,3 +82,4 @@ services:
 networks:
     db:
     php:
+    redis:

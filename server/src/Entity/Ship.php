@@ -50,6 +50,12 @@ class Ship implements Locatable
     private Character $owner;
 
     /**
+     * @ORM\Column(type="integer")
+     * @Groups({"basic"})
+     */
+    private int $maxPower;
+
+    /**
      * @Groups({"basic"})
      * @return int
      */
@@ -131,6 +137,18 @@ class Ship implements Locatable
     public function setOwner(Character $owner): self
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function getMaxPower(): ?int
+    {
+        return $this->maxPower;
+    }
+
+    public function setMaxPower(int $maxPower): self
+    {
+        $this->maxPower = $maxPower;
 
         return $this;
     }

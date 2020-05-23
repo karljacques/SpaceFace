@@ -1,20 +1,20 @@
 {
-    "_readme": [
-        "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
-        "This file is @generated automatically"
-    ],
-    "content-hash": "6e8f8b7a1f72a8495a1330020a3b7e09",
-    "packages": [
-        {
-            "name": "doctrine/annotations",
-            "version": "1.10.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/doctrine/annotations.git",
-                "reference": "b9d758e831c70751155c698c2f7df4665314a1cb"
-            },
-            "dist": {
+  "_readme": [
+    "This file locks the dependencies of your project to a known state",
+    "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+    "This file is @generated automatically"
+  ],
+  "content-hash": "506a4506ad844f26f2a238fe36ae9579",
+  "packages": [
+    {
+      "name": "doctrine/annotations",
+      "version": "1.10.2",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/doctrine/annotations.git",
+        "reference": "b9d758e831c70751155c698c2f7df4665314a1cb"
+      },
+      "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/doctrine/annotations/zipball/b9d758e831c70751155c698c2f7df4665314a1cb",
                 "reference": "b9d758e831c70751155c698c2f7df4665314a1cb",
@@ -1862,26 +1862,76 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Mike van Riel",
-                    "email": "me@mikevanriel.com"
-                }
-            ],
-            "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
-            "time": "2020-02-18T18:59:58+00:00"
+          "authors": [
+            {
+              "name": "Mike van Riel",
+              "email": "me@mikevanriel.com"
+            }
+          ],
+          "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
+          "time": "2020-02-18T18:59:58+00:00"
         },
+    {
+      "name": "predis/predis",
+      "version": "v1.1.1",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/nrk/predis.git",
+        "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/nrk/predis/zipball/f0210e38881631afeafb56ab43405a92cafd9fd1",
+        "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1",
+        "shasum": ""
+      },
+      "require": {
+        "php": ">=5.3.9"
+      },
+      "require-dev": {
+        "phpunit/phpunit": "~4.8"
+      },
+      "suggest": {
+        "ext-curl": "Allows access to Webdis when paired with phpiredis",
+        "ext-phpiredis": "Allows faster serialization and deserialization of the Redis protocol"
+      },
+      "type": "library",
+      "autoload": {
+        "psr-4": {
+          "Predis\\": "src/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "MIT"
+      ],
+      "authors": [
         {
-            "name": "psr/cache",
-            "version": "1.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-fig/cache.git",
-                "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/cache/zipball/d11b50ad223250cf17b86e38383413f5a6764bf8",
+          "name": "Daniele Alessandri",
+          "email": "suppakilla@gmail.com",
+          "homepage": "http://clorophilla.net"
+        }
+      ],
+      "description": "Flexible and feature-complete Redis client for PHP and HHVM",
+      "homepage": "http://github.com/nrk/predis",
+      "keywords": [
+        "nosql",
+        "predis",
+        "redis"
+      ],
+      "time": "2016-06-16T16:22:20+00:00"
+    },
+    {
+      "name": "psr/cache",
+      "version": "1.0.1",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/php-fig/cache.git",
+        "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/php-fig/cache/zipball/d11b50ad223250cf17b86e38383413f5a6764bf8",
                 "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8",
                 "shasum": ""
             },

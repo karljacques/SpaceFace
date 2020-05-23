@@ -3,6 +3,9 @@
         <v-card-text>
             Fuel:
             <display-gauge :current="currentShip.fuel" :maximum="currentShip.maxFuel"/>
+            <br>
+            Power:
+            <display-gauge :current="currentShip.power" :maximum="currentShip.maxPower"/>
         </v-card-text>
     </v-card>
 </template>

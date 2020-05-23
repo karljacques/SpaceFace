@@ -16,6 +16,10 @@ export class StatusResponseFactory {
 
         ship.fuel = shipData.fuel;
         ship.maxFuel = shipData.maxFuel;
+
+        ship.power = shipData.power;
+        ship.maxPower = shipData.maxPower;
+
         ship.docked = shipData.docked;
 
         const sectors: Sector[] = data.system.sectors.map((x: any): Sector => {

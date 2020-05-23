@@ -31,7 +31,8 @@ class ShipFixtures extends Fixture implements DependentFixtureInterface
                 ->setX(1)
                 ->setY(1)
                 ->setMaxFuel($factory->numberBetween(100, 200))
-                ->setFuel($ship->getMaxFuel());
+                ->setFuel($ship->getMaxFuel())
+                ->setMaxPower(1000);
 
             $storage = new Storage();
             $storage->setCapacity(100);
