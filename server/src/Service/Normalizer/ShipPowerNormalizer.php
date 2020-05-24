@@ -5,7 +5,7 @@ namespace App\Service\Normalizer;
 
 
 use App\Entity\Ship;
-use App\Service\ShipStatusCache;
+use App\Service\ShipRealtimeStatusService;
 use Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
@@ -13,14 +13,14 @@ class ShipPowerNormalizer implements ContextAwareNormalizerInterface
 {
     private ObjectNormalizer $normalizer;
     /** Delete Me **/
-    private ShipStatusCache $shipStatusCache;
+    private ShipRealtimeStatusService $shipStatusCache;
 
     /**
      * ShipPowerNormalizer constructor.
      * @param ObjectNormalizer $normalizer
-     * @param ShipStatusCache $shipStatusCache
+     * @param ShipRealtimeStatusService $shipStatusCache
      */
-    public function __construct(ObjectNormalizer $normalizer, ShipStatusCache $shipStatusCache)
+    public function __construct(ObjectNormalizer $normalizer, ShipRealtimeStatusService $shipStatusCache)
     {
         $this->normalizer = $normalizer;
         $this->shipStatusCache = $shipStatusCache;
@@ -46,8 +46,8 @@ class ShipPowerNormalizer implements ContextAwareNormalizerInterface
 
     private function getPower(Ship $ship): int
     {
-        $item = $this->shipStatusCache->getShipStatus($ship);
+        $status = $this->shipStatusCache->getShipStatus($ship);
 
-        return $item->get()->getPower();
+        return $status->getPower();
     }
 }

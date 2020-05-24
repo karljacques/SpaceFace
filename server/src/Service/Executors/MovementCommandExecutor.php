@@ -4,9 +4,8 @@ namespace App\Service\Executors;
 
 use App\Command\CommandInterface;
 use App\Command\MovementCommand;
-use App\Entity\ShipRealtimeStatus;
 use App\Exception\UnexpectedCommandException;
-use App\Service\ShipStatusCache;
+use App\Service\ShipRealtimeStatusService;
 use App\Service\Validation\Rules\Docking\MustNotBeDockedRule;
 use App\Service\Validation\Rules\Ship\MustHaveFuelRule;
 use App\Service\Validation\Rules\Ship\MustHavePowerRule;
@@ -14,11 +13,11 @@ use App\Service\Validation\Rules\System\MustBeWithinSystemRule;
 
 class MovementCommandExecutor extends AbstractCommandExecutor
 {
-    private ShipStatusCache $cache;
+    private ShipRealtimeStatusService $statusService;
 
-    public function __construct(ShipStatusCache $cache)
+    public function __construct(ShipRealtimeStatusService $statusService)
     {
-        $this->cache = $cache;
+        $this->statusService = $statusService;
     }
 
     /**
@@ -36,12 +35,10 @@ class MovementCommandExecutor extends AbstractCommandExecutor
         $ship->setFuel($ship->getFuel() - $command->getFuelCost());
 
 
-        $item = $this->cache->getShipStatus($ship);
-        /** @var ShipRealtimeStatus $status */
-        $status = $item->get();
+        $status = $this->statusService->getShipStatus($ship);
 
         $status->setPower($status->getPower() - 100);
-        $this->cache->persist($item);
+        $this->statusService->persist($status);
     }
 
     protected function getValidationRules(CommandInterface $command): array

@@ -49,4 +49,14 @@ class ShipRealtimeStatus
     {
         $this->ship = $ship;
     }
+
+    public static function createFromShip(Ship $ship): ShipRealtimeStatus
+    {
+        $status = new static();
+
+        $status->setShip($ship);
+        $status->setPower($ship->getMaxPower());
+
+        return $status;
+    }
 }

@@ -4,22 +4,21 @@
 namespace App\Service\Infrastructure;
 
 
-use App\Entity\ShipRealtimeStatus;
 use App\Messenger\Message\UserSpecificMessage;
 use App\Repository\ShipRepository;
-use App\Service\ShipStatusCache;
+use App\Service\ShipRealtimeStatusService;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class TickManager
 {
     private MessageBusInterface $bus;
-    private ShipStatusCache $cache;
+    private ShipRealtimeStatusService $cache;
     private ShipRepository $shipRepository;
 
     public function __construct(
         MessageBusInterface $bus,
         ShipRepository $shipRepository,
-        ShipStatusCache $cache
+        ShipRealtimeStatusService $cache
     )
     {
         $this->bus = $bus;
@@ -32,18 +31,15 @@ class TickManager
         $ships = $this->shipRepository->findAll();
 
         foreach ($ships as $ship) {
-            $cacheItem = $this->cache->getShipStatus($ship);
+            $status = $this->cache->getShipStatus($ship, false);
 
-            if (!$cacheItem->isHit()) {
+            if (null === $status) {
                 continue;
             }
 
-            /** @var ShipRealtimeStatus $status */
-            $status = $cacheItem->get();
-
             $status->setPower(min($status->getPower() + (0.01 * $milliseconds), $ship->getMaxPower()));
 
-            $this->cache->persist($cacheItem);
+            $this->cache->persist($status);
             $this->bus->dispatch(new UserSpecificMessage($ship->getOwner()->getUser(), [
                 'event' => 'update',
                 'power' => $status->getPower()
