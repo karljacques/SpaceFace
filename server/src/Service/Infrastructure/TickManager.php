@@ -26,7 +26,7 @@ class TickManager
         $this->shipRepository = $shipRepository;
     }
 
-    public function tick(int $milliseconds)
+    public function tick()
     {
         $ships = $this->shipRepository->findAll();
 
@@ -37,7 +37,9 @@ class TickManager
                 continue;
             }
 
-            $status->setPower(min($status->getPower() + (0.01 * $milliseconds), $ship->getMaxPower()));
+            $elapsedTime = microtime(true) - $status->getLastUpdate();
+
+            $status->setPower(min($status->getPower() + (20 * $elapsedTime), $ship->getMaxPower()));
 
             $this->cache->persist($status);
             $this->bus->dispatch(new UserSpecificMessage($ship->getOwner()->getUser(), [

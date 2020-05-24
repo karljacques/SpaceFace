@@ -9,6 +9,7 @@ use App\Service\ShipRealtimeStatusService;
 use App\Service\Validation\Rules\Docking\MustNotBeDockedRule;
 use App\Service\Validation\Rules\Ship\MustHaveFuelRule;
 use App\Service\Validation\Rules\Ship\MustHavePowerRule;
+use App\Service\Validation\Rules\Ship\MustNotBeInCooldownRule;
 use App\Service\Validation\Rules\System\MustBeWithinSystemRule;
 
 class MovementCommandExecutor extends AbstractCommandExecutor
@@ -38,6 +39,8 @@ class MovementCommandExecutor extends AbstractCommandExecutor
         $status = $this->statusService->getShipStatus($ship);
 
         $status->setPower($status->getPower() - 100);
+        $status->setMoveCooldownExpires(microtime(true) + 1);
+
         $this->statusService->persist($status);
     }
 
@@ -55,7 +58,8 @@ class MovementCommandExecutor extends AbstractCommandExecutor
             new MustNotBeDockedRule($ship),
             new MustHaveFuelRule($ship, $fuelRequired),
             new MustBeWithinSystemRule($command->getProposedLocation()),
-            new MustHavePowerRule($ship, 100)
+            new MustHavePowerRule($ship, 100),
+            new MustNotBeInCooldownRule($ship)
         ];
     }
 }

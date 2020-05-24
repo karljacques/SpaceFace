@@ -49,6 +49,8 @@ class ShipRealtimeStatusService
     {
         $key = $this->getCacheKeyForShip($status->getShip());
 
+        $status->setLastUpdate(microtime(true));
+
         try {
             if ($this->pool->hasItem($key)) {
                 if ($status->isMax()) {
