@@ -1,5 +1,5 @@
 <template>
-    <span :style="{color}">{{ this.current }}/{{ this.maximum }}</span>
+    <span :style="{color}">{{ parseInt(this.current) }}/{{ this.maximum }}</span>
 </template>
 
 <script lang="ts">

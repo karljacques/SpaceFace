@@ -7,20 +7,20 @@ namespace App\Entity;
 class ShipRealtimeStatus
 {
     protected ?Ship $ship;
-    protected int $power = 0;
+    protected float $power = 0;
 
     /**
-     * @return int
+     * @return float
      */
-    public function getPower(): int
+    public function getPower(): float
     {
         return $this->power;
     }
 
     /**
-     * @param int $power
+     * @param float $power
      */
-    public function setPower(int $power): void
+    public function setPower(float $power): void
     {
         $this->power = $power;
     }
@@ -34,7 +34,7 @@ class ShipRealtimeStatus
 
     public function isMax(): bool
     {
-        return $this->power === $this->ship->getMaxPower();
+        return $this->power >= $this->ship->getMaxPower();
     }
 
     public function getShip(): Ship

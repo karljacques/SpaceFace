@@ -10,7 +10,6 @@ class WebSocketClient {
     protected eventMap: Record<string, Array<(data: any) => void>> = {};
 
     public constructor(@inject(HttpClient) http: HttpClient) {
-        console.log('CONSTRUCT');
         this.http = http;
     }
 
@@ -23,13 +22,11 @@ class WebSocketClient {
             this.ws.onmessage = (data) => {
                 const response = JSON.parse(data.data);
                 const listeners = this.eventMap[response.event] ?? [];
-                console.log(this.eventMap);
-                console.log(listeners);
+
                 for (const listener of listeners) {
                     listener(response);
                 }
 
-                console.log(data);
             };
 
             this.ws.onclose = () => {
@@ -47,7 +44,6 @@ class WebSocketClient {
             this.eventMap[event] = [];
         }
         this.eventMap[event].push(callback);
-        console.log(this.eventMap);
     }
 
     protected async getTicket(): Promise<string> {
