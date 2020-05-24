@@ -53,8 +53,6 @@ services:
         depends_on:
             - db
         environment:
-            AUTORELOAD_PROGRAMS: "swoole"
-            AUTORELOAD_ANY_FILES: 1
             MODE: "WEBSOCKET"
         networks:
             - db
