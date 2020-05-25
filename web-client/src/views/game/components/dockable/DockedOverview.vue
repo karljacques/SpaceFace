@@ -2,7 +2,7 @@
     <v-card>
         <v-card-title>Docked</v-card-title>
         <v-card-text>
-            <v-btn @click="undock" color="error">Undock</v-btn>
+            <v-btn :disabled="isCooldownActive" @click="undock" color="error">Undock</v-btn>
         </v-card-text>
     </v-card>
 </template>
@@ -16,6 +16,9 @@
 
     @Component({})
     export default class DockedOverview extends Vue {
+
+        @ship.Getter
+        protected isCooldownActive!: boolean;
 
         @ship.Action
         protected undock!: () => void;

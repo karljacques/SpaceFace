@@ -8,6 +8,8 @@ use App\Command\CommandInterface;
 use App\Command\UndockCommand;
 use App\Exception\UnexpectedCommandException;
 use App\Service\Validation\Rules\Docking\MustBeDockedRule;
+use App\Service\Validation\Rules\Ship\MustHavePowerRule;
+use App\Service\Validation\Rules\Ship\MustNotBeInCooldownRule;
 
 class UndockCommandExecutor extends AbstractCommandExecutor
 {
@@ -20,6 +22,13 @@ class UndockCommandExecutor extends AbstractCommandExecutor
         $ship = $command->getShip();
 
         $ship->setDockedAt(null);
+
+        $status = $this->getRealtimeStatus($ship);
+
+        $status->applyCooldown(2)
+            ->usePower(100);
+
+        $this->persistRealtimeStatus($status);
     }
 
     protected function getValidationRules(CommandInterface $command): array
@@ -31,7 +40,9 @@ class UndockCommandExecutor extends AbstractCommandExecutor
         $ship = $command->getShip();
 
         return [
-            new MustBeDockedRule($ship)
+            new MustBeDockedRule($ship),
+            new MustNotBeInCooldownRule($ship),
+            new MustHavePowerRule($ship, 100),
         ];
     }
 }

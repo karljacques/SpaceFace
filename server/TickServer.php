@@ -6,7 +6,7 @@ use App\Service\Infrastructure\TickManager;
 $kernel = new Kernel($_SERVER['APP_ENV'], (bool)$_SERVER['APP_DEBUG']);
 $kernel->boot();
 
-const TICK_TIME = 10;
+const TICK_TIME = 200;
 
 Swoole\Timer::tick(TICK_TIME, function (int $timerId, array $params) {
     /** @var Kernel $kernel */

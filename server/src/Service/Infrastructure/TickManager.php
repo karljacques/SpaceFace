@@ -41,6 +41,13 @@ class TickManager
 
             $status->setPower(min($status->getPower() + (20 * $elapsedTime), $ship->getMaxPower()));
 
+            if ($status->getMoveCooldownExpires() && ($status->getMoveCooldownExpires() <= microtime(true))) {
+                $this->bus->dispatch(new UserSpecificMessage($ship->getOwner()->getUser(), [
+                    'event' => 'cooldownExpired'
+                ]));
+
+                $status->setMoveCooldownExpires(null);
+            }
             $this->cache->persist($status);
             $this->bus->dispatch(new UserSpecificMessage($ship->getOwner()->getUser(), [
                 'event' => 'update',

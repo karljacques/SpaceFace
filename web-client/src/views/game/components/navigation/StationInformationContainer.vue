@@ -5,7 +5,7 @@
             <v-card v-for="dockable in dockablesInSector">
                 <v-card-title></v-card-title>
                 <v-card-text>
-                    <v-btn @click="dock(dockable)" color="warning">Dock</v-btn>
+                    <v-btn :disabled="isCooldownActive" @click="dock(dockable)" color="warning">Dock</v-btn>
                 </v-card-text>
             </v-card>
         </v-card-text>
@@ -23,6 +23,9 @@
 
     @Component
     export default class StationInformationContainer extends Vue {
+        @ship.Getter
+        protected isCooldownActive!: boolean;
+
         @ship.Getter
         protected nearbyDockables!: Dockable[];
 

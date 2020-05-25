@@ -7,12 +7,6 @@ import {Sector} from '@/objects/entity/Sector';
 import {JumpNode} from '@/objects/entity/JumpNode';
 import {StatusResponseData} from '@/objects/response/StatusResponseData';
 import {Dockable} from '@/objects/entity/Dockable';
-import {WebSocketClient} from '@/services/connectivity/WebSocket';
-import {container} from '@/container';
-
-console.log(container);
-const webSocketClient = container.get<WebSocketClient>(WebSocketClient);
-
 
 @Module({namespaced: true})
 class ShipModule extends VuexContainerModule {
@@ -21,11 +15,17 @@ class ShipModule extends VuexContainerModule {
     protected jumpNodes: JumpNode[] = [];
     protected dockables: Dockable[] = [];
 
+    protected cooldown: boolean = false;
+
     protected movementApiController: MovementAPIController = this.get(MovementAPIController);
     protected statusApiController: StatusAPIController = this.get(StatusAPIController);
 
     get shipLoaded(): boolean {
         return this.ship !== null;
+    }
+
+    get isCooldownActive(): boolean {
+        return this.cooldown;
     }
 
     get currentShip(): Ship {
@@ -58,7 +58,14 @@ class ShipModule extends VuexContainerModule {
 
     @Mutation
     public setPower(power: number): void {
-        this.ship.power = power;
+        if (this.ship) {
+            this.ship.power = power;
+        }
+    }
+
+    @Mutation
+    public setCooldown(active: boolean): void {
+        this.cooldown = active;
     }
 
     @Action
@@ -67,6 +74,7 @@ class ShipModule extends VuexContainerModule {
 
         if (result.success) {
             this.context.commit('setData', result.data);
+            this.context.commit('setCooldown', true);
         }
     }
 
@@ -76,6 +84,8 @@ class ShipModule extends VuexContainerModule {
 
         if (result.success) {
             this.context.commit('setData', result.data);
+            this.context.commit('setCooldown', true);
+
         }
     }
 
@@ -85,6 +95,7 @@ class ShipModule extends VuexContainerModule {
 
         if (result.success) {
             this.context.commit('setData', result.data);
+            this.context.commit('setCooldown', true);
         }
     }
 
@@ -94,6 +105,7 @@ class ShipModule extends VuexContainerModule {
 
         if (result.success) {
             this.context.commit('setData', result.data);
+            this.context.commit('setCooldown', true);
         }
     }
 

@@ -21,7 +21,7 @@ class EntityManagerConnectionSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::REQUEST => 'onRequest'
+            KernelEvents::REQUEST => ['onRequest', 9]
         ];
     }
 
@@ -30,10 +30,13 @@ class EntityManagerConnectionSubscriber implements EventSubscriberInterface
         $connection = $this->entityManager->getConnection();
 
         if ($connection->ping()) {
+            dump('ping success');
             return;
         }
 
         $connection->close();
         $connection->connect();
+
+        dump('reconnected');
     }
 }

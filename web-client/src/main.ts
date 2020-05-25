@@ -23,3 +23,7 @@ webSocketClient.on('update', (data: any) => {
 
     store.commit('ship/setPower', power);
 });
+
+webSocketClient.on('cooldownExpired', (data: any) => {
+    store.commit('ship/setCooldown', false);
+});

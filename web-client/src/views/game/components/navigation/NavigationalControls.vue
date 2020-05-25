@@ -2,14 +2,26 @@
     <v-card width="230">
         <v-card-text>
             <div style="text-align: center">
-                <v-btn @click="onClickDirection('up')" icon large><i class="fa fa-3x fa-caret-up"></i></v-btn>
+                <v-btn :disabled="movementDisabled" :style="{visibility: getVisibility('up')}"
+                       @click="onClickDirection('up')" icon
+                       large>
+                    <i class="fa fa-3x fa-caret-up"></i></v-btn>
                 <br>
-                <v-btn @click="onClickDirection('left')" icon large><i class="fa fa-3x fa-caret-left"></i></v-btn>
-                <v-btn icon large><i class="fa fa fa-square"></i></v-btn>
+                <v-btn :disabled="movementDisabled" :style="{visibility: getVisibility('left')}"
+                       @click="onClickDirection('left')" icon
+                       large>
+                    <i class="fa fa-3x fa-caret-left"></i></v-btn>
+                <v-btn @click="refresh" icon large><i class="fa fa fa-square"></i></v-btn>
 
-                <v-btn @click="onClickDirection('right')" icon large><i class="fa fa-3x fa-caret-right"></i></v-btn>
+                <v-btn :disabled="movementDisabled" :style="{visibility: getVisibility('right')}"
+                       @click="onClickDirection('right')" icon
+                       large>
+                    <i class="fa fa-3x fa-caret-right"></i></v-btn>
                 <br>
-                <v-btn @click="onClickDirection('down')" icon large><i class="fa fa-3x fa-caret-down"></i></v-btn>
+                <v-btn :disabled="movementDisabled" :style="{visibility: getVisibility('down')}"
+                       @click="onClickDirection('down')" icon
+                       large>
+                    <i class="fa fa-3x fa-caret-down"></i></v-btn>
             </div>
         </v-card-text>
     </v-card>
@@ -18,21 +30,38 @@
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
     import {namespace} from 'vuex-class';
+    import {Ship} from '@/objects/entity/Ship';
 
     const ship = namespace('ship');
 
     @Component({})
     export default class NavigationalControls extends Vue {
         @ship.Action
-        public moveInDirection!: (direction: string) => void;
+        protected moveInDirection!: (direction: string) => void;
+
+        @ship.Action
+        protected refresh!: () => void;
+
+        @ship.Getter
+        protected isCooldownActive!: boolean
+
+        @ship.Getter
+        protected currentShip!: Ship
 
         protected async onClickDirection(direction: string) {
             this.moveInDirection(direction);
         }
 
-        // protected async refreshStatus() {
-        //     const response = await this.http.get('/status');
-        //     // this.updateFromServer(response.data.data);
-        // }
+        get movementDisabled(): boolean {
+            return this.isCooldownActive || this.currentShip.power < 100 || this.currentShip.docked;
+        }
+
+        protected getVisibility(direction: string): string {
+            if (this.currentShip.docked) {
+                return 'hidden';
+            }
+
+            return 'visible';
+        }
     }
 </script>

@@ -10,7 +10,7 @@ class ShipRealtimeStatus
 
     protected float $lastUpdate = 0;
 
-    protected float $moveCooldownExpires = 0;
+    protected ?float $moveCooldownExpires = null;
     protected float $power = 0;
 
     /**
@@ -19,6 +19,20 @@ class ShipRealtimeStatus
     public function getPower(): float
     {
         return $this->power;
+    }
+
+    public function usePower(int $power): self
+    {
+        $this->power -= $power;
+
+        return $this;
+    }
+
+    public function applyCooldown(float $seconds): self
+    {
+        $this->moveCooldownExpires = microtime(true) + $seconds;
+
+        return $this;
     }
 
     /**
@@ -41,7 +55,7 @@ class ShipRealtimeStatus
     public function isMax(): bool
     {
         return $this->power >= $this->ship->getMaxPower()
-            && $this->getMoveCooldownExpires() < microtime(true);
+            && $this->getMoveCooldownExpires() === null;
     }
 
     public function getShip(): Ship
@@ -84,9 +98,9 @@ class ShipRealtimeStatus
     }
 
     /**
-     * @return float|int
+     * @return float
      */
-    public function getMoveCooldownExpires()
+    public function getMoveCooldownExpires(): ?float
     {
         return $this->moveCooldownExpires;
     }
@@ -94,7 +108,7 @@ class ShipRealtimeStatus
     /**
      * @param float|int $moveCooldownExpires
      */
-    public function setMoveCooldownExpires($moveCooldownExpires): void
+    public function setMoveCooldownExpires(?float $moveCooldownExpires): void
     {
         $this->moveCooldownExpires = $moveCooldownExpires;
     }

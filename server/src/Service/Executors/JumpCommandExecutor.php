@@ -9,6 +9,8 @@ use App\Command\JumpCommand;
 use App\Exception\UnexpectedCommandException;
 use App\Service\Validation\Rules\Docking\MustNotBeDockedRule;
 use App\Service\Validation\Rules\Generic\MustHaveSameLocationRule;
+use App\Service\Validation\Rules\Ship\MustHavePowerRule;
+use App\Service\Validation\Rules\Ship\MustNotBeInCooldownRule;
 
 class JumpCommandExecutor extends AbstractCommandExecutor
 {
@@ -19,6 +21,14 @@ class JumpCommandExecutor extends AbstractCommandExecutor
         }
 
         $command->getShip()->setLocation($command->getNode()->getExitLocation());
+
+        $ship = $command->getShip();
+
+        $status = $this->getRealtimeStatus($ship);
+        $status->applyCooldown(5)
+            ->usePower(500);
+
+        $this->persistRealtimeStatus($status);
     }
 
     protected function getValidationRules(CommandInterface $command): array
@@ -32,7 +42,9 @@ class JumpCommandExecutor extends AbstractCommandExecutor
 
         return [
             new MustNotBeDockedRule($ship),
-            new MustHaveSameLocationRule($ship, $node)
+            new MustHaveSameLocationRule($ship, $node),
+            new MustNotBeInCooldownRule($ship),
+            new MustHavePowerRule($ship, 500)
         ];
     }
 }

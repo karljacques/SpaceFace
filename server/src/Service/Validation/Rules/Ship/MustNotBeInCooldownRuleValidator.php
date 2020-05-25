@@ -28,6 +28,6 @@ class MustNotBeInCooldownRuleValidator implements RuleValidatorInterface
 
         $status = $this->realtimeStatusService->getShipStatus($ship);
 
-        return $status->getMoveCooldownExpires() < microtime(true);
+        return $status->getMoveCooldownExpires() === null || $status->getMoveCooldownExpires() < microtime(true);
     }
 }

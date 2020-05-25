@@ -7,7 +7,7 @@
                 <v-card-text>
                     <h3>Destination</h3>
                     <location-component :location="node.exitLocation"></location-component>
-                    <v-btn @click="jump(node)" color="warning">Jump</v-btn>
+                    <v-btn :disabled="isCooldownActive" @click="jump(node)" color="warning">Jump</v-btn>
                 </v-card-text>
             </v-card>
         </v-card-text>
@@ -27,6 +27,9 @@
         components: {LocationComponent}
     })
     export default class JumpNodeInformation extends Vue {
+        @ship.Getter
+        protected isCooldownActive!: boolean;
+
         @ship.Getter
         protected nearbyJumpNodes!: JumpNode[];
 

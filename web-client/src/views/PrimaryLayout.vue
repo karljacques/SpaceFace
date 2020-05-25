@@ -1,16 +1,16 @@
 <template>
-    <v-row>
+    <v-row v-if="shipLoaded">
         <v-col align="right">
 
             <navigational-controls></navigational-controls>
             <br>
-            <navigational-information v-if="shipLoaded"></navigational-information>
+            <navigational-information></navigational-information>
             <br>
-            <general-status v-if="shipLoaded"></general-status>
+            <general-status></general-status>
             <br>
         </v-col>
         <v-col cols="6">
-            <template v-if="shipLoaded">
+            <template>
                 <template v-if="!currentShip.docked">
                     <jump-node-information></jump-node-information>
                     <station-information-container/>
@@ -23,7 +23,7 @@
 
         </v-col>
         <v-col>
-            <mini-map-container v-if="shipLoaded"></mini-map-container>
+            <mini-map-container></mini-map-container>
 
         </v-col>
     </v-row>

@@ -5,7 +5,10 @@ namespace App\Service\Executors;
 
 
 use App\Command\CommandInterface;
+use App\Entity\Ship;
+use App\Entity\ShipRealtimeStatus;
 use App\Exception\UserActionException;
+use App\Service\ShipRealtimeStatusService;
 use App\Service\Validation\RuleValidatorLocator;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
 use Symfony\Contracts\Service\ServiceSubscriberTrait;
@@ -48,5 +51,20 @@ abstract class AbstractCommandExecutor implements ServiceSubscriberInterface
     public function ruleValidatorLocator(): RuleValidatorLocator
     {
         return $this->container->get(__METHOD__);
+    }
+
+    protected function shipRealtimeStatusService(): ShipRealtimeStatusService
+    {
+        return $this->container->get(__METHOD__);
+    }
+
+    protected function getRealtimeStatus(Ship $ship): ShipRealtimeStatus
+    {
+        return $this->shipRealtimeStatusService()->getShipStatus($ship);
+    }
+
+    protected function persistRealtimeStatus(ShipRealtimeStatus $status): void
+    {
+        $this->shipRealtimeStatusService()->persist($status);
     }
 }
