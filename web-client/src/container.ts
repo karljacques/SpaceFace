@@ -7,6 +7,7 @@ import {HttpClient} from '@/services/connectivity/HttpClient';
 
 import '@/services/api/ship/MovementAPIController';
 import '@/services/api/ship/StatusAPIController';
+import '@/services/api/economy/MarketplaceAPIController';
 import {WebSocketClient} from '@/services/connectivity/WebSocket';
 
 const container = new Container();

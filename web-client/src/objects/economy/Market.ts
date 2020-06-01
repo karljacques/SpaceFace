@@ -1,12 +1,16 @@
 import {MarketCommodity} from '@/objects/economy/MarketCommodity';
 
 export class Market {
-    protected marketCommodities: MarketCommodity[] = [];
+    private _marketCommodities: MarketCommodity[] = [];
 
-    public static create(): Market {
+    get marketCommodities(): MarketCommodity[] {
+        return this._marketCommodities;
+    }
+
+    public static create(data: any): Market {
         const market = new Market();
 
-        market.marketCommodities = [];
+        market._marketCommodities = data.marketCommodities.map((x: any) => MarketCommodity.create(x));
 
         return market;
     }
