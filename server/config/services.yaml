@@ -46,10 +46,13 @@ services:
         public: true
         autowire: true
 
-    App\Service\Validation\Command\Validator\RuleLocator:
+    App\Service\Infrastructure\TickManager:
+        public: true
+        autowire: true
+
+    App\Service\Validation\RuleValidatorLocator:
         arguments:
             - !tagged_locator
                 tag: 'app.rule_validator'
-
 
 

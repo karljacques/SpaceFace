@@ -4,6 +4,10 @@ RUN mkdir -p /var/symfony/dev/cache
 RUN chmod 777 /var/symfony/dev/cache
 RUN docker-php-ext-install pdo_mysql
 
+RUN pecl install -o -f redis \
+&&  rm -rf /tmp/pear \
+&&  docker-php-ext-enable redis
+
 RUN pecl install xdebug
 RUN docker-php-ext-enable xdebug
 RUN echo 'xdebug.remote_port=9000' >> /usr/local/etc/php/php.ini

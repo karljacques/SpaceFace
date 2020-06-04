@@ -5,7 +5,7 @@ namespace App\EventListener;
 
 
 use App\Exception\UserActionException;
-use App\Service\Validation\Command\UserActionViolation;
+use App\Service\Executors\UserActionViolation;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 

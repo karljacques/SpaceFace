@@ -1,24 +1,29 @@
 <template>
-    <div id="app" class="container-fluid">
-        <router-view></router-view>
-    </div>
+    <v-app id="inspire">
+        <v-content>
+            <v-container>
+                <router-view></router-view>
+            </v-container>
+        </v-content>
+    </v-app>
 </template>
 
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
+    import {namespace} from 'vuex-class';
 
-    @Component({})
+    const ship = namespace('ship');
+
+    @Component({
+    })
     export default class App extends Vue {
+        @ship.Action
+        protected refresh!: () => void;
 
+        public created() {
+            this.refresh();
+
+            this.$vuetify.theme.dark = true;
+        }
     }
 </script>
-
-<style lang="scss">
-    #app {
-        font-family: Avenir, Helvetica, Arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-
-        margin-top: 60px;
-    }
-</style>

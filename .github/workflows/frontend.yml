@@ -1,0 +1,28 @@
+name: Front-end
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./web-client
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: NPM Install
+        run: npm install
+        working-directory: ${{env.working-directory}}
+
+      - name: Run unit tests
+        run: npm run test:unit
+        working-directory: ${{env.working-directory}}
+
+
+

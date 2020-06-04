@@ -8,6 +8,10 @@
          bootstrap="config/bootstrap.php"
 >
     <php>
+        <!-- Recommended for projects with dependencies that fail to keep up with new deprecations. -->
+        <!-- https://symfony.com/doc/current/components/phpunit_bridge.html#direct-and-indirect-deprecations -->
+        <!-- Integration tests were failing based on deprecations in Doctrine -->
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[direct]=0"/>
         <ini name="error_reporting" value="-1"/>
         <server name="APP_ENV" value="test" force="true"/>
         <server name="SHELL_VERBOSITY" value="-1"/>

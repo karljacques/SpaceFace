@@ -1,6 +1,6 @@
 import Vue from 'vue';
-import VueRouter, { RouteConfig } from 'vue-router';
-import Home from '../views/Home.vue';
+import VueRouter, {RouteConfig} from 'vue-router';
+import PrimaryLayout from '../views/PrimaryLayout.vue';
 
 Vue.use(VueRouter);
 
@@ -8,7 +8,7 @@ const routes: RouteConfig[] = [
   {
     path: '/',
     name: 'Home',
-    component: Home,
+    component: PrimaryLayout,
   },
 ];
 

@@ -6,7 +6,9 @@ use App\Entity\Commodity;
 use App\Entity\Component\Storage;
 use App\Entity\Join\StoredCommodity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
+use LogicException;
 
 /**
  * @method StoredCommodity|null find($id, $lockMode = null, $lockVersion = null)
@@ -36,8 +38,12 @@ class StoredCommodityRepository extends ServiceEntityRepository
             'quantity' => $quantity
         ]);
 
-        $result = $query->getResult();
+        try {
+            $result = $query->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            throw new LogicException('This query is incorrect');
+        }
 
-        return $result !== false;
+        return $result !== null;
     }
 }

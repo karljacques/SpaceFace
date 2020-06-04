@@ -35,7 +35,7 @@ class SectorFixtures extends Fixture implements DependentFixtureInterface
         /** @var System $system */
         foreach ($systems as $system) {
             for ($x = 1; $x <= $system->getSizeX(); $x++) {
-                for ($y = 1; $y <= $system->getSizeX(); $y++) {
+                for ($y = 1; $y <= $system->getSizeY(); $y++) {
                     $this->createSector($manager, $system, $x, $y);
                 }
             }

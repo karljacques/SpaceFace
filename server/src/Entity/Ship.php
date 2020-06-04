@@ -34,6 +34,7 @@ class Ship implements Locatable
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Dockable", inversedBy="ships")
+     * @Groups({"self"})
      */
     private ?Dockable $docked_at = null;
 
@@ -47,6 +48,12 @@ class Ship implements Locatable
      * @ORM\ManyToOne(targetEntity="App\Entity\Character", inversedBy="ships")
      */
     private Character $owner;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"basic"})
+     */
+    private int $maxPower;
 
     /**
      * @Groups({"basic"})
@@ -101,6 +108,10 @@ class Ship implements Locatable
         return $this;
     }
 
+    /**
+     * @Groups({"self"})
+     * @return bool
+     */
     public function isDocked(): bool
     {
         return $this->docked_at !== null;
@@ -123,9 +134,21 @@ class Ship implements Locatable
         return $this->owner;
     }
 
-    public function setOwner(?Character $owner): self
+    public function setOwner(Character $owner): self
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function getMaxPower(): ?int
+    {
+        return $this->maxPower;
+    }
+
+    public function setMaxPower(int $maxPower): self
+    {
+        $this->maxPower = $maxPower;
 
         return $this;
     }

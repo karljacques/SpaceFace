@@ -6,6 +6,7 @@ use App\Entity\Dockable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Component\MarketRepository")
@@ -21,6 +22,7 @@ class Market
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Join\MarketCommodity", mappedBy="market")
+     * @Groups({"basic"})
      */
     private Collection $marketCommodities;
 
@@ -68,4 +70,14 @@ class Market
 
         return $this;
     }
+
+    /**
+     * @return ArrayCollection|Collection
+     */
+    public function getMarketCommodities()
+    {
+        return $this->marketCommodities;
+    }
+
+
 }

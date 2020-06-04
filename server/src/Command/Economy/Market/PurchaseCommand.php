@@ -35,7 +35,7 @@ class PurchaseCommand extends AbstractShipCommand
         return $this->marketCommodity;
     }
 
-    public function getCost(): int
+    public function getTotalValue(): int
     {
         return $this->marketCommodity->getSell() * $this->getQuantity();
     }

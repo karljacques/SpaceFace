@@ -9,7 +9,7 @@ use App\DataFixtures\Economy\MarketDockableFixtures;
 use App\Entity\Join\MarketCommodity;
 use App\Entity\Join\StoredCommodity;
 
-class PurchaseCommandTest extends GameTestCase
+class PurchaseCommandTest extends CommodityManipulationTestCase
 {
     public function setUp(): void
     {
@@ -30,7 +30,7 @@ class PurchaseCommandTest extends GameTestCase
 
         // Get a market commodity to buy
         /** @var MarketCommodity $marketCommodity */
-        $marketCommodity = $this->getRepository(MarketCommodity::class)->findBy([], ['sell' => 'DESC'])[0];
+        $marketCommodity = $this->getFirstSoldMarketCommodity();
 
         // Dock at that market's dockable
         $dockable = $marketCommodity->getMarket()->getDockable();
@@ -41,24 +41,8 @@ class PurchaseCommandTest extends GameTestCase
         // Hopefully that'll get patched.
         $dockable->getX();
 
-        // How much of the commodity is currently in storage?
-        /** @var StoredCommodity $currentStoredCommodity */
-        $currentStoredCommodity = $this->getRepository(StoredCommodity::class)->findOneBy(
-            [
-                'storage' => $marketCommodity->getMarket()->getStorage(),
-                'commodity' => $marketCommodity->getCommodity()
-            ]
-        );
-
-        $currentStoredAmount = $currentStoredCommodity->getQuantity();
-
-        // send request
-        $response = $this->makeRequest(
-            $marketCommodity->getCommodity()->getId(),
-            $marketCommodity->getMarket()->getId(),
-            3,
-            $marketCommodity->getSell()
-        );
+        $quantity = 3;
+        $response = $this->makeBuyRequestWithMarketCommodity($marketCommodity, $quantity);
 
         // expect false
         $this->assertFalse($response->success);
@@ -72,7 +56,7 @@ class PurchaseCommandTest extends GameTestCase
 
         // Get a market commodity to buy
         /** @var MarketCommodity $marketCommodity */
-        $marketCommodity = $this->getRepository(MarketCommodity::class)->findBy([], ['sell' => 'DESC'])[0];
+        $marketCommodity = $this->getFirstSoldMarketCommodity();
 
         // Dock at that market's dockable
         $dockable = $marketCommodity->getMarket()->getDockable();
@@ -84,39 +68,28 @@ class PurchaseCommandTest extends GameTestCase
         $dockable->getX();
 
         // How much of the commodity is currently in storage?
-        /** @var StoredCommodity $currentStoredCommodity */
-        $currentStoredCommodity = $this->getRepository(StoredCommodity::class)->findOneBy(
-            [
-                'storage' => $marketCommodity->getMarket()->getStorage(),
-                'commodity' => $marketCommodity->getCommodity()
-            ]
-        );
-
+        $currentStoredCommodity = $this->getMarketStoredCommodityFromMarketCommodity($marketCommodity);
         $currentStoredAmount = $currentStoredCommodity->getQuantity();
 
         // send request
-        $response = $this->makeRequest(
-            $marketCommodity->getCommodity()->getId(),
-            $marketCommodity->getMarket()->getId(),
-            3,
-            $marketCommodity->getSell()
-        );
+        $quantity = 3;
+        $response = $this->makeBuyRequestWithMarketCommodity($marketCommodity, $quantity);
 
         // expect true
         $this->assertTrue($response->success);
 
         // expect less money characters account
-        $this->assertEquals($startingMoney - ($marketCommodity->getSell() * 3), $character->getMoney());
+        $this->assertEquals($startingMoney - ($marketCommodity->getSell() * $quantity), $character->getMoney());
 
         // expect commodity in ships storage
         /** @var StoredCommodity $storedCommodity */
         $storedCommodity = $ship->getStorageComponent()->getStoredCommodities()->first();
 
         $this->assertEquals($marketCommodity->getCommodity()->getId(), $storedCommodity->getCommodity()->getId());
-        $this->assertEquals(3, $storedCommodity->getQuantity());
+        $this->assertEquals($quantity, $storedCommodity->getQuantity());
 
         // expect less commodity in market's storage
-        $this->assertEquals($currentStoredAmount - 3, $currentStoredCommodity->getQuantity());
+        $this->assertEquals($currentStoredAmount - $quantity, $currentStoredCommodity->getQuantity());
     }
 
     protected function makeRequest(int $commodityId, int $marketId, int $quantity, int $price)
@@ -131,5 +104,21 @@ class PurchaseCommandTest extends GameTestCase
         ]);
 
         return $this->sendCommandRequest($uri, $data);
+    }
+
+
+    /**
+     * @param MarketCommodity $marketCommodity
+     * @param int $quantity
+     * @return mixed
+     */
+    protected function makeBuyRequestWithMarketCommodity(MarketCommodity $marketCommodity, int $quantity)
+    {
+        return $this->makeRequest(
+            $marketCommodity->getCommodity()->getId(),
+            $marketCommodity->getMarket()->getId(),
+            $quantity,
+            $marketCommodity->getSell()
+        );
     }
 }
