@@ -5,6 +5,7 @@ namespace App\Entity\Join;
 use App\Entity\Commodity;
 use App\Entity\Component\Storage;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Join\StoredCommodityRepository")
@@ -27,11 +28,13 @@ class StoredCommodity
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Commodity")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"basic"})
      */
     private Commodity $commodity;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"basic"})
      */
     private int $quantity;
 

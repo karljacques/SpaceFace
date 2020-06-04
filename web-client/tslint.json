@@ -29,6 +29,7 @@
       "options": [
         "allow-leading-underscore"
       ]
-    }
+    },
+    "no-trailing-whitespace": false
   }
 }

@@ -2,17 +2,12 @@
   "type": "object",
   "additionalProperties": false,
   "required": [
-    "commodity_id",
-    "market_id",
+    "market_commodity_id",
     "quantity",
     "price"
   ],
   "properties": {
-    "commodity_id": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "market_id": {
+    "market_commodity_id": {
       "type": "integer",
       "minimum": 1
     },

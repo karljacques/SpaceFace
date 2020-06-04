@@ -11,8 +11,14 @@
         @Prop() protected current!: number;
         @Prop() protected maximum!: number;
 
+        @Prop({default: false}) protected invert!: boolean;
+
         get percentage(): number {
-            return this.current / this.maximum;
+            if (this.invert) {
+                return 1 - (this.current / this.maximum);
+            } else {
+                return this.current / this.maximum;
+            }
         }
 
         get color(): string {

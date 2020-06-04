@@ -8,6 +8,8 @@
             <br>
             <general-status></general-status>
             <br>
+            <cargo-status></cargo-status>
+            <br>
         </v-col>
         <v-col cols="6">
             <template>
@@ -41,11 +43,13 @@
     import StationInformationContainer from '@/views/game/components/navigation/StationInformationContainer.vue';
     import {Ship} from '@/objects/entity/Ship';
     import DockedOverview from '@/views/game/components/dockable/DockedOverview.vue';
+    import CargoStatus from '@/views/game/components/status/CargoStatus.vue';
 
     const ship = namespace('ship');
 
     @Component({
         components: {
+            CargoStatus,
             DockedOverview,
             StationInformationContainer,
             JumpNodeInformation,

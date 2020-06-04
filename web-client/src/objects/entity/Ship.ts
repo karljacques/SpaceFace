@@ -1,4 +1,5 @@
 import {Location} from '@/objects/entity/Location';
+import Storage from '@/objects/entity/Storage';
 
 export class Ship {
     private _maxFuel: number = 0;
@@ -8,8 +9,28 @@ export class Ship {
     private _power: number = 0;
 
     private _docked: boolean = false;
+    protected _location!: Location;
 
-    constructor(protected _location: Location) {
+    private _cargo!: Storage;
+
+    get cargo(): Storage {
+        return this._cargo;
+    }
+
+    public static create(data: any): Ship {
+        const ship = new Ship();
+
+        ship.location = Location.create(data.location);
+        ship._fuel = data.fuel;
+        ship._maxFuel = data.maxFuel;
+
+        ship.power = data.power;
+        ship.maxPower = data.maxPower;
+
+        ship.docked = data.docked;
+        ship._cargo = Storage.create(data.cargo);
+
+        return ship;
     }
 
     get location(): Location {
