@@ -74,8 +74,8 @@ jobs:
           path: ./server/vendor
           key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
 
-      - name: Run Unit Tests
-        run: php bin/phpunit --configuration phpunit.xml.dist tests/Unit --teamcity
+      -   name: Run Unit Tests
+        run: php bin/phpunit --configuration phpunit.xml.dist tests/Unit
         working-directory: ${{env.working-directory}}
 
   integration_tests:
@@ -99,8 +99,8 @@ jobs:
         run: php bin/console doctrine:schema:create --env=test
         working-directory: ${{env.working-directory}}
 
-      - name: Run Integration Tests
-        run: php bin/phpunit --configuration phpunit.xml.dist tests/Integration --teamcity
+      -   name: Run Integration Tests
+          run: php bin/phpunit --configuration phpunit.xml.dist tests/Integration
         working-directory: ${{env.working-directory}}
 
   functional_tests:
@@ -124,6 +124,6 @@ jobs:
         run: php bin/console doctrine:schema:create --env=test
         working-directory: ${{env.working-directory}}
 
-      - name: Run Integration Tests
-        run: php bin/phpunit --configuration phpunit.xml.dist tests/Functional --teamcity
+      -   name: Run Integration Tests
+          run: php bin/phpunit --configuration phpunit.xml.dist tests/Functional
         working-directory: ${{env.working-directory}}
