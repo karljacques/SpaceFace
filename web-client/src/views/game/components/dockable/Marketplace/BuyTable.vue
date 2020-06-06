@@ -4,7 +4,9 @@
             <v-text-field type="number" v-model.number="props.item.quantity"></v-text-field>
         </template>
         <template v-slot:item.actions="{ item }">
-            <v-btn @click="sell(item.id, item.quantity)" color="primary">Sell</v-btn>
+            <v-btn @click="buy(item.id, item.quantity)" color="secondary">Buy</v-btn>
+            <v-btn @click="buyAll(item.id)" color="primary">Buy All</v-btn>
+
         </template>
     </v-data-table>
 </template>
@@ -22,7 +24,7 @@
     const ship = namespace('ship');
 
     @Component
-    export default class SellTable extends Vue {
+    export default class BuyTable extends Vue {
         @Prop({required: true})
         protected commodities!: MarketCommodity[];
 
@@ -68,14 +70,13 @@
                 return {
                     id: x.id,
                     name: x.commodity.name,
-                    price: x.buy,
-                    available,
-                    quantity: available
+                    price: x.sell,
+                    quantity: 0
                 }
             });
         }
 
-        protected async sell(itemId: number, quantity: number) {
+        protected async buyAll(itemId: number) {
             const marketCommodity = this.commodities.find((x: MarketCommodity) => {
                 return x.id === itemId;
             }) ?? null;
@@ -85,7 +86,25 @@
                 return;
             }
 
-            const response = await this.marketplaceApiController.sell(marketCommodity, quantity);
+            const freeSpace = this.currentShip.cargo.capacity - this.currentShip.cargo.usage;
+            const commoditySpaceRequired = marketCommodity.commodity.size;
+
+            const max = Math.floor(freeSpace / commoditySpaceRequired);
+
+            await this.buy(itemId, max);
+        }
+
+        protected async buy(itemId: number, quantity: number) {
+            const marketCommodity = this.commodities.find((x: MarketCommodity) => {
+                return x.id === itemId;
+            }) ?? null;
+
+            if (marketCommodity === null) {
+                // This should never happen
+                return;
+            }
+
+            const response = await this.marketplaceApiController.buy(marketCommodity, quantity);
 
             this.setData(response.data);
         }

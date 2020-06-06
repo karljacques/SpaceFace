@@ -49,4 +49,25 @@ export class MarketplaceAPIController extends AbstractAPIController {
         );
     }
 
+    public async buy(
+        marketCommodity: MarketCommodity,
+        quantity: number,
+    ): Promise<CommandResponse<StatusResponseData>> {
+        const uri = '/economy/market/purchase';
+
+        const data = {
+            market_commodity_id: marketCommodity.id,
+            price: marketCommodity.sell,
+            quantity,
+        };
+
+        const response = await this.http.post(uri, data);
+
+        return new CommandResponse<StatusResponseData>(
+            response.data.success,
+            [],
+            this.statusResponseFactory.createStatusResponse(response.data.data),
+        );
+    }
+
 }

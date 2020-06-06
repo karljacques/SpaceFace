@@ -22,12 +22,10 @@ class PurchaseCommandFactory implements CommandFactoryInterface
 
     public function createCommand(Request $request, Ship $ship): CommandInterface
     {
-        $commodityId = $request->get('commodity_id');
-        $marketId = $request->get('market_id');
+        $marketCommodityId = $request->get('market_commodity_id');
         $price = $request->get('price');
 
-
-        $marketCommodity = $this->marketCommodityRepository->findOneBySellPrice($marketId, $commodityId, $price);
+        $marketCommodity = $this->marketCommodityRepository->findOneBySellPrice($marketCommodityId, $price);
 
         return new PurchaseCommand($ship, $marketCommodity, $request->get('quantity'));
     }

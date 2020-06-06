@@ -2,8 +2,10 @@
     <v-container>
         <v-row v-for="market in markets">
             <v-col>
-                Market #
-                <sell-table :bought-commodities="boughtCommodities(market)"/>
+                Marketplace Sell
+                <sell-table :commodities="boughtCommodities(market)"/>
+                Marketplace Buy
+                <buy-table :commodities="soldCommodities(market)"/>
             </v-col>
         </v-row>
 
@@ -18,9 +20,10 @@
     import {Market} from '@/objects/economy/Market';
     import {MarketCommodity} from '@/objects/economy/MarketCommodity';
     import SellTable from '@/views/game/components/dockable/Marketplace/SellTable.vue';
+    import BuyTable from '@/views/game/components/dockable/Marketplace/BuyTable.vue';
 
     @Component({
-        components: {SellTable}
+        components: {BuyTable, SellTable}
     })
     export default class MarketplaceComponent extends Vue {
         protected http: HttpClient = container.get(HttpClient);
@@ -37,6 +40,13 @@
         protected boughtCommodities(market: Market): MarketCommodity[] {
             return market.marketCommodities.filter((commodity: MarketCommodity) => {
                 return null !== commodity.buy;
+            });
+        }
+
+
+        protected soldCommodities(market: Market): MarketCommodity[] {
+            return market.marketCommodities.filter((commodity: MarketCommodity) => {
+                return null !== commodity.sell;
             });
         }
 

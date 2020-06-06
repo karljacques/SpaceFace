@@ -20,7 +20,7 @@ class MarketFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create();
-        $numberOfMarkets = $faker->numberBetween(1, 10);
+        $numberOfMarkets = $faker->numberBetween(150, 200);
 
         for ($i = 0; $i < $numberOfMarkets; $i++) {
             $market = new Market();

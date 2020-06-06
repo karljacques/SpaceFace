@@ -22,7 +22,7 @@ class DockableFixtures extends Fixture implements DependentFixtureInterface
     {
         $systems = $manager->getRepository(System::class)->findAll();
 
-        $dockableCount = 20;
+        $dockableCount = 200;
 
         $faker = Factory::create();
 

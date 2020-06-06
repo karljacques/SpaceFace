@@ -30,8 +30,8 @@ class MovementCommandExecutor extends AbstractCommandExecutor
 
         $status = $this->getRealtimeStatus($ship);
 
-        $status->usePower(100)
-            ->applyCooldown(1);
+        $status->usePower(50)
+            ->applyCooldown(0.5);
 
         $this->persistRealtimeStatus($status);
     }
@@ -50,7 +50,7 @@ class MovementCommandExecutor extends AbstractCommandExecutor
             new MustNotBeDockedRule($ship),
             new MustHaveFuelRule($ship, $fuelRequired),
             new MustBeWithinSystemRule($command->getProposedLocation()),
-            new MustHavePowerRule($ship, 100),
+            new MustHavePowerRule($ship, 50),
             new MustNotBeInCooldownRule($ship)
         ];
     }
