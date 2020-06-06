@@ -1,122 +1,113 @@
-import {Action, Module, Mutation} from 'vuex-module-decorators';
 import {Ship} from '@/objects/entity/Ship';
-import {VuexContainerModule} from '@/store/modules/VuexContainerModule';
-import {MovementAPIController} from '@/services/api/ship/MovementAPIController';
-import {StatusAPIController} from '@/services/api/ship/StatusAPIController';
 import {Sector} from '@/objects/entity/Sector';
 import {JumpNode} from '@/objects/entity/JumpNode';
-import {StatusResponseData} from '@/objects/response/StatusResponseData';
 import {Dockable} from '@/objects/entity/Dockable';
+import {StatusResponseData} from '@/objects/response/StatusResponseData';
+import {MovementAPIController} from '@/services/api/ship/MovementAPIController';
+import {StatusAPIController} from '@/services/api/ship/StatusAPIController';
+import {container} from '@/container';
 
-@Module({namespaced: true})
-class ShipModule extends VuexContainerModule {
-    protected ship: Ship | null = null;
-    protected sectors: Sector[] = [];
-    protected jumpNodes: JumpNode[] = [];
-    protected dockables: Dockable[] = [];
+const movementApiController: MovementAPIController = container.get(MovementAPIController);
+const statusApiController: StatusAPIController = container.get(StatusAPIController);
 
-    protected cooldown: boolean = false;
+export interface ShipModuleState {
+    ship: Ship | null;
+    sectors: Sector[];
+    jumpNodes: JumpNode[];
+    dockables: Dockable[];
 
-    protected movementApiController: MovementAPIController = this.get(MovementAPIController);
-    protected statusApiController: StatusAPIController = this.get(StatusAPIController);
-
-    get shipLoaded(): boolean {
-        return this.ship !== null;
-    }
-
-    get isCooldownActive(): boolean {
-        return this.cooldown;
-    }
-
-    get currentShip(): Ship {
-        if (!this.ship) {
-            throw new Error('LogicException - ship not set');
-        }
-
-        return this.ship;
-    }
-
-    get nearbySectors(): Sector[] {
-        return this.sectors;
-    }
-
-    get nearbyJumpNodes(): JumpNode[] {
-        return this.jumpNodes;
-    }
-
-    get nearbyDockables(): Dockable[] {
-        return this.dockables;
-    }
-
-    @Mutation
-    public setData(data: StatusResponseData): void {
-        this.ship = data.ship;
-        this.jumpNodes = data.jumpNodes;
-        this.sectors = data.sectors;
-        this.dockables = data.dockables;
-    }
-
-    @Mutation
-    public setPower(power: number): void {
-        if (this.ship) {
-            this.ship.power = power;
-        }
-    }
-
-    @Mutation
-    public setCooldown(active: boolean): void {
-        this.cooldown = active;
-    }
-
-    @Action
-    public async moveInDirection(direction: string): Promise<void> {
-        const result = await this.movementApiController.move(direction);
-
-        if (result.success) {
-            this.context.commit('setData', result.data);
-            this.context.commit('setCooldown', true);
-        }
-    }
-
-    @Action
-    public async jump(jumpNode: JumpNode): Promise<void> {
-        const result = await this.movementApiController.jump(jumpNode);
-
-        if (result.success) {
-            this.context.commit('setData', result.data);
-            this.context.commit('setCooldown', true);
-
-        }
-    }
-
-    @Action
-    public async dock(dockable: Dockable): Promise<void> {
-        const result = await this.movementApiController.dock(dockable);
-
-        if (result.success) {
-            this.context.commit('setData', result.data);
-            this.context.commit('setCooldown', true);
-        }
-    }
-
-    @Action
-    public async undock(): Promise<void> {
-        const result = await this.movementApiController.undock();
-
-        if (result.success) {
-            this.context.commit('setData', result.data);
-            this.context.commit('setCooldown', true);
-        }
-    }
-
-    @Action
-    public async refresh(): Promise<void> {
-        const result = await this.statusApiController.refresh();
-
-        if (result.success) {
-            this.context.commit('setData', result.data);
-        }
-    }
+    cooldown: boolean;
 }
 
-export {ShipModule};
+export default {
+    namespaced: true,
+    state: {
+        ship: null,
+        sectors: [],
+        jumpNodes: [],
+        dockables: [],
+
+        cooldown: false,
+    } as ShipModuleState,
+    getters: {
+        shipLoaded: (state: ShipModuleState): boolean => {
+            return state.ship !== null;
+        },
+        isCooldownActive: (state: ShipModuleState): boolean => {
+            return state.cooldown;
+        },
+        currentShip: (state: ShipModuleState): Ship => {
+            if (state.ship === null) {
+                throw new Error('LogicException - ship is not yet loaded');
+            }
+
+            return state.ship;
+        },
+        nearbySectors: (state: ShipModuleState): Sector[] => {
+            return state.sectors;
+        },
+        nearbyJumpNodes: (state: ShipModuleState): JumpNode[] => {
+            return state.jumpNodes;
+        },
+        nearbyDockables: (state: ShipModuleState): Dockable[] => {
+            return state.dockables;
+        },
+    },
+    mutations: {
+        setData: (state: ShipModuleState, data: StatusResponseData): void => {
+            state.ship = data.ship;
+            state.jumpNodes = data.jumpNodes;
+            state.sectors = data.sectors;
+            state.dockables = data.dockables;
+        },
+        setPower: (state: ShipModuleState, power: number): void => {
+            if (state.ship) {
+                state.ship.power = power;
+            }
+        },
+        setCooldown: (state: ShipModuleState, active: boolean): void => {
+            state.cooldown = active;
+        },
+    },
+    actions: {
+        moveInDirection: async (context: any, direction: string): Promise<void> => {
+            const result = await movementApiController.move(direction);
+
+            if (result.success) {
+                context.commit('setData', result.data);
+                context.commit('setCooldown', true);
+            }
+        },
+        jump: async (context: any, jumpNode: JumpNode): Promise<void> => {
+            const result = await movementApiController.jump(jumpNode);
+
+            if (result.success) {
+                context.commit('setData', result.data);
+                context.commit('setCooldown', true);
+            }
+        },
+        dock: async (context: any, dockable: Dockable): Promise<void> => {
+            const result = await movementApiController.dock(dockable);
+
+            if (result.success) {
+                context.commit('setData', result.data);
+                context.commit('setCooldown', true);
+            }
+        },
+        undock: async (context: any): Promise<void> => {
+            const result = await movementApiController.undock();
+
+            if (result.success) {
+                context.commit('setData', result.data);
+                context.commit('setCooldown', true);
+            }
+        },
+        refresh: async (context: any): Promise<void> => {
+            const result = await statusApiController.refresh();
+
+            if (result.success) {
+                context.commit('setData', result.data);
+            }
+        },
+    },
+};
