@@ -26,22 +26,6 @@ services:
             MYSQL_PASSWORD: symfony
         networks:
             - db
-    php-swoole:
-        container_name: php-swoole
-        build: ./php-swoole
-        ports:
-            - 9501:9501
-        volumes:
-            - ./server:/var/www:cached
-        depends_on:
-            - db
-        environment:
-            AUTORELOAD_PROGRAMS: "swoole"
-            AUTORELOAD_ANY_FILES: 1
-            MODE: "HTTP"
-        networks:
-            - db
-            - redis
 
     php-swoole-websocket:
         container_name: php-swoole-websocket
@@ -80,9 +64,9 @@ services:
         volumes:
             - ./php-fpm/nginx.conf:/etc/nginx/conf.d/site.conf
             - ./server:/var/www
-
         networks:
             - php
+
     php:
         build: ./php-fpm
         volumes:
@@ -90,8 +74,6 @@ services:
         networks:
             - db
             - php
-
-
 
 networks:
     db:

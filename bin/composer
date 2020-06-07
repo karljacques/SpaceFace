@@ -1,1 +1,1 @@
-docker-compose run --no-deps php-swoole composer $@
+docker-compose run --no-deps php composer $@

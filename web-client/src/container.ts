@@ -13,7 +13,7 @@ const container = new Container();
 container.load(buildProviderModule());
 
 const http = new AxiosHttp({
-    baseURL: 'http://localhost:9501',
+    baseURL: 'http://api.spaceface.dev',
     headers: {
         'X-AUTH-TOKEN': '73d0e731888687f8dd1413215b5de938',
     },

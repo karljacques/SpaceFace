@@ -8,6 +8,11 @@ Secondly, you will need to install Docker + Node.
 
 ## Backend
 
+Add the following to your hosts file:
+```
+127.0.0.1 api.spaceface.dev
+```
+
 In the root folder, run the following command to boot all the containers:
 ```
 docker-compose up -d
