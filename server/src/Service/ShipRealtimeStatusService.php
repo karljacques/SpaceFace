@@ -81,6 +81,4 @@ class ShipRealtimeStatusService
     {
         return sprintf("ship_%s_status", $ship->getId());
     }
-
-
 }
