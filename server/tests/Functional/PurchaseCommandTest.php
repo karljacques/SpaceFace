@@ -92,13 +92,12 @@ class PurchaseCommandTest extends CommodityManipulationTestCase
         $this->assertEquals($currentStoredAmount - $quantity, $currentStoredCommodity->getQuantity());
     }
 
-    protected function makeRequest(int $commodityId, int $marketId, int $quantity, int $price)
+    protected function makeRequest(int $marketCommodityId, int $quantity, int $price)
     {
         $uri = '/economy/market/purchase';
 
         $data = json_encode([
-            'commodity_id' => $commodityId,
-            'market_id' => $marketId,
+            'market_commodity_id' => $marketCommodityId,
             'quantity' => $quantity,
             'price' => $price
         ]);
@@ -115,8 +114,7 @@ class PurchaseCommandTest extends CommodityManipulationTestCase
     protected function makeBuyRequestWithMarketCommodity(MarketCommodity $marketCommodity, int $quantity)
     {
         return $this->makeRequest(
-            $marketCommodity->getCommodity()->getId(),
-            $marketCommodity->getMarket()->getId(),
+            $marketCommodity->getId(),
             $quantity,
             $marketCommodity->getSell()
         );

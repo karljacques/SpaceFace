@@ -10,6 +10,9 @@ class PlayerDataCollector implements DataCollectorInterface
 {
     public function collect(Ship $ship): array
     {
-        return ['ship' => $ship];
+        return [
+            'ship' => $ship,
+            'character' => $ship->getOwner()
+        ];
     }
 }

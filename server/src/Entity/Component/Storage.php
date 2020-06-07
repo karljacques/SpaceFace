@@ -7,6 +7,7 @@ use App\Entity\TypedPropertySleepTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Component\StorageRepository")
@@ -14,20 +15,24 @@ use Doctrine\ORM\Mapping as ORM;
 class Storage
 {
     use TypedPropertySleepTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"basic"})
      */
     private int $id;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Join\StoredCommodity", mappedBy="storage")
+     * @Groups({"basic"})
      */
     private Collection $storedCommodities;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"self"})
      */
     private int $capacity;
 
@@ -71,6 +76,10 @@ class Storage
         return $this;
     }
 
+    /**
+     * @Groups({"self"})
+     * @return int
+     */
     public function getCapacityUsage(): int
     {
         $storedCommodities = $this->getStoredCommodities();

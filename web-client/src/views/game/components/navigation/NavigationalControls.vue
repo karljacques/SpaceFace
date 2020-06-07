@@ -53,7 +53,7 @@
         }
 
         get movementDisabled(): boolean {
-            return this.isCooldownActive || this.currentShip.power < 100 || this.currentShip.docked;
+            return this.isCooldownActive || this.currentShip.power < 50 || this.currentShip.docked;
         }
 
         protected getVisibility(direction: string): string {

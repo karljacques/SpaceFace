@@ -25,7 +25,7 @@ class JumpCommandExecutor extends AbstractCommandExecutor
         $ship = $command->getShip();
 
         $status = $this->getRealtimeStatus($ship);
-        $status->applyCooldown(5)
+        $status->applyCooldown(2)
             ->usePower(500);
 
         $this->persistRealtimeStatus($status);

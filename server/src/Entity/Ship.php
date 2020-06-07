@@ -7,6 +7,7 @@ use App\Entity\Component\Storage;
 use App\Entity\Traits\LocationTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ShipRepository")
@@ -41,6 +42,8 @@ class Ship implements Locatable
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Component\Storage", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"self"})
+     * @SerializedName("cargo")
      */
     private Storage $storageComponent;
 

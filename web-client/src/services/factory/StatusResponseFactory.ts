@@ -9,18 +9,7 @@ import {Dockable} from '@/objects/entity/Dockable';
 @provide(StatusResponseFactory)
 export class StatusResponseFactory {
     public createStatusResponse(data: any): StatusResponseData {
-        const shipData = data.player.ship;
-        const location = Location.create(shipData.location);
-
-        const ship = new Ship(location);
-
-        ship.fuel = shipData.fuel;
-        ship.maxFuel = shipData.maxFuel;
-
-        ship.power = shipData.power;
-        ship.maxPower = shipData.maxPower;
-
-        ship.docked = shipData.docked;
+        const ship = Ship.create(data.player.ship);
 
         const sectors: Sector[] = data.system.sectors.map((x: any): Sector => {
             return new Sector(x.type, Location.create(x.location));

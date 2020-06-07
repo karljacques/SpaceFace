@@ -28,7 +28,7 @@ class StoredCommodityRepository extends ServiceEntityRepository
         $dql = /** @lang DQL */
             "SELECT 1 FROM App\Entity\Join\StoredCommodity sc
              WHERE sc.commodity = :commodity AND sc.storage = :storage
-             AND sc.quantity > :quantity";
+             AND sc.quantity >= :quantity";
 
         $query = $this->getEntityManager()->createQuery($dql);
 

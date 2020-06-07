@@ -8,9 +8,13 @@
             <br>
             <general-status></general-status>
             <br>
+            <cargo-status></cargo-status>
+            <br>
         </v-col>
         <v-col cols="6">
             <template>
+                <player-information/>
+                <br>
                 <template v-if="!currentShip.docked">
                     <jump-node-information></jump-node-information>
                     <station-information-container/>
@@ -41,11 +45,15 @@
     import StationInformationContainer from '@/views/game/components/navigation/StationInformationContainer.vue';
     import {Ship} from '@/objects/entity/Ship';
     import DockedOverview from '@/views/game/components/dockable/DockedOverview.vue';
+    import CargoStatus from '@/views/game/components/status/CargoStatus.vue';
+    import PlayerInformation from '@/views/game/components/status/PlayerInformation.vue';
 
     const ship = namespace('ship');
 
     @Component({
         components: {
+            PlayerInformation,
+            CargoStatus,
             DockedOverview,
             StationInformationContainer,
             JumpNodeInformation,

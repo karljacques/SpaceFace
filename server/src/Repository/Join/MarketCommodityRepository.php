@@ -19,20 +19,18 @@ class MarketCommodityRepository extends ServiceEntityRepository
         parent::__construct($registry, MarketCommodity::class);
     }
 
-    public function findOneBySellPrice(int $marketId, int $commodityId, int $price): ?MarketCommodity
+    public function findOneBySellPrice(int $id, int $price): ?MarketCommodity
     {
         return $this->findOneBy([
-            'market' => $marketId,
-            'commodity' => $commodityId,
+            'id' => $id,
             'sell' => $price
         ]);
     }
 
-    public function findOneByBuyPrice(int $marketId, int $commodityId, int $price): ?MarketCommodity
+    public function findOneByBuyPrice(int $id, int $price): ?MarketCommodity
     {
         return $this->findOneBy([
-            'market' => $marketId,
-            'commodity' => $commodityId,
+            'id' => $id,
             'buy' => $price
         ]);
     }
