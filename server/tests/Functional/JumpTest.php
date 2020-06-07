@@ -30,6 +30,7 @@ class JumpTest extends GameTestCase
         $this->getEntityManager()->flush();
 
         $response = $this->makeRequest($node->getId());
+
         $this->assertTrue($response->success);
 
         $this->getEntityManager()->refresh($ship);
