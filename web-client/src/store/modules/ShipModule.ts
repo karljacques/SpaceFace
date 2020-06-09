@@ -75,7 +75,6 @@ export default {
 
             if (result.success) {
                 context.commit('setData', result.data);
-                context.commit('setCooldown', true);
             }
         },
         jump: async (context: any, jumpNode: JumpNode): Promise<void> => {
@@ -83,7 +82,6 @@ export default {
 
             if (result.success) {
                 context.commit('setData', result.data);
-                context.commit('setCooldown', true);
             }
         },
         dock: async (context: any, dockable: Dockable): Promise<void> => {
@@ -91,7 +89,6 @@ export default {
 
             if (result.success) {
                 context.commit('setData', result.data);
-                context.commit('setCooldown', true);
             }
         },
         undock: async (context: any): Promise<void> => {
@@ -99,7 +96,6 @@ export default {
 
             if (result.success) {
                 context.commit('setData', result.data);
-                context.commit('setCooldown', true);
             }
         },
         refresh: async (context: any): Promise<void> => {

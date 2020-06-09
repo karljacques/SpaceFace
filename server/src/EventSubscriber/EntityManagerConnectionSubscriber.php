@@ -30,13 +30,11 @@ class EntityManagerConnectionSubscriber implements EventSubscriberInterface
         $connection = $this->entityManager->getConnection();
 
         if ($connection->ping()) {
-            dump('ping success');
             return;
         }
 
         $connection->close();
         $connection->connect();
 
-        dump('reconnected');
     }
 }
