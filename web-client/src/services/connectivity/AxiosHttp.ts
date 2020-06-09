@@ -50,6 +50,10 @@ class AxiosHttp implements HttpClient {
     public request<T = any, R = HttpResponse<T>>(config: HttpRequestConfig): Promise<R> {
         return this.axios.request(config as AxiosRequestConfig);
     }
+
+    public header(header: string, value: string): void {
+        this.axios.defaults.headers[header] = value;
+    }
 }
 
 export {AxiosHttp};
