@@ -30,7 +30,6 @@ const module = {
                 context.commit('setToken', response.data.token);
 
                 http.header('X-AUTH-TOKEN', response.data.token);
-
                 return true;
             } else {
                 return false;
