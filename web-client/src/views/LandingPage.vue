@@ -8,7 +8,7 @@
         <v-row>
 
             <v-col cols="8">
-                Some introductory crap here
+                SpaceFace splash screen
             </v-col>
             <v-col cols="4">
                 <login-form/>

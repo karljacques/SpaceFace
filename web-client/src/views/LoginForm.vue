@@ -23,7 +23,7 @@
         </v-card-text>
         <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" type="submit">Login</v-btn>
+            <v-btn @click="login" color="primary">Login</v-btn>
         </v-card-actions>
     </v-card>
 

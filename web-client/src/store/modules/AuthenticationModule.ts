@@ -2,7 +2,7 @@ import {container} from '@/container';
 import {HttpClient} from '@/services/connectivity/HttpClient';
 
 interface AuthenticationState {
-    token: string | null;
+    isAuthenticated: boolean;
 }
 
 export interface UserCredentials {
@@ -15,30 +15,25 @@ const http = container.get(HttpClient);
 const module = {
     namespaced: true,
     state: {
-        token: null,
+        isAuthenticated: false,
     } as AuthenticationState,
     getters: {
         isAuthenticated: (state: AuthenticationState): boolean => {
-            return state.token !== null;
+            return state.isAuthenticated;
         },
     },
     actions: {
         authenticate: async (context: any, credentials: UserCredentials): Promise<boolean> => {
             const response = await http.post('/login', credentials);
 
-            if (response.data.success) {
-                context.commit('setToken', response.data.token);
+            context.commit('setAuthenticated', response.data.success);
 
-                http.header('X-AUTH-TOKEN', response.data.token);
-                return true;
-            } else {
-                return false;
-            }
+            return response.data.success;
         },
     },
     mutations: {
-        setToken: (state: AuthenticationState, token: string): void => {
-            state.token = token;
+        setAuthenticated: (state: AuthenticationState, authenticated: boolean): void => {
+            state.isAuthenticated = authenticated;
         },
     },
 };

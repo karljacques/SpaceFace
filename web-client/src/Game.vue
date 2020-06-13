@@ -11,6 +11,8 @@
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
     import {namespace} from 'vuex-class';
+    import {WebSocketClient} from '@/services/connectivity/WebSocket';
+    import {container} from '@/container';
 
     const ship = namespace('ship');
 
@@ -22,6 +24,8 @@
 
         public async created() {
             this.refresh();
+            await container.get(WebSocketClient).connect();
+
         }
     }
 </script>
