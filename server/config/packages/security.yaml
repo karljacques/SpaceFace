@@ -14,13 +14,21 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        login:
+            pattern:  ^/login
+            anonymous: true
+            json_login:
+                check_path:               /login
+                success_handler:          lexik_jwt_authentication.handler.authentication_success
+                failure_handler:          lexik_jwt_authentication.handler.authentication_failure
         main:
+            pattern: ^/
             anonymous: lazy
             logout: ~
             provider: app_user_provider
             guard:
                 authenticators:
-                    - App\Security\TokenAuthenticator
+                    - lexik_jwt_authentication.jwt_token_authenticator
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -32,5 +40,4 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/_profiler, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: ROLE_USER }

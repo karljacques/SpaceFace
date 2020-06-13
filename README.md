@@ -25,6 +25,11 @@ docker-compose down
 docker-compose up -d
 ```
 
+Generate keys for JWT using passphrase in `.env JWT_PASSPHRASE`
+```
+./bin/generate-keys
+```
+
 Run migrations on the database:
 ```
 ./bin/console doctrine:migrations:migrate

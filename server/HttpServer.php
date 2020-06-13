@@ -1,8 +1,8 @@
 <?php
 
 use App\Kernel;
+use App\Service\Infrastructure\ResponseWriter;
 use Indragunawan\SwooleHttpMessageBridge\Symfony\Request as RequestFactory;
-use Indragunawan\SwooleHttpMessageBridge\Symfony\Response as ResponseWriter;
 use Swoole\Http\Request;
 use Swoole\Http\Response;
 use Swoole\Http\Server;
