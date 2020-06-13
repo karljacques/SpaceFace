@@ -1,13 +1,14 @@
 <template>
     <v-card class="elevation-12">
         <v-card-text>
-            <v-form>
+            <v-form @keyup.native.enter="login" @submit="login">
                 <v-text-field
                         label="Login"
                         name="login"
                         prepend-icon="mdi-account"
                         type="text"
                         v-model="username"
+                        @enter
                 ></v-text-field>
 
                 <v-text-field
@@ -22,7 +23,7 @@
         </v-card-text>
         <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn @click="login" color="primary">Login</v-btn>
+            <v-btn color="primary" type="submit">Login</v-btn>
         </v-card-actions>
     </v-card>
 
