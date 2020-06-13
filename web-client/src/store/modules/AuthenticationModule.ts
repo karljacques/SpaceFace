@@ -26,9 +26,13 @@ const module = {
         authenticate: async (context: any, credentials: UserCredentials): Promise<boolean> => {
             const response = await http.post('/login', credentials);
 
-            context.commit('setAuthenticated', response.data.success);
+            context.commit('setAuthenticated', !!response.data.token);
 
             return response.data.success;
+        },
+        fetchAuthenticationState: async (context: any): Promise<void> => {
+            const response = await http.get('/authenticated');
+            context.commit('setAuthenticated', response.data.authenticated);
         },
     },
     mutations: {

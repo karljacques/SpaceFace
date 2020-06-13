@@ -20,7 +20,12 @@
         @authentication.Getter
         protected isAuthenticated!: boolean;
 
+        @authentication.Action
+        protected fetchAuthenticationState!: () => void;
+
         public async created() {
+            this.fetchAuthenticationState();
+
             this.$vuetify.theme.dark = true;
         }
     }
