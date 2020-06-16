@@ -34,6 +34,10 @@ const module = {
             const response = await http.get('/authenticated');
             context.commit('setAuthenticated', response.data.authenticated);
         },
+        logout: async (context: any): Promise<void> => {
+            await http.get('/authentication/logout');
+            await context.dispatch('fetchAuthenticationState');
+        },
     },
     mutations: {
         setAuthenticated: (state: AuthenticationState, authenticated: boolean): void => {

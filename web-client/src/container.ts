@@ -12,7 +12,7 @@ container.load(buildProviderModule());
 
 const http = new AxiosHttp({
     baseURL: 'http://localhost:9501',
-    withCredentials: true
+    withCredentials: true,
 });
 
 
