@@ -15,6 +15,8 @@ class UndockTest extends GameTestCase
 
         $this->addFixtureByName(DockableFixtures::class);
         $this->executeFixtures();
+
+        $this->loginUser();
     }
 
     public function testUndockWhenNotDocked()

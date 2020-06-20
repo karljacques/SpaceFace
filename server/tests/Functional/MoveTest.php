@@ -18,6 +18,8 @@ class MoveTest extends GameTestCase
         parent::setUp();
 
         $this->executeFixtures();
+
+        $this->loginUser();
     }
 
     public function testInvalidMovementDirection()
@@ -91,9 +93,7 @@ class MoveTest extends GameTestCase
             'direction' => $direction
         ]);
 
-        $this->client->request('POST', '/move', [], [], [
-            'HTTP_X-AUTH-TOKEN' => self::AUTH_TOKEN
-        ], $body);
+        $this->client->request('POST', '/move', [], [], [], $body);
 
         return json_decode($this->client->getResponse()->getContent());
     }

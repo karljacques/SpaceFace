@@ -14,10 +14,10 @@ class GameTestCase extends WebTestCase
 {
     use FixtureAwareTestCase;
 
-    const AUTH_TOKEN = '73d0e731888687f8dd1413215b5de938';
-
     /** @var KernelBrowser */
     protected KernelBrowser $client;
+
+    protected User $loggedInUser;
 
     public function setUp(): void
     {
@@ -25,9 +25,21 @@ class GameTestCase extends WebTestCase
 
         $this->client = static::createClient();
 
+
         /** @var ShipFixtures $shipFixtures */
         $shipFixtures = static::$kernel->getContainer()->get('test.App\DataFixtures\ShipFixtures');
         $this->addFixture($shipFixtures);
+
+        $this->executeFixtures();
+    }
+
+    protected function loginUser(): void
+    {
+        $user = collect($this->getRepository(User::class)->findBy([], ['id' => 'asc'], 1))->first();
+        $this->assertNotNull($user);
+
+        $this->loggedInUser = $user;
+        $this->client->loginUser($user);
     }
 
     /**
@@ -35,9 +47,7 @@ class GameTestCase extends WebTestCase
      */
     protected function getCurrentUser(): User
     {
-        /** @var User $user */
-        $user = $this->getRepository(User::class)->findOneBy(['apiToken' => self::AUTH_TOKEN]);
-        return $user;
+        return $this->loggedInUser;
     }
 
     /**
@@ -68,9 +78,7 @@ class GameTestCase extends WebTestCase
      */
     protected function sendCommandRequest(string $uri, ?string $body)
     {
-        $this->client->request('POST', $uri, [], [], [
-            'HTTP_X-AUTH-TOKEN' => GameTestCase::AUTH_TOKEN
-        ], $body);
+        $this->client->request('POST', $uri, [], [], [], $body);
 
         return json_decode($this->client->getResponse()->getContent());
     }

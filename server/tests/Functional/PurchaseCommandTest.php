@@ -19,6 +19,8 @@ class PurchaseCommandTest extends CommodityManipulationTestCase
         $this->addFixtureByName(MarketCommodityFixtures::class);
 
         $this->executeFixtures();
+
+        $this->loginUser();
     }
 
     public function testNotEnoughMoney()
