@@ -21,10 +21,7 @@ class GameTestCase extends WebTestCase
 
     public function setUp(): void
     {
-        parent::setUp();
-
         $this->client = static::createClient();
-
 
         /** @var ShipFixtures $shipFixtures */
         $shipFixtures = static::$kernel->getContainer()->get('test.App\DataFixtures\ShipFixtures');
