@@ -5,6 +5,7 @@ import {Ship} from '@/objects/entity/Ship';
 import {Location} from '@/objects/entity/Location';
 import {System} from '@/objects/entity/System';
 import {Vector2} from '@/objects/entity/Vector2';
+import Storage from '@/objects/entity/Storage';
 
 describe('StatusResponseFactory', () => {
     describe('when passed a valid response object', () => {
@@ -25,6 +26,12 @@ describe('StatusResponseFactory', () => {
                     },
                     fuel: 100,
                     maxFuel: 250,
+                    cargo: {
+                        id: 3,
+                        capacity: 100,
+                        capacityUsage: 25,
+                        storedCommodities: [] // TODO: Add stored commodity testing
+                    },
                 },
             },
             system: {
@@ -57,6 +64,16 @@ describe('StatusResponseFactory', () => {
             expect(response.ship.location.position).toBeInstanceOf(Vector2);
             expect(response.ship.location.position.x).toEqual(5);
             expect(response.ship.location.position.y).toEqual(2);
+        });
+
+        it('correctly populates storage information', () => {
+            expect(response.ship.cargo).toBeInstanceOf(Storage);
+
+            expect(response.ship.cargo.id).toEqual(3);
+            expect(response.ship.cargo.capacity).toEqual(100);
+            expect(response.ship.cargo.usage).toEqual(25);
+
+
         });
     });
 });

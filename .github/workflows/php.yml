@@ -124,6 +124,6 @@ jobs:
           run: php bin/console doctrine:schema:create --env=test
           working-directory: ${{env.working-directory}}
 
-      -   name: Run Integration Tests
+      -   name: Run Functional Tests
           run: php bin/phpunit --configuration phpunit.xml.dist tests/Functional
           working-directory: ${{env.working-directory}}
