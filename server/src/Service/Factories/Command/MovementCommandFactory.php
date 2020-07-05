@@ -7,25 +7,38 @@ namespace App\Service\Factories\Command;
 use App\Command\CommandInterface;
 use App\Command\MovementCommand;
 use App\Entity\Ship;
+use App\Exception\ValidationError;
+use App\Exception\ValidationException;
 use App\Service\Calculators\MovementCostCalculatorInterface;
 use App\Util\Location;
 use App\Util\Vector2;
-use LogicException;
 use Symfony\Component\HttpFoundation\Request;
 
 class MovementCommandFactory implements CommandFactoryInterface
 {
-    protected $movementCostCalculator;
+    protected MovementCostCalculatorInterface $movementCostCalculator;
 
     public function __construct(MovementCostCalculatorInterface $movementCostCalculator)
     {
         $this->movementCostCalculator = $movementCostCalculator;
     }
 
+    /**
+     * @param Request $request
+     * @param Ship $ship
+     * @return CommandInterface
+     * @throws ValidationException
+     */
     public function createCommand(Request $request, Ship $ship): CommandInterface
     {
         $direction = $request->get('direction');
-        $translation = $this->convertDirectionToTranslation($direction);
+        $translation = new Vector2($direction['x'], $direction['y']);
+
+        if (!$this->isValid($translation)) {
+            throw new ValidationException([
+                new ValidationError('The direction supplied is not valid', 'direction')
+            ]);
+        }
 
         $targetPosition = $ship->getLocation()->getVector()->add($translation);
         $targetLocation = new Location($ship->getSystem(), $targetPosition);
@@ -35,20 +48,9 @@ class MovementCommandFactory implements CommandFactoryInterface
         return new MovementCommand($ship, $translation, $fuelCost);
     }
 
-    private function convertDirectionToTranslation(string $direction): Vector2
+    protected function isValid(Vector2 $translation)
     {
-        switch ($direction) {
-            case 'up':
-                return new Vector2(0, 1);
-            case 'down':
-                return new Vector2(0, -1);
-            case 'left':
-                return new Vector2(-1, 0);
-            case 'right':
-                return new Vector2(1, 0);
-        }
-
-        throw new LogicException('Invalid direction');
+        return abs($translation->getX() + $translation->getY()) === 1;
     }
 
     public function getSchema(): string

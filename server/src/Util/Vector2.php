@@ -63,4 +63,5 @@ class Vector2 implements JsonSerializable
     {
         return $this->x === $vector->getX() && $this->y === $vector->getY();
     }
+
 }

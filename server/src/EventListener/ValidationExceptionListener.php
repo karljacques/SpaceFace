@@ -4,28 +4,30 @@
 namespace App\EventListener;
 
 
-use App\Exception\SchemaValidationException;
+use App\Exception\ValidationError;
+use App\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
-class SchemaValidationExceptionListener
+class ValidationExceptionListener
 {
     /**
+     * @param ExceptionEvent $event
      * @return void
      */
     public function onKernelException(ExceptionEvent $event)
     {
         $exception = $event->getThrowable();
 
-        if (!$exception instanceof SchemaValidationException) {
+        if (!$exception instanceof ValidationException) {
             return;
         }
 
-        $errors = collect($exception->getErrors())->map(function ($error) {
-            $error = ['type' => 'validation'] + $error;
-
-            return $error;
-        });
+        $errors = collect($exception->getErrors())->map(fn(ValidationError $error) => [
+            'type' => 'validation',
+            'property' => $error->getPointer(),
+            'message' => $error->getMessage()
+        ]);
 
         $event->setResponse(new JsonResponse([
             'success' => false,

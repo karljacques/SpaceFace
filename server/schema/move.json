@@ -6,13 +6,20 @@
   ],
   "properties": {
     "direction": {
-      "type": "string",
-      "enum": [
-        "up",
-        "down",
-        "left",
-        "right"
-      ]
+      "type": "object",
+      "additionalProperties": "false",
+      "required": [
+        "x",
+        "y"
+      ],
+      "properties": {
+        "x": {
+          "type": "integer"
+        },
+        "y": {
+          "type": "integer"
+        }
+      }
     }
   }
 }

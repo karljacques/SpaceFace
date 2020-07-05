@@ -35,7 +35,7 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
 
-    App\EventListener\SchemaValidationExceptionListener:
+    App\EventListener\ValidationExceptionListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
 

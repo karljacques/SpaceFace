@@ -24,7 +24,7 @@ class MoveTest extends GameTestCase
 
     public function testInvalidMovementDirection()
     {
-        $response = $this->executeCommand('backwards');
+        $response = $this->executeCommand(new Vector2(3, 4));
 
         $this->assertFalse($response->success);
         $this->assertIsArray($response->errors);
@@ -38,12 +38,12 @@ class MoveTest extends GameTestCase
         $this->assertObjectHasAttribute('property', $error);
         $this->assertEquals('direction', $error->property);
 
-        $this->assertEquals('Does not have a value in the enumeration ["up","down","left","right"]', $error->message);
+        $this->assertEquals('The direction supplied is not valid', $error->message);
     }
 
     public function testOutOfBoundsMovement()
     {
-        $response = $this->executeCommand('down');
+        $response = $this->executeCommand(new Vector2(-1, 0));
 
         $this->assertFalse($response->success);
 
@@ -66,7 +66,7 @@ class MoveTest extends GameTestCase
         $ship = $this->getCurrentShip();
         $ship->setFuel(0);
 
-        $response = $this->executeCommand('up');
+        $response = $this->executeCommand(new Vector2(1, 0));
 
         $this->assertFalse($response->success);
 
@@ -75,7 +75,7 @@ class MoveTest extends GameTestCase
 
     public function testSuccessfulMove()
     {
-        $response = $this->executeCommand('up');
+        $response = $this->executeCommand(new Vector2(1, 0));
 
         $this->assertTrue($response->success);
 
@@ -83,14 +83,17 @@ class MoveTest extends GameTestCase
 
         $ship = $this->getCurrentShip();
 
-        $this->assertEquals(2, $ship->getY());
-        $this->assertEquals(1, $ship->getX());
+        $this->assertEquals(1, $ship->getY());
+        $this->assertEquals(2, $ship->getX());
     }
 
-    protected function executeCommand(string $direction): object
+    protected function executeCommand(Vector2 $direction): object
     {
         $body = json_encode([
-            'direction' => $direction
+            'direction' => [
+                'x' => $direction->getX(),
+                'y' => $direction->getY()
+            ]
         ]);
 
         $this->client->request('POST', '/move', [], [], [], $body);

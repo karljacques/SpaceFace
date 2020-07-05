@@ -5,6 +5,7 @@ namespace App\EventSubscriber;
 
 
 use App\Exception\SchemaValidationException;
+use App\Exception\ValidationError;
 use JsonSchema\Validator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -50,7 +51,7 @@ class SchemaValidationSubscriber implements EventSubscriberInterface
         $validator->validate($data, $schema);
 
         if (!$validator->isValid()) {
-            throw new SchemaValidationException($validator->getErrors());
+            throw new SchemaValidationException($this->transformValidationErrors($validator->getErrors()));
         }
     }
 
@@ -92,10 +93,18 @@ class SchemaValidationSubscriber implements EventSubscriberInterface
      */
     private function throwJsonExceptionError(string $message, string $pointer): array
     {
-        throw new SchemaValidationException([[
-            'message' => $message,
-            'pointer' => $pointer
-        ]]);
+        throw new SchemaValidationException([new ValidationError($message, $pointer)]);
+    }
+
+    /**
+     * @param array $errors
+     * @return ValidationError[]
+     */
+    private function transformValidationErrors(array $errors): array
+    {
+        return collect($errors)
+            ->map(fn(array $error) => new ValidationError($error['message'], $error['pointer']))
+            ->toArray();
     }
 
     public static function getSubscribedEvents()
