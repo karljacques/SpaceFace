@@ -14,8 +14,10 @@ class ResponseWriter
      * @param SwooleResponse $swooleResponse
      * @param SfResponse $sfResponse
      * @param bool $end
+     *
+     * @return void
      */
-    public static function writeSwooleResponse(SwooleResponse $swooleResponse, SfResponse $sfResponse, $end = true)
+    public static function writeSwooleResponse(SwooleResponse $swooleResponse, SfResponse $sfResponse, $end = true): void
     {
         // write headers
         self::writeHeaders($swooleResponse, $sfResponse);
@@ -33,8 +35,10 @@ class ResponseWriter
      *
      * @param SwooleResponse $swooleResponse
      * @param SfResponse $sfResponse
+     *
+     * @return void
      */
-    protected static function writeHeaders(SwooleResponse $swooleResponse, SfResponse $sfResponse)
+    protected static function writeHeaders(SwooleResponse $swooleResponse, SfResponse $sfResponse): void
     {
         // headers
         foreach ($sfResponse->headers->allPreserveCaseWithoutCookies() as $name => $values) {
@@ -44,11 +48,11 @@ class ResponseWriter
         }
 
         // status
-        $swooleResponse->status($sfResponse->getStatusCode());
+        $swooleResponse->status((string)$sfResponse->getStatusCode());
 
         // cookies
         foreach ($sfResponse->headers->getCookies() as $cookie) {
-            $swooleResponse->cookie($cookie->getName(), $cookie->getValue(), $cookie->getExpiresTime(), $cookie->getPath(), $cookie->getDomain(), $cookie->isSecure(), $cookie->isHttpOnly());
+            $swooleResponse->cookie($cookie->getName(), $cookie->getValue(), (string)$cookie->getExpiresTime(), $cookie->getPath(), $cookie->getDomain(), (string)$cookie->isSecure(), (string)$cookie->isHttpOnly());
         }
     }
 }

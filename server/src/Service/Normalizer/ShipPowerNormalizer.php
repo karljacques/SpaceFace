@@ -44,7 +44,7 @@ class ShipPowerNormalizer implements ContextAwareNormalizerInterface
         return $data;
     }
 
-    private function getPower(Ship $ship): int
+    private function getPower(Ship $ship): float
     {
         $status = $this->shipStatusCache->getShipStatus($ship);
 

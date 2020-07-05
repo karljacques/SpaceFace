@@ -17,5 +17,6 @@
         <MissingPropertyType errorLevel="error"/>
         <MissingReturnType errorLevel="error"/>
         <MissingParamType errorLevel="error"/>
+        <InvalidCatch errorLevel="info"/>
     </issueHandlers>
 </psalm>

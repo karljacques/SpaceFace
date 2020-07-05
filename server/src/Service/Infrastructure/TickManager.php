@@ -26,7 +26,7 @@ class TickManager
         $this->shipRepository = $shipRepository;
     }
 
-    public function tick()
+    public function tick(): void
     {
         $ships = $this->shipRepository->findAll();
 

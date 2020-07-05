@@ -13,7 +13,7 @@ class JWTAuthenticationSuccessListener
 {
     private int $tokenLifetime;
     private string $cookieName;
-    private int $requiresSecure;
+    private bool $requiresSecure;
 
     public function __construct(int $tokenLifetime, string $cookieName, bool $requiresSecure)
     {

@@ -4,6 +4,8 @@
 namespace App\Entity;
 
 
+use LogicException;
+
 class ShipRealtimeStatus
 {
     protected ?Ship $ship;
@@ -58,13 +60,17 @@ class ShipRealtimeStatus
             && $this->getMoveCooldownExpires() === null;
     }
 
-    public function getShip(): Ship
+    public function getShip(): ?Ship
     {
+        if (null === $this->ship) {
+            throw new LogicException(
+                sprintf('Expected type of property $this->ship to be %s, null returned', Ship::class));
+        }
         return $this->ship;
     }
 
     /**
-     * @param Ship|null $ship
+     * @param Ship $ship
      */
     public function setShip(Ship $ship): void
     {
