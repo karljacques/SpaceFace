@@ -18,6 +18,8 @@ abstract class HttpClient {
 
     public abstract patch<T = any, R = HttpResponse<T>>
     (url: string, data?: any, config?: HttpRequestConfig): Promise<R>;
+
+    public abstract header(header: string, value: string): void;
 }
 
 const mockHttpClientFactory = (): HttpClient => {
@@ -30,6 +32,7 @@ const mockHttpClientFactory = (): HttpClient => {
         put: jest.fn(),
         patch: jest.fn(),
         delete: jest.fn(),
+        header: jest.fn(),
     };
 };
 

@@ -1,8 +1,8 @@
 <?php
 
 use App\Kernel;
+use App\Service\Infrastructure\ResponseWriter;
 use Indragunawan\SwooleHttpMessageBridge\Symfony\Request as RequestFactory;
-use Indragunawan\SwooleHttpMessageBridge\Symfony\Response as ResponseWriter;
 use Swoole\Http\Request;
 use Swoole\Http\Response;
 use Swoole\Http\Server;
@@ -26,9 +26,6 @@ $http->on(
     "request",
     function (Request $request, Response $response) use ($kernel) {
 
-        // SqlFormatter will behave differently when it thinks we're in cli, which swoole is
-        SqlFormatter::$cli = false;
-
         $sfRequest = RequestFactory::createFromSwooleRequest($request);
 
         try {
@@ -38,9 +35,6 @@ $http->on(
             ResponseWriter::writeSwooleResponse($response, $sfResponse);
         } catch (Exception $e) {
             $response->end((string)$e);
-        } finally {
-            // Allow normal cli detection to resume
-            SqlFormatter::$cli = null;
         }
     }
 );

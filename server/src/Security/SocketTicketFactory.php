@@ -11,12 +11,12 @@ use Symfony\Component\Security\Core\Security;
 
 class SocketTicketFactory
 {
-    protected $security;
-    protected $entityManager;
+    protected Security $security;
+    protected EntityManagerInterface $entityManager;
 
     public function __construct(Security $security, EntityManagerInterface $entityManager)
     {
-        $this->security      = $security;
+        $this->security = $security;
         $this->entityManager = $entityManager;
     }
 

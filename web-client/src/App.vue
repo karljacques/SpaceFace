@@ -1,27 +1,30 @@
 <template>
     <v-app id="inspire">
-        <v-content>
-            <v-container>
-                <router-view></router-view>
-            </v-container>
-        </v-content>
+        <game v-if="isAuthenticated"/>
+        <landing-page v-else/>
     </v-app>
 </template>
 
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
     import {namespace} from 'vuex-class';
+    import Game from '@/Game.vue';
+    import LandingPage from '@/views/LandingPage.vue';
 
-    const ship = namespace('ship');
+    const authentication = namespace('authentication');
 
     @Component({
+        components: {LandingPage, Game}
     })
     export default class App extends Vue {
-        @ship.Action
-        protected refresh!: () => void;
+        @authentication.Getter
+        protected isAuthenticated!: boolean;
 
-        public created() {
-            this.refresh();
+        @authentication.Action
+        protected fetchAuthenticationState!: () => void;
+
+        public async created() {
+            this.fetchAuthenticationState();
 
             this.$vuetify.theme.dark = true;
         }

@@ -17,6 +17,8 @@ class JumpTest extends GameTestCase
         $this->addFixture($jumpNodeFixtures);
 
         $this->executeFixtures();
+
+        $this->loginUser();
     }
 
     public function testJumpWhenAtEntryNode()

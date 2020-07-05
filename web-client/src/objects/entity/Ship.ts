@@ -28,6 +28,7 @@ export class Ship {
         ship.maxPower = data.maxPower;
 
         ship.docked = data.docked;
+
         ship._cargo = Storage.create(data.cargo);
 
         return ship;

@@ -10,6 +10,7 @@
             <br>
             <cargo-status></cargo-status>
             <br>
+            <v-btn @click="logout" color="error">Logout</v-btn>
         </v-col>
         <v-col cols="6">
             <template>
@@ -49,6 +50,7 @@
     import PlayerInformation from '@/views/game/components/status/PlayerInformation.vue';
 
     const ship = namespace('ship');
+    const authentication = namespace('authentication');
 
     @Component({
         components: {
@@ -64,6 +66,9 @@
         },
     })
     export default class PrimaryLayout extends Vue {
+        @authentication.Action
+        protected logout!: () => void;
+
         @ship.Getter
         protected shipLoaded!: boolean;
 
