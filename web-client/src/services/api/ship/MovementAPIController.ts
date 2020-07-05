@@ -8,16 +8,20 @@ import {StatusResponseFactory} from '@/services/factory/StatusResponseFactory';
 import {JumpNode} from '@/objects/entity/JumpNode';
 import {HttpResponse} from '@/services/connectivity/interface/HttpResponse';
 import {Dockable} from '@/objects/entity/Dockable';
+import {Vector2} from '@/objects/entity/Vector2';
 
 @provide(MovementAPIController)
 export class MovementAPIController extends AbstractAPIController {
     @inject(StatusResponseFactory) protected statusResponseFactory!: StatusResponseFactory;
 
-    public async move(direction: string): Promise<CommandResponse<StatusResponseData>> {
+    public async move(direction: Vector2): Promise<CommandResponse<StatusResponseData>> {
         const uri = '/move';
 
         const data = {
-            direction,
+            direction: {
+                x: direction.x,
+                y: direction.y,
+            },
         };
 
         return await this.makeMovementRequest(uri, data);

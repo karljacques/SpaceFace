@@ -6,6 +6,7 @@ import {StatusResponseData} from '@/objects/response/StatusResponseData';
 import {MovementAPIController} from '@/services/api/ship/MovementAPIController';
 import {StatusAPIController} from '@/services/api/ship/StatusAPIController';
 import {container} from '@/container';
+import {Vector2} from '@/objects/entity/Vector2';
 
 const movementApiController: MovementAPIController = container.get(MovementAPIController);
 const statusApiController: StatusAPIController = container.get(StatusAPIController);
@@ -70,7 +71,7 @@ export default {
         },
     },
     actions: {
-        moveInDirection: async (context: any, direction: string): Promise<void> => {
+        moveInDirection: async (context: any, direction: Vector2): Promise<void> => {
             const result = await movementApiController.move(direction);
 
             if (result.success) {
