@@ -1,9 +1,10 @@
 <template>
     <v-card width="230">
-        <v-card-text>
+        <v-card-text :class="getMapClass">
             <ul class="hex-grid__list">
                 <template v-for="row in rows">
                     <li class="hex-grid__item" v-for="location in row">
+                        <div class="hex-grid__center-cell" v-if="currentShip.location.equals(location)"></div>
                         <div :style="{'background-color': getSectorColor(location)}"
                              class="hex-grid__content sector-cell">
                             {{ getSectorLetter(location) }}
@@ -31,7 +32,7 @@
     @Component({})
     export default class MiniMapHexContainer extends Vue {
 
-        protected mapSize: number = 2;
+        protected mapSize: number = 3;
 
         @ship.Getter
         protected nearbySectors!: Sector[];
@@ -44,6 +45,10 @@
 
         @ship.Getter
         protected currentShip!: Ship;
+
+        get getMapClass(): string {
+            return 'hex-grid-size-' + ((this.mapSize * 2) + 1);
+        }
 
         get position(): Vector2 {
             return this.currentShip.location.position;
@@ -75,7 +80,7 @@
 
         protected getSectorColor(location: Location): string {
             if (location.position.x < 1 || location.position.y < 1) {
-                return '#1d1d1d';
+                return 'rgb(40, 40, 40)';
             }
 
             const sector = this.sectorAtLocation(location);
@@ -112,7 +117,7 @@
 </script>
 
 <style lang="scss" scoped>
-
+    // https://ninjarockstar.dev/css-hex-grids/
     .sector-cell {
         width: 45px;
         height: 45px;
@@ -140,9 +145,30 @@
         }
     }
 
+
     #{$block} {
         display: flex;
         justify-content: center;
+
+        &__center-cell {
+            position: absolute;
+            height: 110%;
+            width: 110%;
+            margin-left: -5%;
+            margin-top: -5%;
+            font-size: 1.125rem;
+            clip-path: polygon(75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%, 25% 0);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            /*padding: 2rem 25%;*/
+            text-decoration: none;
+            text-align: center;
+            transition: transform .24s ease-out;
+            background: white !important;
+            z-index: -1;
+        }
 
         &__list {
             --amount: 5;
@@ -152,7 +178,7 @@
             list-style-type: none;
             display: grid;
             grid-template-columns: repeat(var(--amount), 1fr 2fr) 1fr;
-            grid-gap: 0.2em 0.5rem;
+            grid-gap: 0.1rem 0.5rem;
         }
 
         &__item {
@@ -174,20 +200,23 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            /*padding: 2rem 25%;*/
             text-decoration: none;
             text-align: center;
             transition: transform .24s ease-out;
         }
     }
 
-    #{$block} {
-        &__list {
-            --amount: 5;
-            --counter: 1;
-        }
+    @for $i from 1 through 20 {
+        #{$block}-size-#{$i} #{$block} {
+            &__list {
+                --amount: $i;
+                --counter: 1;
+            }
 
-        &__item {
-            @include grid-item(5);
+            &__item {
+                @include grid-item($i);
+            }
         }
     }
 
