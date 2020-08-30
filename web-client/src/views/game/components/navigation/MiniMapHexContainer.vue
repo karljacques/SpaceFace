@@ -1,17 +1,16 @@
 <template>
     <v-card width="230">
         <v-card-text>
-            <table style="border-collapse: collapse;">
-                <tbody>
-                <tr v-for="row in rows">
-                    <td :style="{'background-color': getSectorColor(location)}"
-                        class="sector-cell"
-                        v-for="location in row">
-                        {{ getSectorLetter(location) }}
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <ul class="hex-grid__list">
+                <template v-for="row in rows">
+                    <li class="hex-grid__item" v-for="location in row">
+                        <div :style="{'background-color': getSectorColor(location)}"
+                             class="hex-grid__content sector-cell">
+                            {{ getSectorLetter(location) }}
+                        </div>
+                    </li>
+                </template>
+            </ul>
         </v-card-text>
     </v-card>
 </template>
@@ -21,18 +20,16 @@
     import {Vue} from 'vue-property-decorator';
     import {namespace} from 'vuex-class';
     import {Sector} from '@/objects/entity/Sector';
+    import {JumpNode} from '@/objects/entity/JumpNode';
     import {Ship} from '@/objects/entity/Ship';
     import {Vector2} from '@/objects/entity/Vector2';
     import {Location} from '@/objects/entity/Location';
-    import {JumpNode} from '@/objects/entity/JumpNode';
-    import MiniMapHexContainer from '@/views/game/components/navigation/MiniMapHexContainer.vue';
+
 
     const ship = namespace('ship');
 
-    @Component({
-        components: {MiniMapHexContainer}
-    })
-    export default class MiniMapContainer extends Vue {
+    @Component({})
+    export default class MiniMapHexContainer extends Vue {
 
         protected mapSize: number = 2;
 
@@ -114,17 +111,84 @@
     }
 </script>
 
-<style scoped>
-    table {
-        border: 1px solid #ccc;
-    }
+<style lang="scss" scoped>
 
     .sector-cell {
-        border: 1px dotted #aaa;
         width: 45px;
         height: 45px;
         text-align: center;
         font-weight: bold;
-        font-size: 20px
+        font-size: 20px;
     }
+
+    $block: '.hex-grid';
+
+    @mixin grid-item($amount) {
+        @for $i from 1 through $amount {
+            &:nth-of-type(#{$amount}n + #{$i}) {
+                grid-column: #{$i + $i - 1} / span 3;
+                @if $i % 2 == 0 {
+                    grid-row: calc(var(--counter) + var(--counter) - 1) / span 2;
+                }
+            }
+        }
+
+        @for $i from 1 through 20 {
+            &:nth-of-type(n + #{$i * $amount + 1}) {
+                --counter: #{$i + 1};
+            }
+        }
+    }
+
+    #{$block} {
+        display: flex;
+        justify-content: center;
+
+        &__list {
+            --amount: 5;
+            position: relative;
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+            display: grid;
+            grid-template-columns: repeat(var(--amount), 1fr 2fr) 1fr;
+            grid-gap: 0.2em 0.5rem;
+        }
+
+        &__item {
+            position: relative;
+            grid-column: 1 / span 3;
+            grid-row: calc(var(--counter) + var(--counter)) / span 2;
+            filter: drop-shadow(0 0 10px rgba(#444, .08));
+            height: 0;
+            padding-bottom: 90%;
+        }
+
+        &__content {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            font-size: 1.125rem;
+            clip-path: polygon(75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%, 25% 0);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            text-align: center;
+            transition: transform .24s ease-out;
+        }
+    }
+
+    #{$block} {
+        &__list {
+            --amount: 5;
+            --counter: 1;
+        }
+
+        &__item {
+            @include grid-item(5);
+        }
+    }
+
 </style>

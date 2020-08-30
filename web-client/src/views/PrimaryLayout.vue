@@ -28,6 +28,7 @@
 
         </v-col>
         <v-col>
+            <mini-map-hex-container></mini-map-hex-container>
             <mini-map-container></mini-map-container>
 
         </v-col>
@@ -48,12 +49,14 @@
     import DockedOverview from '@/views/game/components/dockable/DockedOverview.vue';
     import CargoStatus from '@/views/game/components/status/CargoStatus.vue';
     import PlayerInformation from '@/views/game/components/status/PlayerInformation.vue';
+    import MiniMapHexContainer from '@/views/game/components/navigation/MiniMapHexContainer.vue';
 
     const ship = namespace('ship');
     const authentication = namespace('authentication');
 
     @Component({
         components: {
+            MiniMapHexContainer,
             PlayerInformation,
             CargoStatus,
             DockedOverview,
