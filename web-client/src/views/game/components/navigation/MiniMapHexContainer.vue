@@ -47,7 +47,15 @@
         protected currentShip!: Ship;
 
         get getMapClass(): string {
-            return 'hex-grid-size-' + ((this.mapSize * 2) + 1);
+            return 'hex-grid-size-' + ((this.mapSize * 2) + 1) + this.mapClassParitySuffix;
+        }
+
+        get mapClassParitySuffix(): string {
+            if (this.position.x % 2 === 0) {
+                return '-even';
+            }
+
+            return '-odd';
         }
 
         get position(): Vector2 {
@@ -128,11 +136,11 @@
 
     $block: '.hex-grid';
 
-    @mixin grid-item($amount) {
+    @mixin grid-item($amount, $isAlternative) {
         @for $i from 1 through $amount {
             &:nth-of-type(#{$amount}n + #{$i}) {
                 grid-column: #{$i + $i - 1} / span 3;
-                @if $i % 2 == 0 {
+                @if $i % 2 == $isAlternative {
                     grid-row: calc(var(--counter) + var(--counter) - 1) / span 2;
                 }
             }
@@ -208,14 +216,25 @@
     }
 
     @for $i from 1 through 20 {
-        #{$block}-size-#{$i} #{$block} {
+        #{$block}-size-#{$i}-even #{$block} {
             &__list {
                 --amount: $i;
                 --counter: 1;
             }
 
             &__item {
-                @include grid-item($i);
+                @include grid-item($i, 0);
+            }
+        }
+
+        #{$block}-size-#{$i}-odd #{$block} {
+            &__list {
+                --amount: $i;
+                --counter: 1;
+            }
+
+            &__item {
+                @include grid-item($i, 1);
             }
         }
     }
