@@ -4,8 +4,8 @@
 namespace App\Entity\Traits;
 
 use App\Entity\System;
+use App\Util\HexVector;
 use App\Util\Location;
-use App\Util\Vector2;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 trait LocationTrait
@@ -27,17 +27,17 @@ trait LocationTrait
     private $y;
 
     /**
-     * @return Vector2
+     * @return HexVector
      */
-    public function getVector(): Vector2
+    public function getVector(): HexVector
     {
-        return new Vector2($this->getX(), $this->getY());
+        return new HexVector($this->getX(), $this->getY());
     }
 
-    public function setVector(Vector2 $position): void
+    public function setVector(HexVector $position): void
     {
-        $this->setX($position->getX());
-        $this->setY($position->getY());
+        $this->setX($position->getQ());
+        $this->setY($position->getR());
     }
 
     /**
@@ -94,8 +94,8 @@ trait LocationTrait
     public function setLocation(Location $location): self
     {
         $this->system = $location->getSystem();
-        $this->x = $location->getVector()->getX();
-        $this->y = $location->getVector()->getY();
+        $this->x = $location->getVector()->getQ();
+        $this->y = $location->getVector()->getR();
 
         return $this;
     }

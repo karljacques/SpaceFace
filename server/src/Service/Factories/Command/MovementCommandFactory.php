@@ -10,8 +10,8 @@ use App\Entity\Ship;
 use App\Exception\ValidationError;
 use App\Exception\ValidationException;
 use App\Service\Calculators\MovementCostCalculatorInterface;
+use App\Util\HexVector;
 use App\Util\Location;
-use App\Util\Vector2;
 use Symfony\Component\HttpFoundation\Request;
 
 class MovementCommandFactory implements CommandFactoryInterface
@@ -32,7 +32,7 @@ class MovementCommandFactory implements CommandFactoryInterface
     public function createCommand(Request $request, Ship $ship): CommandInterface
     {
         $direction = $request->get('direction');
-        $translation = new Vector2($direction['x'], $direction['y']);
+        $translation = new HexVector($direction['x'], $direction['y']);
 
         if (!$this->isValid($translation)) {
             throw new ValidationException([
@@ -48,9 +48,9 @@ class MovementCommandFactory implements CommandFactoryInterface
         return new MovementCommand($ship, $translation, $fuelCost);
     }
 
-    protected function isValid(Vector2 $translation)
+    protected function isValid(HexVector $translation)
     {
-        return abs($translation->getX() + $translation->getY()) === 1;
+        return abs($translation->getQ() + $translation->getR()) === 1;
     }
 
     public function getSchema(): string

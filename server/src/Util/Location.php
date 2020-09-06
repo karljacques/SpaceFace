@@ -11,9 +11,9 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 class Location
 {
     private System $system;
-    private Vector2 $vector;
+    private HexVector $vector;
 
-    public function __construct(System $system, Vector2 $vector)
+    public function __construct(System $system, HexVector $vector)
     {
         $this->system = $system;
         $this->vector = $vector;
@@ -31,9 +31,9 @@ class Location
     /**
      * @Groups({"basic"})
      * @SerializedName("position")
-     * @return Vector2
+     * @return HexVector
      */
-    public function getVector(): Vector2
+    public function getVector(): HexVector
     {
         return $this->vector;
     }

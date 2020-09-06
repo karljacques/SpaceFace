@@ -3,7 +3,7 @@
 namespace App\Tests\Functional;
 
 use App\Tests\FixtureAwareTestCase;
-use App\Util\Vector2;
+use App\Util\HexVector;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 class MoveTest extends GameTestCase
@@ -24,7 +24,7 @@ class MoveTest extends GameTestCase
 
     public function testInvalidMovementDirection()
     {
-        $response = $this->executeCommand(new Vector2(3, 4));
+        $response = $this->executeCommand(new HexVector(3, 4));
 
         $this->assertFalse($response->success);
         $this->assertIsArray($response->errors);
@@ -43,7 +43,7 @@ class MoveTest extends GameTestCase
 
     public function testOutOfBoundsMovement()
     {
-        $response = $this->executeCommand(new Vector2(-1, 0));
+        $response = $this->executeCommand(new HexVector(-1, 0));
 
         $this->assertFalse($response->success);
 
@@ -66,16 +66,16 @@ class MoveTest extends GameTestCase
         $ship = $this->getCurrentShip();
         $ship->setFuel(0);
 
-        $response = $this->executeCommand(new Vector2(1, 0));
+        $response = $this->executeCommand(new HexVector(1, 0));
 
         $this->assertFalse($response->success);
 
-        $this->assertTrue($ship->getVector()->equals(new Vector2(1, 1)));
+        $this->assertTrue($ship->getVector()->equals(new HexVector(1, 1)));
     }
 
     public function testSuccessfulMove()
     {
-        $response = $this->executeCommand(new Vector2(1, 0));
+        $response = $this->executeCommand(new HexVector(1, 0));
 
         $this->assertTrue($response->success);
 
@@ -87,12 +87,12 @@ class MoveTest extends GameTestCase
         $this->assertEquals(2, $ship->getX());
     }
 
-    protected function executeCommand(Vector2 $direction): object
+    protected function executeCommand(HexVector $direction): object
     {
         $body = json_encode([
             'direction' => [
-                'x' => $direction->getX(),
-                'y' => $direction->getY()
+                'x' => $direction->getQ(),
+                'y' => $direction->getR()
             ]
         ]);
 

@@ -4,8 +4,8 @@ namespace App\Service\Factories;
 
 use App\Exception\InvalidLocationException;
 use App\Repository\SystemRepository;
+use App\Util\HexVector;
 use App\Util\Location;
-use App\Util\Vector2;
 
 class LocationFactory
 {
@@ -31,7 +31,7 @@ class LocationFactory
             throw new InvalidLocationException('System does not exist');
         }
 
-        $vector = new Vector2($x, $y);
+        $vector = new HexVector($x, $y);
 
         if (!$system->getBoundingBox()->containsPoint($vector)) {
             throw new InvalidLocationException('Point not within system bounds');

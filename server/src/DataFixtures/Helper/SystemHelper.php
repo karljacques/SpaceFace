@@ -5,8 +5,8 @@ namespace App\DataFixtures\Helper;
 
 
 use App\Entity\System;
+use App\Util\HexVector;
 use App\Util\Location;
-use App\Util\Vector2;
 use Faker\Factory;
 
 class SystemHelper
@@ -17,7 +17,7 @@ class SystemHelper
 
         return new Location(
             $system,
-            new Vector2(
+            new HexVector(
                 $faker->numberBetween(1, $system->getSizeX()),
                 $faker->numberBetween(1, $system->getSizeY()))
         );

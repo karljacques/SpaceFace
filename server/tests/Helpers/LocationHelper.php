@@ -4,8 +4,8 @@
 namespace App\Tests\Helpers;
 
 
+use App\Util\HexVector;
 use App\Util\Location;
-use App\Util\Vector2;
 
 class LocationHelper
 {
@@ -18,7 +18,7 @@ class LocationHelper
         return new Location(
             $location->getSystem(),
             $location->getVector()
-                ->add(new Vector2(1, 0))
+                ->add(new HexVector(1, 0))
         );
     }
 }

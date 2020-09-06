@@ -9,7 +9,7 @@ use App\Repository\DockableRepository;
 use App\Repository\JumpNodeRepository;
 use App\Repository\SectorRepository;
 use App\Util\BoundingBox;
-use App\Util\Vector2;
+use App\Util\HexVector;
 use Tightenco\Collect\Support\Collection;
 
 class ShipSensors
@@ -54,7 +54,7 @@ class ShipSensors
     {
         $offset = 2;
 
-        $delta = new Vector2($offset, $offset);
+        $delta = new HexVector($offset, $offset);
 
         return new BoundingBox(
             $ship->getVector()->subtract($delta),

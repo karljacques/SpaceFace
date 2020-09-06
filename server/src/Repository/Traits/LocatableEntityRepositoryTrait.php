@@ -29,10 +29,10 @@ trait LocatableEntityRepositoryTrait
                 AND e.system = :system');
 
         $qb->setParameters([
-            'minX' => $box->getStart()->getX(),
-            'maxX' => $box->getEnd()->getX(),
-            'minY' => $box->getStart()->getY(),
-            'maxY' => $box->getEnd()->getY(),
+            'minX' => $box->getStart()->getQ(),
+            'maxX' => $box->getEnd()->getQ(),
+            'minY' => $box->getStart()->getR(),
+            'maxY' => $box->getEnd()->getR(),
             'system' => $system
         ]);
 
@@ -43,8 +43,8 @@ trait LocatableEntityRepositoryTrait
     {
         return collect($this->findBy([
             'system' => $location->getSystem(),
-            'x' => $location->getVector()->getX(),
-            'y' => $location->getVector()->getY()
+            'x' => $location->getVector()->getQ(),
+            'y' => $location->getVector()->getR()
         ]));
     }
 }

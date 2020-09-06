@@ -3,8 +3,8 @@
 namespace App\Entity;
 
 use App\Entity\Traits\LocationTrait;
+use App\Util\HexVector;
 use App\Util\Location;
-use App\Util\Vector2;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -47,8 +47,8 @@ class JumpNode implements Locatable
     public function setExitLocation(Location $location): void
     {
         $this->exitSystem = $location->getSystem();
-        $this->exitX = $location->getVector()->getX();
-        $this->exitY = $location->getVector()->getY();
+        $this->exitX = $location->getVector()->getQ();
+        $this->exitY = $location->getVector()->getR();
     }
 
     /**
@@ -57,6 +57,6 @@ class JumpNode implements Locatable
      */
     public function getExitLocation(): Location
     {
-        return new Location($this->exitSystem, new Vector2($this->exitX, $this->exitY));
+        return new Location($this->exitSystem, new HexVector($this->exitX, $this->exitY));
     }
 }

@@ -6,6 +6,7 @@
                     <li class="hex-grid__item" v-for="location in row">
                         <div class="hex-grid__center-cell" v-if="currentShip.location.equals(location)"></div>
                         <div :style="{'background-color': getSectorColor(location)}"
+                             :class="{'historical': isHistorical(location)}"
                              class="hex-grid__content sector-cell">
                             {{ getSectorLetter(location) }}
                         </div>
@@ -121,6 +122,10 @@
             }
             return str;
         }
+
+        protected isHistorical(location: Location): boolean {
+            return true;
+        }
     }
 </script>
 
@@ -132,6 +137,10 @@
         text-align: center;
         font-weight: bold;
         font-size: 20px;
+
+        &.historical {
+            opacity: 50%;
+        }
     }
 
     $block: '.hex-grid';

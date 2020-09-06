@@ -4,21 +4,21 @@ namespace App\Command;
 
 use App\Entity\Ship;
 use App\Service\Factories\Command\MovementCommandFactory;
+use App\Util\HexVector;
 use App\Util\Location;
-use App\Util\Vector2;
 
 class MovementCommand extends AbstractShipCommand
 {
-    /** @var Vector2 */
+    /** @var HexVector */
     protected $translation;
 
-    /** @var Vector2 */
+    /** @var HexVector */
     protected $proposedPosition;
 
     /** @var int */
     protected $fuelCost;
 
-    public function __construct(Ship $ship, Vector2 $translation, int $fuelCost)
+    public function __construct(Ship $ship, HexVector $translation, int $fuelCost)
     {
         parent::__construct($ship);
         $this->translation = $translation;
@@ -29,9 +29,9 @@ class MovementCommand extends AbstractShipCommand
     }
 
     /**
-     * @return Vector2
+     * @return HexVector
      */
-    public function getTranslation(): Vector2
+    public function getTranslation(): HexVector
     {
         return $this->translation;
     }

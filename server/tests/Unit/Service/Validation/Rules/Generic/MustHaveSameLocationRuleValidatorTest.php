@@ -9,8 +9,8 @@ use App\Service\Validation\Rules\Generic\MustHaveSameLocationRule;
 use App\Service\Validation\Rules\Generic\MustHaveSameLocationRuleValidator;
 use App\Tests\Helpers\LocationHelper;
 use App\Tests\Unit\Service\Validation\Rules\AbstractRuleValidator;
+use App\Util\HexVector;
 use App\Util\Location;
-use App\Util\Vector2;
 
 class MustHaveSameLocationRuleValidatorTest extends AbstractRuleValidator
 {
@@ -42,7 +42,7 @@ class MustHaveSameLocationRuleValidatorTest extends AbstractRuleValidator
         $system = new System();
         $system->setId(1);
 
-        return new Location($system, new Vector2(1, 1));
+        return new Location($system, new HexVector(1, 1));
     }
 
     public function testValidateDifferentLocation()

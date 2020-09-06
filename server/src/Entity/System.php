@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Util\BoundingBox;
-use App\Util\Vector2;
+use App\Util\HexVector;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -103,7 +103,7 @@ class System
 
     public function getBoundingBox(): BoundingBox
     {
-        return new BoundingBox(new Vector2(1, 1), new Vector2($this->getSizeX(), $this->getSizeY()));
+        return new BoundingBox(new HexVector(1, 1), new HexVector($this->getSizeX(), $this->getSizeY()));
     }
 
     public function getSizeX(): ?int
