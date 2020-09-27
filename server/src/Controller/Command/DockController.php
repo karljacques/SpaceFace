@@ -25,7 +25,7 @@ class DockController extends AbstractGameController
     }
 
     /**
-     * @Route("/dock", methods={"POST"}, defaults={"_schema": "dock.json"})
+     * @Route("/dock", methods={"POST"})
      * @param DockCommand $command
      * @return Response
      * @throws UserActionException

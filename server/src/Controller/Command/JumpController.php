@@ -22,7 +22,7 @@ class JumpController extends AbstractGameController
     }
 
     /**
-     * @Route("/jump", methods={"POST"}, defaults={"_schema": "jump.json"})
+     * @Route("/jump", methods={"POST"})
      * @param JumpCommand $command
      * @return JsonResponse
      * @throws UserActionException

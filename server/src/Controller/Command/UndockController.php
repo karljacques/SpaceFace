@@ -21,7 +21,7 @@ class UndockController extends AbstractGameController
     }
 
     /**
-     * @Route("/undock", methods={"POST"}, defaults={"_schema": ""})
+     * @Route("/undock", methods={"POST"})
      * @param UndockCommand $command
      * @return Response
      * @throws UserActionException

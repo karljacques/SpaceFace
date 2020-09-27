@@ -21,7 +21,7 @@ class SellController extends AbstractGameController
     }
 
     /**
-     * @Route("/economy/market/sell", methods={"POST"}, defaults={"_schema":"economy/market/purchase.json"})
+     * @Route("/economy/market/sell", methods={"POST"})
      * @param SellCommand $command
      * @return JsonResponse
      * @throws UserActionException
