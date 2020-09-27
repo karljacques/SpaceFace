@@ -5,39 +5,31 @@ namespace App\Controller\Command;
 
 
 use App\Command\UndockCommand;
-use App\Controller\AbstractCommandController;
+use App\Controller\AbstractGameController;
 use App\Exception\UserActionException;
 use App\Service\Executors\UndockCommandExecutor;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class UndockController extends AbstractCommandController
+class UndockController extends AbstractGameController
 {
     protected UndockCommandExecutor $commandExecutor;
-    protected EntityManagerInterface $entityManager;
 
-    public function __construct(
-        UndockCommandExecutor $commandExecutor,
-        EntityManagerInterface $entityManager
-    )
+    public function __construct(UndockCommandExecutor $commandExecutor)
     {
         $this->commandExecutor = $commandExecutor;
-        $this->entityManager = $entityManager;
     }
 
     /**
      * @Route("/undock", methods={"POST"}, defaults={"_schema": ""})
+     * @param UndockCommand $command
+     * @return Response
      * @throws UserActionException
      */
-    public function index(): Response
+    public function index(UndockCommand $command): Response
     {
-        /** @var UndockCommand $command */
-        $command = $this->createCommand(UndockCommand::class);
-
         // Execute the command
         $this->commandExecutor->execute($command);
-        $this->entityManager->flush();
 
         return $this->response($command->getShip(), ['player', 'sector', 'system']);
     }

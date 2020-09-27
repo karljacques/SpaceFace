@@ -5,46 +5,32 @@ namespace App\Controller\Command;
 
 
 use App\Command\MovementCommand;
-use App\Controller\AbstractCommandController;
+use App\Controller\AbstractGameController;
 use App\Exception\UserActionException;
-use App\Messenger\Message\UserSpecificMessage;
 use App\Service\Executors\MovementCommandExecutor;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-class MovementController extends AbstractCommandController
+class MovementController extends AbstractGameController
 {
     protected MovementCommandExecutor $commandExecutor;
-    protected EntityManagerInterface $entityManager;
 
-    public function __construct(
-        MovementCommandExecutor $commandExecutor,
-        EntityManagerInterface $entityManager
-    )
+    public function __construct(MovementCommandExecutor $commandExecutor)
     {
         $this->commandExecutor = $commandExecutor;
-        $this->entityManager = $entityManager;
     }
 
     /**
-     * @Route("/move", methods={"POST"}, defaults={"_schema"="move.json"})
-     * @param MessageBusInterface $bus
+     * @Route("/move", methods={"POST"})
+     * @param MovementCommand $command
      * @return Response
      * @throws UserActionException
      */
-    public function index(MessageBusInterface $bus)
+    public function index(MovementCommand $command)
     {
-        /** @var MovementCommand $move */
-        $move = $this->createCommand(MovementCommand::class);
-
         // Execute the command
-        $this->commandExecutor->execute($move);
-        $this->entityManager->flush();
+        $this->commandExecutor->execute($command);
 
-        $bus->dispatch(new UserSpecificMessage($move->getShip()->getOwner()->getUser(), ['action' => 'move_success']));
-
-        return $this->response($move->getShip(), ['player', 'sector', 'system']);
+        return $this->response($command->getShip(), ['player', 'sector', 'system']);
     }
 }

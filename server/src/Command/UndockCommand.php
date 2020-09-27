@@ -4,12 +4,18 @@
 namespace App\Command;
 
 
-use App\Service\Factories\Command\UndockCommandFactory;
+use App\Service\Validation\Rules\Docking\MustBeDockedRule;
+use App\Service\Validation\Rules\Ship\MustHavePowerRule;
+use App\Service\Validation\Rules\Ship\MustNotBeInCooldownRule;
 
 class UndockCommand extends AbstractShipCommand
 {
-    public static function getFactoryName(): string
+    public function getValidationRules(): array
     {
-        return UndockCommandFactory::class;
+        return [
+            new MustBeDockedRule($this->ship),
+            new MustNotBeInCooldownRule($this->ship),
+            new MustHavePowerRule($this->ship, 100),
+        ];
     }
 }

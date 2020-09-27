@@ -8,10 +8,11 @@ use App\Command\CommandInterface;
 use App\Command\Economy\Market\SellCommand;
 use App\Entity\Ship;
 use App\Repository\Join\MarketCommodityRepository;
-use App\Service\Factories\Command\CommandFactoryInterface;
+use App\Service\Factories\Command\AbstractCommandParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 
-class SellCommandFactory implements CommandFactoryInterface
+class SellCommandFactory extends AbstractCommandParamConverter
 {
     protected MarketCommodityRepository $marketCommodityRepository;
 
@@ -30,8 +31,13 @@ class SellCommandFactory implements CommandFactoryInterface
         return new SellCommand($ship, $marketCommodity, $request->get('quantity'));
     }
 
-    public function getSchema(): string
+    public function getSchemaFilename(): string
     {
         return 'economy/market/purchase.json';
+    }
+
+    public function supports(ParamConverter $configuration)
+    {
+        return $configuration->getClass() === SellCommand::class;
     }
 }

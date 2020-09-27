@@ -11,6 +11,7 @@ use App\Service\Validation\Rules\Storage\MustHaveStorageSpaceRule;
 use App\Service\Validation\Rules\System\MustBeWithinSystemRule;
 use App\Service\Validation\Rules\System\MustBeWithinSystemRuleValidator;
 use App\Service\Validation\RuleValidatorLocator;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -26,7 +27,7 @@ class AbstractCommandExecutorTest extends TestCase
         $command = $this->createMock(CommandInterface::class);
 
         $rules = list($rule1, $rule2, $rule3) = $this->getRules();
-        $this->mockGetValidationRules($commandExecutor, $rules, $command);
+        $command->expects($this->any())->method('getValidationRules')->willReturn($rules);
 
         $ruleValidatorLocator = $this->mockGetRuleValidator($commandExecutor);
 
@@ -41,7 +42,40 @@ class AbstractCommandExecutorTest extends TestCase
         $commandExecutor->expects($this->once())
             ->method('executeCommand');
 
+        $entityManager = $this->mockGetEntityManager($commandExecutor);
+        $entityManager->flush()->shouldBeCalled();
+
         $commandExecutor->execute($command);
+    }
+
+    /**
+     * @throws UserActionException
+     */
+    public function testExecuteExceptionThrowWhenViolations()
+    {
+        $commandExecutor = $this->getCommandExecutor();
+        $command = $this->createMock(CommandInterface::class);
+
+        $rules = list($rule1, $rule2, $rule3) = $this->getRules();
+        $command->expects($this->any())->method('getValidationRules')->willReturn($rules);
+
+        $ruleValidatorLocator = $this->mockGetRuleValidator($commandExecutor);
+
+        $ruleValidator1 = $this->mockGetValidator($ruleValidatorLocator, $rule1);
+        $ruleValidator2 = $this->mockGetValidator($ruleValidatorLocator, $rule2);
+        $ruleValidator3 = $this->mockGetValidator($ruleValidatorLocator, $rule3);
+
+
+        $ruleValidator1->validate($rule1)->shouldBeCalled()->willReturn(false);
+        $ruleValidator2->validate($rule2)->shouldBeCalled()->willReturn(true);
+        $ruleValidator3->validate($rule3)->shouldBeCalled()->willReturn(false);
+
+        $commandExecutor->expects($this->never())->method('executeCommand');
+
+        $this->expectException(UserActionException::class);
+
+        $commandExecutor->execute($command);
+
     }
 
     /**
@@ -52,8 +86,8 @@ class AbstractCommandExecutorTest extends TestCase
         /** @var AbstractCommandExecutor|MockObject $commandExecutor */
         $commandExecutor = $this->createPartialMock(AbstractCommandExecutor::class, [
             'executeCommand',
-            'getValidationRules',
-            'ruleValidatorLocator'
+            'ruleValidatorLocator',
+            'entityManager'
         ]);
         return $commandExecutor;
     }
@@ -72,19 +106,6 @@ class AbstractCommandExecutorTest extends TestCase
             $rule2,
             $rule3
         ];
-    }
-
-    /**
-     * @param MockObject $commandExecutor
-     * @param array $rules
-     * @param CommandInterface $command
-     */
-    protected function mockGetValidationRules(MockObject $commandExecutor, array $rules, CommandInterface $command): void
-    {
-        $commandExecutor->expects($this->once())
-            ->method('getValidationRules')
-            ->with($command)
-            ->willReturn($rules);
     }
 
     /**
@@ -117,32 +138,17 @@ class AbstractCommandExecutorTest extends TestCase
     }
 
     /**
-     * @throws UserActionException
+     * @param MockObject $commandExecutor
+     * @return EntityManagerInterface|ObjectProphecy
      */
-    public function testExecuteExceptionThrowWhenViolations()
+    protected function mockGetEntityManager(MockObject $commandExecutor)
     {
-        $commandExecutor = $this->getCommandExecutor();
-        $command = $this->createMock(CommandInterface::class);
+        $entityManager = $this->prophesize(EntityManagerInterface::class);
 
-        $rules = list($rule1, $rule2, $rule3) = $this->getRules();
-        $this->mockGetValidationRules($commandExecutor, $rules, $command);
+        $commandExecutor->expects($this->any())
+            ->method('entityManager')
+            ->willReturn($entityManager->reveal());
 
-        $ruleValidatorLocator = $this->mockGetRuleValidator($commandExecutor);
-
-        $ruleValidator1 = $this->mockGetValidator($ruleValidatorLocator, $rule1);
-        $ruleValidator2 = $this->mockGetValidator($ruleValidatorLocator, $rule2);
-        $ruleValidator3 = $this->mockGetValidator($ruleValidatorLocator, $rule3);
-
-
-        $ruleValidator1->validate($rule1)->shouldBeCalled()->willReturn(false);
-        $ruleValidator2->validate($rule2)->shouldBeCalled()->willReturn(true);
-        $ruleValidator3->validate($rule3)->shouldBeCalled()->willReturn(false);
-
-        $commandExecutor->expects($this->never())->method('executeCommand');
-
-        $this->expectException(UserActionException::class);
-
-        $commandExecutor->execute($command);
-
+        return $entityManager;
     }
 }

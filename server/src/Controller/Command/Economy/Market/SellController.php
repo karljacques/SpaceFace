@@ -4,32 +4,31 @@
 namespace App\Controller\Command\Economy\Market;
 
 
-use App\Command\Economy\Market\PurchaseCommand;
 use App\Command\Economy\Market\SellCommand;
-use App\Controller\AbstractCommandController;
+use App\Controller\AbstractGameController;
 use App\Exception\UserActionException;
 use App\Service\Executors\Economy\Market\SellCommandExecutor;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-class SellController extends AbstractCommandController
+class SellController extends AbstractGameController
 {
+    private SellCommandExecutor $commandExecutor;
+
+    public function __construct(SellCommandExecutor $commandExecutor)
+    {
+        $this->commandExecutor = $commandExecutor;
+    }
+
     /**
      * @Route("/economy/market/sell", methods={"POST"}, defaults={"_schema":"economy/market/purchase.json"})
-     * @param SellCommandExecutor $commandExecutor
-     * @param EntityManagerInterface $entityManager
+     * @param SellCommand $command
      * @return JsonResponse
      * @throws UserActionException
      */
-    public function index(SellCommandExecutor $commandExecutor, EntityManagerInterface $entityManager)
+    public function index(SellCommand $command)
     {
-        /** @var PurchaseCommand $command */
-        $command = $this->createCommand(SellCommand::class);
-
-        $commandExecutor->execute($command);
-
-        $entityManager->flush();
+        $this->commandExecutor->execute($command);
 
         return $this->response($command->getShip(), ['player', 'sector', 'system']);
     }

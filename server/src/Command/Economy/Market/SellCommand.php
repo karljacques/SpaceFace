@@ -7,7 +7,9 @@ namespace App\Command\Economy\Market;
 use App\Command\AbstractShipCommand;
 use App\Entity\Join\MarketCommodity;
 use App\Entity\Ship;
-use App\Service\Factories\Command\Economy\Market\SellCommandFactory;
+use App\Service\Validation\Rules\Docking\MustBeDockedAtRule;
+use App\Service\Validation\Rules\Storage\MustContainCommodityInStorageRule;
+use App\Service\Validation\Rules\Storage\MustHaveStorageSpaceRule;
 
 class SellCommand extends AbstractShipCommand
 {
@@ -22,14 +24,6 @@ class SellCommand extends AbstractShipCommand
         $this->quantity = $quantity;
     }
 
-    public static function getFactoryName(): string
-    {
-        return SellCommandFactory::class;
-    }
-
-    /**
-     * @return MarketCommodity
-     */
     public function getMarketCommodity(): MarketCommodity
     {
         return $this->marketCommodity;
@@ -40,11 +34,26 @@ class SellCommand extends AbstractShipCommand
         return $this->marketCommodity->getBuy() * $this->getQuantity();
     }
 
-    /**
-     * @return int
-     */
     public function getQuantity(): int
     {
         return $this->quantity;
+    }
+
+    public function getValidationRules(): array
+    {
+        $ship = $this->getShip();
+        $marketCommodity = $this->getMarketCommodity();
+        $market = $marketCommodity->getMarket();
+        $storageRequired = $marketCommodity->getCommodity()->getSize() * $this->getQuantity();
+
+        return [
+            new MustBeDockedAtRule($ship, $marketCommodity->getMarket()->getDockable()),
+            new MustHaveStorageSpaceRule($market->getStorage(), $storageRequired),
+            new MustContainCommodityInStorageRule(
+                $ship->getStorageComponent(),
+                $marketCommodity->getCommodity(),
+                $this->getQuantity()
+            )
+        ];
     }
 }

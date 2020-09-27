@@ -6,7 +6,10 @@ namespace App\Command;
 
 use App\Entity\JumpNode;
 use App\Entity\Ship;
-use App\Service\Factories\Command\JumpCommandFactory;
+use App\Service\Validation\Rules\Docking\MustNotBeDockedRule;
+use App\Service\Validation\Rules\Generic\MustHaveSameLocationRule;
+use App\Service\Validation\Rules\Ship\MustHavePowerRule;
+use App\Service\Validation\Rules\Ship\MustNotBeInCooldownRule;
 
 class JumpCommand extends AbstractShipCommand
 {
@@ -28,9 +31,16 @@ class JumpCommand extends AbstractShipCommand
     }
 
 
-
-    public static function getFactoryName(): string
+    public function getValidationRules(): array
     {
-        return JumpCommandFactory::class;
+        $ship = $this->getShip();
+        $node = $this->getNode();
+
+        return [
+            new MustNotBeDockedRule($ship),
+            new MustHaveSameLocationRule($ship, $node),
+            new MustNotBeInCooldownRule($ship),
+            new MustHavePowerRule($ship, 500)
+        ];
     }
 }

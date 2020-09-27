@@ -3,20 +3,19 @@
 namespace App\Command;
 
 use App\Entity\Ship;
-use App\Service\Factories\Command\MovementCommandFactory;
+use App\Service\Validation\Rules\Docking\MustNotBeDockedRule;
+use App\Service\Validation\Rules\Ship\MustHaveFuelRule;
+use App\Service\Validation\Rules\Ship\MustHavePowerRule;
+use App\Service\Validation\Rules\Ship\MustNotBeInCooldownRule;
+use App\Service\Validation\Rules\System\MustBeWithinSystemRule;
 use App\Util\HexVector;
 use App\Util\Location;
 
 class MovementCommand extends AbstractShipCommand
 {
-    /** @var HexVector */
-    protected $translation;
-
-    /** @var HexVector */
-    protected $proposedPosition;
-
-    /** @var int */
-    protected $fuelCost;
+    protected HexVector $translation;
+    protected HexVector $proposedPosition;
+    protected int $fuelCost;
 
     public function __construct(Ship $ship, HexVector $translation, int $fuelCost)
     {
@@ -28,33 +27,29 @@ class MovementCommand extends AbstractShipCommand
         $this->fuelCost = $fuelCost;
     }
 
-    /**
-     * @return HexVector
-     */
     public function getTranslation(): HexVector
     {
         return $this->translation;
     }
 
-    /**
-     * @return Location
-     */
     public function getProposedLocation(): Location
     {
         return new Location($this->ship->getSystem(), $this->proposedPosition);
     }
 
-    /**
-     * @return int
-     */
-    public function getFuelCost():int
+    public function getFuelCost(): int
     {
         return $this->fuelCost;
     }
 
-
-    public static function getFactoryName(): string
+    public function getValidationRules(): array
     {
-        return MovementCommandFactory::class;
+        return [
+            new MustNotBeDockedRule($this->ship),
+            new MustHaveFuelRule($this->ship, $this->fuelCost),
+            new MustBeWithinSystemRule($this->getProposedLocation()),
+            new MustHavePowerRule($this->ship, 50),
+            new MustNotBeInCooldownRule($this->ship)
+        ];
     }
 }

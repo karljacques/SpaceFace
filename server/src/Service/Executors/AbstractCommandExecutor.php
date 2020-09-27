@@ -10,6 +10,7 @@ use App\Entity\ShipRealtimeStatus;
 use App\Exception\UserActionException;
 use App\Service\ShipRealtimeStatusService;
 use App\Service\Validation\RuleValidatorLocator;
+use Doctrine\ORM\EntityManagerInterface;
 use LogicException;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
 use Symfony\Contracts\Service\ServiceSubscriberTrait;
@@ -20,8 +21,6 @@ abstract class AbstractCommandExecutor implements ServiceSubscriberInterface
 
     abstract protected function executeCommand(CommandInterface $command): void;
 
-    abstract protected function getValidationRules(CommandInterface $command): array;
-
     /**
      * @param CommandInterface $command
      *
@@ -30,7 +29,7 @@ abstract class AbstractCommandExecutor implements ServiceSubscriberInterface
      */
     public function execute(CommandInterface $command): void
     {
-        $rules = $this->getValidationRules($command);
+        $rules = $command->getValidationRules();
         $violations = [];
 
         foreach ($rules as $rule) {
@@ -47,6 +46,7 @@ abstract class AbstractCommandExecutor implements ServiceSubscriberInterface
         }
 
         $this->executeCommand($command);
+        $this->entityManager()->flush();
     }
 
     public function ruleValidatorLocator(): RuleValidatorLocator
@@ -55,6 +55,11 @@ abstract class AbstractCommandExecutor implements ServiceSubscriberInterface
     }
 
     protected function shipRealtimeStatusService(): ShipRealtimeStatusService
+    {
+        return $this->container->get(__METHOD__);
+    }
+
+    protected function entityManager(): EntityManagerInterface
     {
         return $this->container->get(__METHOD__);
     }

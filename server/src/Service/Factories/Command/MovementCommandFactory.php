@@ -12,9 +12,11 @@ use App\Exception\ValidationException;
 use App\Service\Calculators\MovementCostCalculatorInterface;
 use App\Util\HexVector;
 use App\Util\Location;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 
-class MovementCommandFactory implements CommandFactoryInterface
+
+class MovementCommandFactory extends AbstractCommandParamConverter
 {
     protected MovementCostCalculatorInterface $movementCostCalculator;
 
@@ -32,7 +34,7 @@ class MovementCommandFactory implements CommandFactoryInterface
     public function createCommand(Request $request, Ship $ship): CommandInterface
     {
         $direction = $request->get('direction');
-        $translation = new HexVector($direction['x'], $direction['y']);
+        $translation = new HexVector($direction->x, $direction->y);
 
         if (!$this->isValid($translation)) {
             throw new ValidationException([
@@ -53,8 +55,13 @@ class MovementCommandFactory implements CommandFactoryInterface
         return abs($translation->getQ() + $translation->getR()) === 1;
     }
 
-    public function getSchema(): string
+    protected function getSchemaFilename(): string
     {
         return 'move.json';
+    }
+
+    public function supports(ParamConverter $configuration)
+    {
+        return $configuration->getClass() === MovementCommand::class;
     }
 }

@@ -51,8 +51,8 @@ class HexVector implements JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'q' => $this->getQ(),
-            'z' => $this->getR()
+            'x' => $this->getQ(),
+            'y' => $this->getR()
         ];
     }
 

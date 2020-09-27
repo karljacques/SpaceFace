@@ -5,38 +5,34 @@ namespace App\Controller\Command;
 
 
 use App\Command\DockCommand;
-use App\Controller\AbstractCommandController;
+use App\Controller\AbstractGameController;
 use App\Exception\UserActionException;
 use App\Service\Executors\DockCommandExecutor;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DockController extends AbstractCommandController
+class DockController extends AbstractGameController
 {
     protected DockCommandExecutor $commandExecutor;
     protected EntityManagerInterface $entityManager;
 
     public function __construct(
-        DockCommandExecutor $commandExecutor,
-        EntityManagerInterface $entityManager
+        DockCommandExecutor $commandExecutor
     )
     {
         $this->commandExecutor = $commandExecutor;
-        $this->entityManager = $entityManager;
     }
 
     /**
      * @Route("/dock", methods={"POST"}, defaults={"_schema": "dock.json"})
+     * @param DockCommand $command
+     * @return Response
      * @throws UserActionException
      */
-    public function index(): Response
+    public function index(DockCommand $command): Response
     {
-        /** @var DockCommand $command */
-        $command = $this->createCommand(DockCommand::class);
-
         $this->commandExecutor->execute($command);
-        $this->entityManager->flush();
 
         return $this->response($command->getShip(), ['player', 'sector', 'system']);
     }

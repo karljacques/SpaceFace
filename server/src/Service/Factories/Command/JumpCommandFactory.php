@@ -8,11 +8,12 @@ use App\Command\CommandInterface;
 use App\Command\JumpCommand;
 use App\Entity\Ship;
 use App\Repository\JumpNodeRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 
-class JumpCommandFactory implements CommandFactoryInterface
+class JumpCommandFactory extends AbstractCommandParamConverter
 {
-    protected $jumpNodeRepository;
+    protected JumpNodeRepository $jumpNodeRepository;
 
     public function __construct(JumpNodeRepository $jumpNodeRepository)
     {
@@ -28,8 +29,13 @@ class JumpCommandFactory implements CommandFactoryInterface
         return new JumpCommand($ship, $node);
     }
 
-    public function getSchema(): string
+    public function getSchemaFilename(): string
     {
         return 'jump.json';
+    }
+
+    public function supports(ParamConverter $configuration)
+    {
+        return $configuration->getClass() === JumpCommand::class;
     }
 }
