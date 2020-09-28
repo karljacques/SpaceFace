@@ -103,7 +103,7 @@ class System
 
     public function getBoundingBox(): BoundingBox
     {
-        return new BoundingBox(new HexVector(1, 1), new HexVector($this->getSizeX(), $this->getSizeY()));
+        return new BoundingBox(new HexVector(-$this->getSizeX(), -$this->getSizeY()), new HexVector($this->getSizeX(), $this->getSizeY()));
     }
 
     public function getSizeX(): ?int

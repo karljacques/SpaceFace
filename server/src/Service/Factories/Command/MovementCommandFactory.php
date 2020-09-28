@@ -35,14 +35,14 @@ class MovementCommandFactory extends AbstractCommandParamConverter
     {
         $direction = $request->get('direction');
         $translation = new HexVector($direction->x, $direction->y);
+        $targetPosition = $ship->getLocation()->getVector()->add($translation);
 
-        if (!$this->isValid($translation)) {
+        if (!$this->isValid($ship->getVector(), $targetPosition)) {
             throw new ValidationException([
                 new ValidationError('The direction supplied is not valid', 'direction')
             ]);
         }
 
-        $targetPosition = $ship->getLocation()->getVector()->add($translation);
         $targetLocation = new Location($ship->getSystem(), $targetPosition);
 
         $fuelCost = $this->movementCostCalculator->calculateFuelCost($ship->getLocation(), $targetLocation);
@@ -50,9 +50,9 @@ class MovementCommandFactory extends AbstractCommandParamConverter
         return new MovementCommand($ship, $translation, $fuelCost);
     }
 
-    protected function isValid(HexVector $translation)
+    protected function isValid(HexVector $location, HexVector $target)
     {
-        return abs($translation->getQ() + $translation->getR()) === 1;
+        return $location->isAdjacentTo($target);
     }
 
     protected function getSchemaFilename(): string

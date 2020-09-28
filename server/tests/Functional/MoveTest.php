@@ -4,6 +4,7 @@ namespace App\Tests\Functional;
 
 use App\Tests\FixtureAwareTestCase;
 use App\Util\HexVector;
+use Generator;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 class MoveTest extends GameTestCase
@@ -43,7 +44,10 @@ class MoveTest extends GameTestCase
 
     public function testOutOfBoundsMovement()
     {
-        $response = $this->executeCommand(new HexVector(-1, 0));
+        $system = $this->getCurrentShip()->getSystem();
+        $this->getCurrentShip()->setVector(new HexVector($system->getSizeX(), $system->getSizeY()));
+
+        $response = $this->executeCommand(new HexVector(1, 0));
 
         $this->assertFalse($response->success);
 
@@ -73,18 +77,72 @@ class MoveTest extends GameTestCase
         $this->assertTrue($ship->getVector()->equals(new HexVector(1, 1)));
     }
 
-    public function testSuccessfulMove()
+    /**
+     * @dataProvider movementDataProvider
+     *
+     * @param HexVector $direction
+     * @param bool $success
+     */
+    public function testMoveDirections(HexVector $direction, bool $success)
     {
-        $response = $this->executeCommand(new HexVector(1, 0));
+        $this->getCurrentShip()->setVector(new HexVector(0, 0));
+        $response = $this->executeCommand($direction);
 
-        $this->assertTrue($response->success);
+        $this->assertEquals($success, $response->success);
 
-        $this->assertIsObject($response->data);
 
-        $ship = $this->getCurrentShip();
+        if ($success) {
+            $this->assertIsObject($response->data);
 
-        $this->assertEquals(1, $ship->getY());
-        $this->assertEquals(2, $ship->getX());
+            $ship = $this->getCurrentShip();
+
+            $this->assertEquals($direction->getR(), $ship->getY());
+            $this->assertEquals($direction->getQ(), $ship->getX());
+        }
+    }
+
+    public function movementDataProvider(): Generator
+    {
+        yield [
+            'direction' => new HexVector(1, -1),
+            'valid' => true
+        ];
+
+        yield [
+            'direction' => new HexVector(1, 0),
+            'valid' => true
+        ];
+
+        yield [
+            'direction' => new HexVector(0, 1),
+            'valid' => true
+        ];
+
+        yield [
+            'direction' => new HexVector(-1, 1),
+            'valid' => true
+        ];
+
+        yield [
+            'direction' => new HexVector(-1, 0),
+            'valid' => true
+        ];
+
+        yield [
+            'direction' => new HexVector(0, -1),
+            'valid' => true
+        ];
+
+        // Invalid
+        yield [
+            'direction' => new HexVector(1, 1),
+            'valid' => false
+        ];
+
+        yield [
+            'direction' => new HexVector(-1, -1),
+            'valid' => false
+        ];
     }
 
     protected function executeCommand(HexVector $direction): object
@@ -100,6 +158,5 @@ class MoveTest extends GameTestCase
 
         return json_decode($this->client->getResponse()->getContent());
     }
-
 }
 
