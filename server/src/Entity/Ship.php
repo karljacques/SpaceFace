@@ -120,7 +120,7 @@ class Ship implements Locatable
         return $this->docked_at !== null;
     }
 
-    public function getStorageComponent(): ?Storage
+    public function getStorageComponent(): Storage
     {
         return $this->storageComponent;
     }
@@ -132,7 +132,7 @@ class Ship implements Locatable
         return $this;
     }
 
-    public function getOwner(): ?Character
+    public function getOwner(): Character
     {
         return $this->owner;
     }

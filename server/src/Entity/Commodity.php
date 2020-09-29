@@ -66,7 +66,7 @@ class Commodity
         return $this;
     }
 
-    public function getSize(): ?int
+    public function getSize(): int
     {
         return $this->size;
     }
@@ -78,7 +78,7 @@ class Commodity
         return $this;
     }
 
-    public function getWeight(): ?int
+    public function getWeight(): int
     {
         return $this->weight;
     }
