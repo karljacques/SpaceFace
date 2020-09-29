@@ -27,7 +27,7 @@ abstract class AbstractCommandParamConverter implements ParamConverterInterface,
      * @param ParamConverter $configuration
      * @throws SchemaValidationException
      */
-    public function apply(Request $request, ParamConverter $configuration): void
+    public function apply(Request $request, ParamConverter $configuration)
     {
         $schemaFilename = $this->getSchemaFilename();
 
@@ -52,6 +52,8 @@ abstract class AbstractCommandParamConverter implements ParamConverterInterface,
 
         $name = $configuration->getName();
         $request->attributes->set($name, $command);
+
+        return true;
     }
 
     abstract protected function getSchemaFilename(): ?string;

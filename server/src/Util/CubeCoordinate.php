@@ -17,7 +17,7 @@ class CubeCoordinate
         $this->z = $z;
     }
 
-    public function distance(CubeCoordinate $b)
+    public function distance(CubeCoordinate $b): int
     {
         $a = $this;
 

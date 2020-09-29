@@ -50,7 +50,7 @@ class MovementCommandFactory extends AbstractCommandParamConverter
         return new MovementCommand($ship, $translation, $fuelCost);
     }
 
-    protected function isValid(HexVector $location, HexVector $target)
+    protected function isValid(HexVector $location, HexVector $target): bool
     {
         return $location->isAdjacentTo($target);
     }
