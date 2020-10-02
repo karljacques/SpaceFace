@@ -10,6 +10,7 @@ use App\Entity\Ship;
 use App\Service\Validation\Rules\Docking\MustBeDockedAtRule;
 use App\Service\Validation\Rules\Storage\MustContainCommodityInStorageRule;
 use App\Service\Validation\Rules\Storage\MustHaveStorageSpaceRule;
+use LogicException;
 
 class SellCommand extends AbstractShipCommand
 {
@@ -31,7 +32,13 @@ class SellCommand extends AbstractShipCommand
 
     public function getTotalValue(): int
     {
-        return $this->marketCommodity->getBuy() * $this->getQuantity();
+        $buy = $this->marketCommodity->getBuy();
+
+        if (null === $buy) {
+            throw new LogicException('MarketCommodity has no buy value');
+        }
+
+        return $buy * $this->getQuantity();
     }
 
     public function getQuantity(): int
@@ -46,8 +53,7 @@ class SellCommand extends AbstractShipCommand
         $market = $marketCommodity->getMarket();
         $storageRequired = $marketCommodity->getCommodity()->getSize() * $this->getQuantity();
 
-        return [
-            new MustBeDockedAtRule($ship, $marketCommodity->getMarket()->getDockable()),
+        $rules = [
             new MustHaveStorageSpaceRule($market->getStorage(), $storageRequired),
             new MustContainCommodityInStorageRule(
                 $ship->getStorageComponent(),
@@ -55,5 +61,13 @@ class SellCommand extends AbstractShipCommand
                 $this->getQuantity()
             )
         ];
+
+        $marketDockable = $marketCommodity->getMarket()->getDockable();
+
+        if (null !== $marketDockable) {
+            $rules[] = new MustBeDockedAtRule($ship, $marketDockable);
+        }
+
+        return $rules;
     }
 }

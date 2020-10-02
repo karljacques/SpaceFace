@@ -8,18 +8,14 @@ use App\Command\DockCommand;
 use App\Controller\AbstractGameController;
 use App\Exception\UserActionException;
 use App\Service\Executors\DockCommandExecutor;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DockController extends AbstractGameController
 {
     protected DockCommandExecutor $commandExecutor;
-    protected EntityManagerInterface $entityManager;
 
-    public function __construct(
-        DockCommandExecutor $commandExecutor
-    )
+    public function __construct(DockCommandExecutor $commandExecutor)
     {
         $this->commandExecutor = $commandExecutor;
     }

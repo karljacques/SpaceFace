@@ -39,7 +39,7 @@ class PurchaseCommand extends AbstractShipCommand
         $sell = $this->marketCommodity->getSell();
 
         if (null === $sell) {
-            throw new LogicException('Commodity is not sold');
+            throw new LogicException('MarketCommodity has no sell value');
         }
 
         return $sell * $this->getQuantity();
@@ -66,8 +66,9 @@ class PurchaseCommand extends AbstractShipCommand
             )
         ];
 
-        if (null !== $marketCommodity->getMarket()->getDockable()) {
-            $rules[] = new MustBeDockedAtRule($ship, $marketCommodity->getMarket()->getDockable());
+        $marketDockable = $marketCommodity->getMarket()->getDockable();
+        if (null !== $marketDockable) {
+            $rules[] = new MustBeDockedAtRule($ship, $marketDockable);
         }
 
         return $rules;

@@ -59,7 +59,7 @@ class Market
         return $this;
     }
 
-    public function getStorage(): ?Storage
+    public function getStorage(): Storage
     {
         return $this->storage;
     }
