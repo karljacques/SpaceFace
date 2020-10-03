@@ -5,20 +5,20 @@ namespace App\Service\Infrastructure;
 
 
 use App\Messenger\Message\UserSpecificMessage;
+use App\Repository\Realtime\ShipRealtimeStatusRepositoryInterface;
 use App\Repository\ShipRepository;
-use App\Service\ShipRealtimeStatusService;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class TickManager
 {
     private MessageBusInterface $bus;
-    private ShipRealtimeStatusService $cache;
+    private ShipRealtimeStatusRepositoryInterface $cache;
     private ShipRepository $shipRepository;
 
     public function __construct(
         MessageBusInterface $bus,
         ShipRepository $shipRepository,
-        ShipRealtimeStatusService $cache
+        ShipRealtimeStatusRepositoryInterface $cache
     )
     {
         $this->bus = $bus;
@@ -31,7 +31,7 @@ class TickManager
         $ships = $this->shipRepository->findAll();
 
         foreach ($ships as $ship) {
-            $status = $this->cache->getShipStatus($ship);
+            $status = $this->cache->findOneByShip($ship);
 
             $elapsedTime = microtime(true) - $status->getLastUpdate();
 

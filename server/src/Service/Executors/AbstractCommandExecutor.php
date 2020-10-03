@@ -8,7 +8,7 @@ use App\Command\CommandInterface;
 use App\Entity\Ship;
 use App\Entity\ShipRealtimeStatus;
 use App\Exception\UserActionException;
-use App\Service\ShipRealtimeStatusService;
+use App\Repository\Realtime\ShipRealtimeStatusRepositoryInterface;
 use App\Service\Validation\RuleValidatorLocator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
@@ -53,7 +53,7 @@ abstract class AbstractCommandExecutor implements ServiceSubscriberInterface
         return $this->container->get(__METHOD__);
     }
 
-    protected function shipRealtimeStatusService(): ShipRealtimeStatusService
+    protected function shipRealtimeStatusService(): ShipRealtimeStatusRepositoryInterface
     {
         return $this->container->get(__METHOD__);
     }
@@ -65,7 +65,7 @@ abstract class AbstractCommandExecutor implements ServiceSubscriberInterface
 
     protected function getRealtimeStatus(Ship $ship): ShipRealtimeStatus
     {
-        return $this->shipRealtimeStatusService()->getShipStatus($ship);
+        return $this->shipRealtimeStatusService()->findOneByShip($ship);
     }
 
     protected function persistRealtimeStatus(ShipRealtimeStatus $status): void

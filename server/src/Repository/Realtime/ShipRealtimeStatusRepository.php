@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Service;
+namespace App\Repository\Realtime;
 
 
 use App\Entity\Ship;
@@ -10,7 +10,7 @@ use LogicException;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Cache\InvalidArgumentException;
 
-class ShipRealtimeStatusService
+class ShipRealtimeStatusRepository implements ShipRealtimeStatusRepositoryInterface
 {
     private CacheItemPoolInterface $pool;
 
@@ -23,7 +23,7 @@ class ShipRealtimeStatusService
      * @param Ship $ship
      * @return ShipRealtimeStatus
      */
-    public function getShipStatus(Ship $ship): ShipRealtimeStatus
+    public function findOneByShip(Ship $ship): ShipRealtimeStatus
     {
         try {
             $key = $this->getCacheKeyForShip($ship);
@@ -36,7 +36,11 @@ class ShipRealtimeStatusService
                 return $status;
             }
 
-            return ShipRealtimeStatus::createFromShip($ship);
+            $status = ShipRealtimeStatus::createFromShip($ship);
+            $item->set($status);
+            $this->pool->save($item);
+
+            return $status;
         } catch (InvalidArgumentException $e) {
             throw new LogicException('Invalid key supplied to cache');
         }

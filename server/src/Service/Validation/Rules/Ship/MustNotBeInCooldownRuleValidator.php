@@ -4,16 +4,16 @@
 namespace App\Service\Validation\Rules\Ship;
 
 
-use App\Service\ShipRealtimeStatusService;
+use App\Repository\Realtime\ShipRealtimeStatusRepositoryInterface;
 use App\Service\Validation\Rules\RuleInterface;
 use App\Service\Validation\Rules\RuleValidatorInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class MustNotBeInCooldownRuleValidator implements RuleValidatorInterface
 {
-    private ShipRealtimeStatusService $realtimeStatusService;
+    private ShipRealtimeStatusRepositoryInterface $realtimeStatusService;
 
-    public function __construct(ShipRealtimeStatusService $realtimeStatusService)
+    public function __construct(ShipRealtimeStatusRepositoryInterface $realtimeStatusService)
     {
         $this->realtimeStatusService = $realtimeStatusService;
     }
@@ -26,7 +26,7 @@ class MustNotBeInCooldownRuleValidator implements RuleValidatorInterface
 
         $ship = $rule->getShip();
 
-        $status = $this->realtimeStatusService->getShipStatus($ship);
+        $status = $this->realtimeStatusService->findOneByShip($ship);
 
         return $status->getMoveCooldownExpires() === null || $status->getMoveCooldownExpires() < microtime(true);
     }
