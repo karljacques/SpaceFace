@@ -8,12 +8,18 @@ use LogicException;
 
 class ShipRealtimeStatus
 {
-    protected ?Ship $ship;
+    protected Ship $ship;
 
     protected float $lastUpdate = 0;
 
     protected ?float $moveCooldownExpires = null;
     protected float $power = 0;
+
+    public function __construct(Ship $ship, float $power)
+    {
+        $this->ship = $ship;
+        $this->power = $power;
+    }
 
     /**
      * @return float
@@ -79,12 +85,7 @@ class ShipRealtimeStatus
 
     public static function createFromShip(Ship $ship): ShipRealtimeStatus
     {
-        $status = new static();
-
-        $status->setShip($ship);
-        $status->setPower($ship->getMaxPower());
-
-        return $status;
+        return new static($ship, $ship->getMaxPower());
     }
 
     /**

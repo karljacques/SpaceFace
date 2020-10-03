@@ -5,6 +5,7 @@ namespace App\Controller;
 
 
 use App\Entity\Ship;
+use App\Entity\User;
 use App\Service\DataCollectors\DataCollectorInterface;
 use App\Service\DataCollectors\PlayerDataCollector;
 use App\Service\DataCollectors\SectorDataCollector;
@@ -52,5 +53,25 @@ class AbstractGameController extends AbstractController
             PlayerDataCollector::class,
             SystemDataCollector::class
         ]);
+    }
+
+    protected function getActiveShip(): Ship
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $character = $user->getCharacters()->first();
+
+        if (!$character) {
+            throw new LogicException('User has no character');
+        }
+
+        $ship = $character->getShips()->first();
+
+        if (!$ship) {
+            throw new LogicException('Character has no ship');
+
+        }
+        return $ship;
     }
 }

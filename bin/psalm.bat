@@ -1,1 +1,1 @@
-docker-compose run --no-deps php-swoole ./vendor/bin/psalm %*
+docker-compose run --no-deps php-swoole ./vendor/vimeo/psalm/psalm %*

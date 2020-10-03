@@ -4,8 +4,6 @@
 namespace App\Controller;
 
 
-use App\Entity\Ship;
-use App\Entity\User;
 use App\Repository\JumpNodeRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,10 +26,7 @@ class StatusController extends AbstractGameController
      */
     public function index()
     {
-        /** @var User $user */
-        $user = $this->security->getUser();
-        /** @var Ship $ship */
-        $ship = $user->getCharacters()->first()->getShips()->first();
+       $ship = $this->getActiveShip();
 
         return $this->response($ship, ['sector', 'player', 'system']);
     }
