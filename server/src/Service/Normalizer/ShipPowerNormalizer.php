@@ -12,7 +12,6 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 class ShipPowerNormalizer implements ContextAwareNormalizerInterface
 {
     private ObjectNormalizer $normalizer;
-    /** Delete Me **/
     private ShipRealtimeStatusService $shipStatusCache;
 
     /**
@@ -37,6 +36,7 @@ class ShipPowerNormalizer implements ContextAwareNormalizerInterface
      */
     public function normalize($object, string $format = null, array $context = [])
     {
+        /** @var array $data */
         $data = $this->normalizer->normalize($object, $format, $context);
 
         $data['power'] = $this->getPower($object);

@@ -30,6 +30,9 @@ class WebsocketConnectionManager
 
         $ticket = $this->socketTicketRepository->findOneByToken($token);
 
+        if (null === $ticket) {
+            return null;
+        }
 
         return $ticket->getUser();
     }

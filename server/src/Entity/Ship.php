@@ -144,7 +144,7 @@ class Ship implements Locatable
         return $this;
     }
 
-    public function getMaxPower(): ?int
+    public function getMaxPower(): int
     {
         return $this->maxPower;
     }

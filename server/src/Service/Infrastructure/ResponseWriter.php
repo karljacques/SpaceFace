@@ -23,9 +23,9 @@ class ResponseWriter
         self::writeHeaders($swooleResponse, $sfResponse);
 
         if (true === $end) {
-            $swooleResponse->end($sfResponse->getContent());
+            $swooleResponse->end($sfResponse->getContent() ?: '');
         } else {
-            $swooleResponse->write($sfResponse->getContent());
+            $swooleResponse->write($sfResponse->getContent() ?: '');
         }
     }
 
@@ -52,7 +52,7 @@ class ResponseWriter
 
         // cookies
         foreach ($sfResponse->headers->getCookies() as $cookie) {
-            $swooleResponse->cookie($cookie->getName(), $cookie->getValue(), (string)$cookie->getExpiresTime(), $cookie->getPath(), $cookie->getDomain(), (string)$cookie->isSecure(), (string)$cookie->isHttpOnly());
+            $swooleResponse->cookie($cookie->getName(), $cookie->getValue() ?? '', (string)$cookie->getExpiresTime(), $cookie->getPath(), $cookie->getDomain() ?? '', (string)$cookie->isSecure(), (string)$cookie->isHttpOnly());
         }
     }
 }

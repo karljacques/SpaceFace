@@ -11,7 +11,6 @@ use App\Exception\UserActionException;
 use App\Service\ShipRealtimeStatusService;
 use App\Service\Validation\RuleValidatorLocator;
 use Doctrine\ORM\EntityManagerInterface;
-use LogicException;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
 use Symfony\Contracts\Service\ServiceSubscriberTrait;
 
@@ -66,14 +65,7 @@ abstract class AbstractCommandExecutor implements ServiceSubscriberInterface
 
     protected function getRealtimeStatus(Ship $ship): ShipRealtimeStatus
     {
-        $status = $this->shipRealtimeStatusService()->getShipStatus($ship);
-
-        if (null === $status) {
-            throw new LogicException(
-                sprintf('Expected return type of getShipStatus to be %s, null returned.', ShipRealtimeStatus::class)
-            );
-        }
-        return $status;
+        return $this->shipRealtimeStatusService()->getShipStatus($ship);
     }
 
     protected function persistRealtimeStatus(ShipRealtimeStatus $status): void

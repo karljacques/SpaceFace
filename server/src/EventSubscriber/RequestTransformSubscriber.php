@@ -20,7 +20,7 @@ class RequestTransformSubscriber implements EventSubscriberInterface
         $request = $event->getRequest();
         $body = $request->getContent();
 
-        if ($body === '') {
+        if ($body === '' || !is_string($body)) {
             return;
         }
 

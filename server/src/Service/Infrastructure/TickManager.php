@@ -31,11 +31,7 @@ class TickManager
         $ships = $this->shipRepository->findAll();
 
         foreach ($ships as $ship) {
-            $status = $this->cache->getShipStatus($ship, false);
-
-            if (null === $status) {
-                continue;
-            }
+            $status = $this->cache->getShipStatus($ship);
 
             $elapsedTime = microtime(true) - $status->getLastUpdate();
 

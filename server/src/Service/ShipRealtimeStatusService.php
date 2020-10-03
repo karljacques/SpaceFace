@@ -21,29 +21,26 @@ class ShipRealtimeStatusService
 
     /**
      * @param Ship $ship
-     * @param bool $createIfNull
      * @return ShipRealtimeStatus
      */
-    public function getShipStatus(Ship $ship, bool $createIfNull = true): ?ShipRealtimeStatus
+    public function getShipStatus(Ship $ship): ShipRealtimeStatus
     {
-        $key = $this->getCacheKeyForShip($ship);
-
         try {
+            $key = $this->getCacheKeyForShip($ship);
             $item = $this->pool->getItem($key);
+
+            if ($item->isHit()) {
+                $status = $item->get();
+                $status->setShip($ship);
+
+                return $status;
+            }
+
+            return ShipRealtimeStatus::createFromShip($ship);
         } catch (InvalidArgumentException $e) {
-            return $createIfNull ? ShipRealtimeStatus::createFromShip($ship) : null;
+            throw new LogicException('Invalid key supplied to cache');
         }
-
-        if ($item->isHit()) {
-            $status = $item->get();
-            $status->setShip($ship);
-
-            return $status;
-        }
-
-        return $createIfNull ? ShipRealtimeStatus::createFromShip($ship) : null;
     }
-
 
     public function persist(ShipRealtimeStatus $status): void
     {

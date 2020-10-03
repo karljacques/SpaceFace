@@ -11,6 +11,7 @@ use App\Exception\SchemaValidationException;
 use App\Exception\ValidationError;
 use App\Service\SchemaService;
 use JsonSchema\Validator;
+use LogicException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,6 +26,7 @@ abstract class AbstractCommandParamConverter implements ParamConverterInterface,
     /**
      * @param Request $request
      * @param ParamConverter $configuration
+     * @return bool
      * @throws SchemaValidationException
      */
     public function apply(Request $request, ParamConverter $configuration)
@@ -32,7 +34,7 @@ abstract class AbstractCommandParamConverter implements ParamConverterInterface,
         $schemaFilename = $this->getSchemaFilename();
 
         if ($schemaFilename !== null) {
-            $schema = $this->schemaService()->loadSchema($this->getSchemaFilename());
+            $schema = $this->schemaService()->loadSchema($schemaFilename);
             $data = (object)$request->request->all();
 
             $validator = new Validator();
@@ -46,7 +48,18 @@ abstract class AbstractCommandParamConverter implements ParamConverterInterface,
 
         /** @var User $user */
         $user = $this->security()->getUser();
-        $ship = $user->getCharacters()->first()->getShips()->first();
+
+        $character = $user->getCharacters()->first();
+
+        if (!$character) {
+            throw new LogicException('Player has no character');
+        }
+
+        $ship = $character->getShips()->first();
+
+        if (!$ship) {
+            throw new LogicException('Character has no ship');
+        }
 
         $command = $this->createCommand($request, $ship);
 
