@@ -6,6 +6,7 @@ import {Container} from 'inversify';
 import {CommandResponse} from '@/objects/response/CommandResponse';
 import {StatusResponseFactory} from '@/services/factory/StatusResponseFactory';
 import {HttpResponse} from '@/services/connectivity/interface/HttpResponse';
+import {Vector2} from '@/objects/entity/Vector2';
 
 describe('MovementAPIController', () => {
     describe('when the api returns a successful response', () => {
@@ -40,11 +41,12 @@ describe('MovementAPIController', () => {
 
         const controller = container.get(MovementAPIController);
 
-        const commandResponsePromise = controller.move('direction');
+        const commandResponsePromise = controller.move(Vector2.create({x: 1, y: 1}));
 
         it('should create a CommandResponse object', () => {
             return commandResponsePromise.then((commandResponse: any) => {
                 expect(commandResponse).toBeInstanceOf(CommandResponse);
+
             });
         });
 
@@ -75,7 +77,7 @@ describe('MovementAPIController', () => {
 
         const controller = container.get(MovementAPIController);
 
-        const commandResponsePromise = controller.move('direction');
+        const commandResponsePromise = controller.move(Vector2.create({x: 1, y: 1}));
 
         it('should return a failing CommandResponse object', () => {
             return commandResponsePromise.then((commandResponse: any) => {
